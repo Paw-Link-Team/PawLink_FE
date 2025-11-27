@@ -1,0 +1,214 @@
+/* 브라우저 전체 – 가운데에 최대 480px 폭의 화면 */
+.home-screen-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--paw-bg-ivory);
+  display: flex;
+  justify-content: center;
+}
+
+/* 실제 화면 컨테이너: 모바일에선 전체 폭, 데스크탑에선 가운데 카드 */
+.home-screen {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  background: var(--paw-white);
+  display: flex;
+  flex-direction: column;
+}
+
+/* 데스크탑일 때는 카드처럼 보이도록 */
+@media (min-width: 480px) {
+  .home-screen {
+    margin: 16px 0;
+    border-radius: 32px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+  }
+}
+
+/* 상태바 영역 */
+.home-status-bar {
+  height: 28px;
+}
+
+/* 헤더 – 흰색 바 */
+.home-header {
+  height: 44px;
+  padding: 0 16px;
+  background: var(--paw-white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.home-logo {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--paw-brand-brown);
+}
+
+.home-location {
+  font-size: 20px;
+}
+
+/* 상단 Soft Beige 영역 */
+.home-hero {
+  height: 170px;
+  background: var(--paw-bg-soft-beige);
+}
+
+/* 말풍선 배너 */
+.home-chip-wrap {
+  padding: 12px 0 8px;
+  display: flex;
+  justify-content: center;
+  background: var(--paw-bg-ivory);
+}
+
+.home-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--paw-white);
+  font-size: 12px;
+  color: var(--paw-text-t1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.home-chip-icon {
+  font-size: 14px;
+}
+
+/* 랭킹 영역 전체 */
+.home-ranking {
+  flex: 1;
+  background: var(--paw-white);
+}
+
+/* 브라운 헤더 바 */
+.home-ranking-header {
+  height: 40px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--paw-white);
+  background: var(--paw-brand-brown);
+}
+
+/* 리스트 */
+.home-ranking-list {
+  margin: 0;
+  padding: 8px 0 0;
+  list-style: none;
+}
+
+.home-ranking-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+}
+
+.home-ranking-item + .home-ranking-item {
+  border-top: 1px solid rgba(186, 176, 166, 0.4); /* Light Gray Brown */
+}
+
+.home-ranking-left {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.home-ranking-number {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--paw-text-t2);
+  width: 14px;
+}
+
+.home-ranking-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.home-ranking-name {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--paw-text-t1);
+}
+
+.home-ranking-meta {
+  margin: 0;
+  font-size: 11px;
+  color: var(--paw-text-t3);
+}
+
+/* 오른쪽 아바타 – 브랜드 브라운 원 안에 흰색 아이콘 */
+.home-ranking-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--paw-brand-brown);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-ranking-avatar-icon {
+  width: 18px;
+  height: 18px;
+  fill: var(--paw-white);
+}
+
+/* 하단 네비게이션 – 스크롤해도 아래에 붙어 있게 */
+.home-bottom-nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  height: 60px;
+  border-top: 1px solid rgba(186, 176, 166, 0.4);
+  background: var(--paw-white);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.home-bottom-nav-item {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  color: var(--paw-text-t3);
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.home-bottom-nav-icon {
+  font-size: 20px;
+}
+
+/* 선택된 탭 */
+.home-bottom-nav-item.is-active {
+  color: var(--paw-text-t1);
+  font-weight: 600;
+}
+
+/* 아이폰 홈 인디케이터 */
+.home-indicator {
+  height: 5px;
+  margin: 4px auto 8px;
+  width: 120px;
+  border-radius: 999px;
+  background: #000000;
+}
