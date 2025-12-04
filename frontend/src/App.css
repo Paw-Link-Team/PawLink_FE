@@ -1,42 +1,47 @@
+:root {
+  /* ==== PawLink 공식 팔레트 ==== */
+  --paw-brand-brown: #75401f;       /* Brand Brown / 로고, 버튼, 강조 */
+  --paw-deep-brown: #3f3028;        /* Deep Brown / 메인 텍스트 */
+  --paw-sand-brown: #8c7f74;        /* Sand Brown / 서브 텍스트 */
+  --paw-light-gray-brown: #bab0a6;  /* Light Gray Brown / Disabled, 구분선 */
+
+  --paw-bg-soft-beige: #f2e8dd;     /* Soft Beige / 섹션 배경 */
+  --paw-bg-ivory: #fef7e9;          /* Ivory Base / 기본 배경 */
+  --paw-white: #ffffff;             /* White / 카드, 컴포넌트 */
+
+  --paw-text-t1: #3f3028;           /* 메인 텍스트 */
+  --paw-text-t2: #75401f;           /* 강조 텍스트 */
+  --paw-text-t3: #8c7f74;           /* 보조 텍스트 */
+  --paw-text-t4: #bab0a6;           /* 비활성 텍스트 */
+
+  --paw-font: -apple-system, BlinkMacSystemFont, "Noto Sans KR",
+    system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+body {
+  font-family: var(--paw-font);
+  background: var(--paw-bg-ivory);
+  color: var(--paw-text-t1);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* 브라우저 전체 – 가운데에 폰 한 대 */
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paw-bg-ivory);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
