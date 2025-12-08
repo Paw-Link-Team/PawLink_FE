@@ -18,4 +18,4 @@
 - etc
 
 ex)
-`git commit -m "[#1] Feat : User 엔티티 구현`
+`git commit -m "[#1] Feat : User 엔티티 구현"`
