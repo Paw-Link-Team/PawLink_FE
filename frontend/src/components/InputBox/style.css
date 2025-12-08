@@ -1,0 +1,9 @@
+.input-box-button {
+    display: flex;
+    height: 56px;
+    padding: 13px 101px;
+    align-items: center;
+    gap: 7px;
+    align-self: stretch;
+    color: yellow;
+}
