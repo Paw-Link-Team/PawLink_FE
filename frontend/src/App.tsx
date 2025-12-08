@@ -1,13 +1,15 @@
-import './App.css'
-import KakaoLoginButton from './components/InputBox';
+import "./App.css";
+import Home from "./Home";
+
+
 
 function App() {
 
 
   return (
-     <>
-      <KakaoLoginButton />
-     </>
+    <div className="app-root">
+      <Home />
+    </div>
   );
 }
 
