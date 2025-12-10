@@ -1,0 +1,62 @@
+.rank-container {
+  padding: 18px;
+  margin-top: 10px;
+}
+
+.rank-title {
+  font-size: clamp(18px, 5vw, 22px);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.rank-subtitle {
+  font-size: clamp(14px, 4vw, 18px);
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.rank-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rank-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 14px;
+  transition: background 0.15s;
+}
+
+.rank-item:active {
+  background: #f0f0f0;
+}
+
+.rank-number {
+  font-size: clamp(18px, 6vw, 26px);
+  font-weight: 700;
+  color: #ff7b00;
+  width: 30px;
+}
+
+.rank-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rank-name {
+  font-size: clamp(16px, 4.5vw, 20px);
+  font-weight: 600;
+}
+
+.rank-detail {
+  font-size: clamp(13px, 3.8vw, 17px);
+  color: #555;
+}
