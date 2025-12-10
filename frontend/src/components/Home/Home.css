@@ -1,0 +1,283 @@
+.home-screen-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--paw-bg-ivory);
+  display: fixed;
+  justify-content: center;
+}
+
+.home-screen {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  background: var(--paw-white);
+  display: fixed;
+  flex-direction: column;
+}
+
+@media (min-width: 480px) {
+  .home-screen {
+    margin: 16px 0;
+    border-radius: 32px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+  }
+}
+
+.home-status-bar {
+  height: 28px;
+}
+
+.home-header {
+  height: 44px;
+  padding: 0 16px;
+  background: var(--paw-white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.home-logo {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--paw-brand-brown);
+}
+
+.home-location {
+  font-size: 20px;
+}
+
+/* Hero */
+.home-hero {
+  height: 170px;
+  background: var(--paw-bg-soft-beige);
+}
+
+/* Chip */
+.home-chip-wrap {
+  padding: 12px 0 8px;
+  display: flex;
+  justify-content: center;
+  background: var(--paw-bg-ivory);
+}
+
+.home-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--paw-white);
+  font-size: 12px;
+  color: var(--paw-text-t1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.home-chip-icon {
+  font-size: 14px;
+}
+
+/* Ranking List */
+.home-ranking {
+  flex: 1;
+  background: var(--paw-white);
+}
+
+.home-ranking-header {
+  height: 40px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--paw-white);
+  background: var(--paw-brand-brown);
+}
+
+.home-ranking-list {
+  margin: 0;
+  padding: 8px 0 0;
+  list-style: none;
+}
+
+.home-ranking-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+}
+
+.home-ranking-item + .home-ranking-item {
+  border-top: 1px solid rgba(186, 176, 166, 0.4);
+}
+
+.home-ranking-left {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.home-ranking-number {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--paw-text-t2);
+  width: 14px;
+}
+
+.home-ranking-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.home-ranking-name {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--paw-text-t1);
+}
+
+.home-ranking-meta {
+  margin: 0;
+  font-size: 11px;
+  color: var(--paw-text-t3);
+}
+
+/* Avatar */
+.home-ranking-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--paw-brand-brown);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-ranking-avatar-icon {
+  width: 18px;
+  height: 18px;
+  fill: var(--paw-white);
+}
+
+/* Bottom Navigation */
+.home-bottom-nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  height: 60px;
+  border-top: 1px solid rgba(186, 176, 166, 0.4);
+  background: var(--paw-white);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.home-bottom-nav-item {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  color: var(--paw-text-t3);
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.home-bottom-nav-icon {
+  font-size: 20px;
+}
+
+.home-bottom-nav-item.is-active {
+  color: var(--paw-text-t1);
+  font-weight: 600;
+}
+
+/* 태블릿 (481px~1024px) */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .home-screen {
+    max-width: 640px;
+    margin: 24px 0;
+    border-radius: 24px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+  }
+
+  .home-bottom-nav {
+    position: sticky;
+    bottom: 0;
+  }
+}
+
+/* PC (1025px 이상) */
+@media (min-width: 1025px) {
+  .home-screen-wrapper {
+    padding-top: 40px;
+  }
+
+  .home-screen {
+    max-width: 900px;
+    min-height: auto;
+    border-radius: 30px;
+    margin: 0 auto;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  }
+
+  .home-bottom-nav {
+    position: static;
+    border-top: none;
+    height: auto;
+    padding: 12px 0;
+    background: var(--paw-bg-ivory);
+  }
+
+  .home-bottom-nav-item {
+    font-size: 14px;
+  }
+}
+@media (min-width: 1025px) {
+  .home-screen-wrapper {
+    padding-top: 40px;
+  }
+
+  .home-screen {
+    max-width: 900px;
+    min-height: auto;
+    border-radius: 30px;
+    margin: 0 auto;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  }
+
+  /* -----------------------------
+     PC 헤더 고정 추가
+     ----------------------------- */
+  .home-header {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    z-index: 50;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  /* 헤더 높이만큼 화면 아래 내용이 밀리도록 */
+  .home-screen {
+    padding-top: 44px; /* 헤더 높이 44px */
+  }
+
+  .home-bottom-nav {
+    position: static;
+    border-top: none;
+    height: auto;
+    padding: 12px 0;
+    background: var(--paw-bg-ivory);
+  }
+
+  .home-bottom-nav-item {
+    font-size: 14px;
+  }
+}

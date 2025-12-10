@@ -29,7 +29,7 @@
 }
 @media (min-width: 768px) {
   .bottom-nav {
-    position: static;
+    position: sticky;
     bottom: auto;
     border-top: none;
     width: auto;

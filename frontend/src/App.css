@@ -38,10 +38,9 @@ body {
 
 /* 브라우저 전체 – 가운데에 폰 한 대 */
 .app-root {
-  min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--paw-bg-ivory);
+  flex-direction: column;   /* Header → WalkRank → Navbar 순으로 세로 배치 */
+  width: 100%;
+  min-height: 100vh;
 }
 
