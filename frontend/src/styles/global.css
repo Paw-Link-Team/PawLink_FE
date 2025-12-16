@@ -1,0 +1,24 @@
+:root{
+    /* 색상 */
+    --color-primary: #ff7b00;
+    --color-secondary: #ffe3c1;
+    --color-text: #222;
+    --color-bg: #fff;
+
+    /* 폰트 */
+    --fs-xs: 12px;
+    --fs-sm: 14px;
+    --fs-md: 16px;
+    --fs-lg: 20px;
+    --fs-xl: 24px;
+
+    /* 공간 */
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+}
+
+.dark{
+    --color-bg: #111;
+    --color-text: #fff;
+}

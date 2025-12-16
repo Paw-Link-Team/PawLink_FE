@@ -1,6 +1,7 @@
 import React from "react";
 import "./Home.css";
 
+
 type RankItem = {
   id: number;
   name: string;
@@ -113,9 +114,6 @@ const Home: React.FC = () => {
             <span className="home-bottom-nav-label">마이페이지</span>
           </button>
         </nav>
-
-        {/* 아이폰 홈 인디케이터 느낌 */}
-        <div className="home-indicator" />
       </div>
     </div>
   );

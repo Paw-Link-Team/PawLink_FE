@@ -1,0 +1,21 @@
+@media (max-width: 480px) {
+  :root {
+    --fs-md: 14px;
+    --fs-lg: 18px;
+    --spacing-lg: 18px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 1024px) {
+  :root {
+    --fs-md: 15px;
+    --fs-lg: 20px;
+  }
+}
+
+@media (min-width: 1025px) {
+  :root {
+    --fs-md: 16px;
+    --fs-lg: 22px;
+  }
+}
