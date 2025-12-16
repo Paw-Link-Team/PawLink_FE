@@ -1,0 +1,169 @@
+/* frontend/src/pages/NoticeBoardPage.css */
+
+.nb-root {
+  min-height: 100vh;
+  background: #2f2f2f; /* 바깥 배경(피그마처럼 어두운 회색) */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 28px 12px;
+}
+
+.nb-phone {
+  width: 393px;
+  min-height: 852px;
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 헤더 */
+.nb-header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 16px 10px;
+}
+
+.nb-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.nb-search-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.nb-search-icon {
+  font-size: 20px;
+}
+
+/* 탭 */
+.nb-tabs {
+  display: flex;
+  gap: 10px;
+  padding: 8px 16px 10px;
+}
+
+.nb-tab {
+  border: none;
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #efe7de;   /* 비활성 베이지 */
+  color: #6b5a4c;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.nb-tab.active {
+  background: #75401f;   /* 활성 브라운 */
+  color: #ffffff;
+}
+
+/* 리스트 */
+.nb-list {
+  padding: 6px 0 90px; /* 하단 네브 공간 확보 */
+}
+
+.nb-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.nb-thumb {
+  width: 54px;
+  height: 54px;
+  border-radius: 8px;
+  background: #f3eee9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.nb-dog {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: #f3a24a; /* 강아지 아이콘 느낌(임시) */
+}
+
+.nb-item-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.nb-item-title {
+  font-weight: 800;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.nb-item-preview {
+  font-size: 12px;
+  color: #777;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 플로팅 + 버튼 */
+.nb-fab {
+  position: absolute;
+  right: 16px;
+  bottom: 86px;
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: #75401f;
+  color: #ffffff;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 하단 네브 */
+.nb-nav {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 76px;
+  border-top: 1px solid #eee;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.nb-nav-item {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #777;
+}
+
+.nb-nav-item .nb-nav-ic {
+  font-size: 18px;
+}
+
+.nb-nav-item.active {
+  color: #000;
+}
