@@ -1,11 +1,11 @@
-.nb-wrapper {
+.unb-wrapper {
   min-height: 100vh;
   background: #fff7e9;
   display: flex;
   justify-content: center;
 }
 
-.nb-screen {
+.unb-screen {
   width: 100%;
   max-width: 390px;
   min-height: 100vh;
@@ -13,25 +13,25 @@
   position: relative;
 }
 
-.nb-status {
+.unb-status {
   height: 24px;
 }
 
 /* 헤더 */
-.nb-header {
+.unb-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 14px 16px 8px;
 }
 
-.nb-title {
+.unb-title {
   font-size: 18px;
   font-weight: 900;
   color: #1a1a1a;
 }
 
-.nb-search {
+.unb-search {
   width: 36px;
   height: 36px;
   border: none;
@@ -41,14 +41,14 @@
   cursor: pointer;
 }
 
-/* 탭(알약) */
-.nb-tabs {
+/* 탭 */
+.unb-tabs {
   display: flex;
   gap: 10px;
   padding: 6px 16px 10px;
 }
 
-.nb-tab {
+.unb-tab {
   border: none;
   cursor: pointer;
   padding: 7px 14px;
@@ -59,78 +59,68 @@
   background: #f5efe9;
 }
 
-.nb-tab.active {
+.unb-tab.active {
   background: #7a4a22;
   color: #ffffff;
 }
 
-/* 리스트 */
-.nb-list {
-  list-style: none;
-  margin: 0;
-  padding: 0 16px 0;
+/* ✅ 완료 탭 톤다운 영역(사진 오른쪽 느낌) */
+.unb-dim-area {
+  background: #efe9e3; /* 톤 다운 */
+  min-height: calc(100vh - 24px - 60px - 52px - 72px);
+  padding-bottom: 10px;
 }
 
-.nb-item {
+.unb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 16px;
+}
+
+.unb-item {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 14px 0;
-  border-bottom: 1px solid #f0f0f0;
-  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.nb-thumb {
+/* 썸네일도 회색 톤으로 */
+.unb-thumb {
   width: 48px;
   height: 48px;
-  border-radius: 12px;
-  background: #f5efe9;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.nb-thumb-ico {
+.unb-thumb-ico {
   font-size: 20px;
+  opacity: 0.8;
 }
 
-.nb-body {
+.unb-body {
   flex: 1;
   min-width: 0;
 }
 
-.nb-item-title {
+.unb-item-title {
   font-size: 14px;
   font-weight: 900;
   color: #2a2a2a;
   margin-bottom: 6px;
 }
 
-.nb-item-desc {
+.unb-item-desc {
   font-size: 12px;
-  color: #8b8b8b;
+  color: #7a7a7a; /* 더 흐리게 */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* 플로팅 + 버튼 */
-.nb-fab {
-  position: absolute;
-  right: 18px;
-  bottom: 88px; /* NavBar 위로 */
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: none;
-  background: #7a4a22;
-  color: #fff;
-  font-size: 28px;
-  cursor: pointer;
-  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
-}
-
-/* 안전 패딩 */
-.nb-safe {
+.unb-safe {
   height: 72px;
 }

@@ -1,4 +1,5 @@
 import "../App.css";
+import NavBar from "../components/NavBar";
 
 const RANKING_DATA = [
   {
@@ -94,28 +95,8 @@ export default function HomePage() {
             ))}
           </ul>
         </section>
-
-        {/* 하단 네비 */}
-        <nav
-          className="home-bottom-nav"
-          style={{
-            position: "fixed",
-            bottom: 0,
-            width: "100%",
-            maxWidth: "390px",
-            background: "#fff",
-            borderTop: "1px solid #eee",
-            display: "flex",
-            justifyContent: "space-around",
-            padding: "8px 0",
-          }}
-        >
-          <button>🏠<br />홈</button>
-          <button>📋<br />게시판</button>
-          <button>💬<br />채팅</button>
-          <button>👤<br />마이페이지</button>
-        </nav>
-
+        <NavBar active="home"></NavBar>
+        
         {/* 안전 패딩 */}
         <div style={{ height: "72px" }} />
       </div>

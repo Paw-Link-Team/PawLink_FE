@@ -8,20 +8,18 @@ type PostDetail = {
   authorName: string;
   authorMeta: string;
   title: string;
-  metaLine: string; // 산책시간/산책장소
+  metaLine: string;
   detailLines: string[];
-  statsLine: string; // 채팅/관심/조회
+  statsLine: string;
 };
 
 export default function NoticeBoardDetailPage() {
   const nav = useNavigate();
   const { id } = useParams();
 
-  // 좋아요 상태(활성/비활성)
   const [liked, setLiked] = useState(true);
 
   const data: PostDetail = useMemo(() => {
-    // 지금은 더미. 나중에 id로 데이터 바꾸면 됨.
     return {
       id: Number(id ?? 1),
       authorName: "강형욱",
@@ -42,8 +40,12 @@ export default function NoticeBoardDetailPage() {
       <div className="nbd-phone">
         {/* 상단바 */}
         <header className="nbd-top">
-          <button className="nbd-icon-btn" onClick={() => nav(-1)} aria-label="back">
-            {/* <- */}
+          <button
+            className="nbd-icon-btn"
+            onClick={() => nav(-1)}
+            aria-label="back"
+            type="button"
+          >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <path
                 d="M15 18l-6-6 6-6"
@@ -55,8 +57,7 @@ export default function NoticeBoardDetailPage() {
             </svg>
           </button>
 
-          <button className="nbd-icon-btn" aria-label="share">
-            {/* 공유 */}
+          <button className="nbd-icon-btn" aria-label="share" type="button">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <path
                 d="M16 6l-8 4 8 4"
@@ -76,12 +77,12 @@ export default function NoticeBoardDetailPage() {
           </button>
         </header>
 
-        {/* 상단 일러스트 영역 */}
-        <section className="nbd-hero" aria-hidden />
+        {/* 상단 이미지 */}
+        <section className="nbd-hero" />
 
-        {/* 작성자 라인 */}
+        {/* 작성자 */}
         <section className="nbd-author">
-          <div className="nbd-avatar" aria-hidden />
+          <div className="nbd-avatar" />
           <div className="nbd-author-text">
             <div className="nbd-author-name">{data.authorName}</div>
             <div className="nbd-author-meta">{data.authorMeta}</div>
@@ -95,7 +96,10 @@ export default function NoticeBoardDetailPage() {
 
           <div className="nbd-body">
             {data.detailLines.map((line, idx) => (
-              <div key={idx} className={idx === 0 ? "nbd-body-head" : "nbd-body-line"}>
+              <div
+                key={idx}
+                className={idx === 0 ? "nbd-body-head" : "nbd-body-line"}
+              >
                 {line}
               </div>
             ))}
@@ -106,13 +110,13 @@ export default function NoticeBoardDetailPage() {
 
         {/* 하단 액션바 */}
         <footer className="nbd-bottom">
+          {/* ❤️ 하트 */}
           <button
             className={`nbd-like ${liked ? "on" : ""}`}
             onClick={() => setLiked((v) => !v)}
             aria-label="like"
             type="button"
           >
-            {/* 하트 */}
             <svg width="26" height="26" viewBox="0 0 24 24">
               <path
                 d="M12 21s-7-4.5-9.5-8.5C.5 9 2.5 6 6 6c2 0 3.2 1.1 4 2 0 0 1.2-2 4-2 3.5 0 5.5 3 3.5 6.5C19 16.5 12 21 12 21z"
@@ -121,7 +125,12 @@ export default function NoticeBoardDetailPage() {
             </svg>
           </button>
 
-          <button className="nbd-chat" type="button">
+          {/* 💬 채팅하기 */}
+          <button
+            className="nbd-chat"
+            type="button"
+            onClick={() => nav(`/chat/${data.id}`)}
+          >
             채팅하기
           </button>
         </footer>
