@@ -1,0 +1,45 @@
+.pl-nav {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 12px;
+}
+
+.pl-nav-item {
+  width: 25%;
+  text-decoration: none;
+  color: #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.pl-nav-ico {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.pl-nav-txt {
+  font-size: 11px;
+}
+
+.pl-nav-item.active {
+  color: #75401f;
+}
+
+.pl-home-indicator {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 6px;
+  width: 130px;
+  height: 4px;
+  background: #000;
+  opacity: 0.12;
+  border-radius: 999px;
+}

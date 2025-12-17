@@ -1,0 +1,136 @@
+.nb-wrapper {
+  min-height: 100vh;
+  background: #fff7e9;
+  display: flex;
+  justify-content: center;
+}
+
+.nb-screen {
+  width: 100%;
+  max-width: 390px;
+  min-height: 100vh;
+  background: #ffffff;
+  position: relative;
+}
+
+.nb-status {
+  height: 24px;
+}
+
+/* 헤더 */
+.nb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 8px;
+}
+
+.nb-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: #1a1a1a;
+}
+
+.nb-search {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  color: #7a4a22;
+  cursor: pointer;
+}
+
+/* 탭(알약) */
+.nb-tabs {
+  display: flex;
+  gap: 10px;
+  padding: 6px 16px 10px;
+}
+
+.nb-tab {
+  border: none;
+  cursor: pointer;
+  padding: 7px 14px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #6b4a2d;
+  background: #f5efe9;
+}
+
+.nb-tab.active {
+  background: #7a4a22;
+  color: #ffffff;
+}
+
+/* 리스트 */
+.nb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 16px 0;
+}
+
+.nb-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+}
+
+.nb-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #f5efe9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nb-thumb-ico {
+  font-size: 20px;
+}
+
+.nb-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.nb-item-title {
+  font-size: 14px;
+  font-weight: 900;
+  color: #2a2a2a;
+  margin-bottom: 6px;
+}
+
+.nb-item-desc {
+  font-size: 12px;
+  color: #8b8b8b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 플로팅 + 버튼 */
+.nb-fab {
+  position: absolute;
+  right: 18px;
+  bottom: 88px; /* NavBar 위로 */
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: #7a4a22;
+  color: #fff;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* 안전 패딩 */
+.nb-safe {
+  height: 72px;
+}

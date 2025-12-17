@@ -1,0 +1,186 @@
+/* frontend/src/pages/NoticeBoardDetailPage.css */
+
+:root {
+  --brand-brown: #75401f;
+  --deep-brown: #3f3028;
+  --sand: #f2e8dd;
+  --ivory: #fef7e9;
+  --text-1: #3f3028;
+  --text-2: #8c7f74;
+  --line: rgba(63, 48, 40, 0.12);
+}
+
+.nbd-root {
+  min-height: 100vh;
+  background: #2b2b2b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 12px;
+}
+
+.nbd-phone {
+  width: 393px;
+  height: 852px;
+  background: #ffffff;
+  border-radius: 22px;
+  overflow: hidden;
+  position: relative;
+}
+
+.nbd-top {
+  height: 64px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--sand);
+  color: var(--brand-brown);
+}
+
+.nbd-icon-btn {
+  border: none;
+  background: transparent;
+  color: var(--brand-brown);
+  cursor: pointer;
+}
+
+.nbd-hero {
+  height: 270px;
+  background: var(--sand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* 강아지 일러스트 느낌(가짜) */
+.nbd-hero::after {
+  content: "";
+  width: 220px;
+  height: 220px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #f3b062, #e58e3e);
+  opacity: 0.95;
+  transform: rotate(0deg);
+}
+
+.nbd-author {
+  height: 74px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+}
+
+.nbd-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--brand-brown);
+}
+
+.nbd-author-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-1);
+}
+
+.nbd-author-meta {
+  font-size: 11px;
+  color: var(--text-2);
+  margin-top: 2px;
+}
+
+.nbd-content {
+  padding: 18px 16px 140px;
+}
+
+.nbd-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--text-1);
+  margin-bottom: 10px;
+}
+
+.nbd-meta {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+
+.nbd-body-head {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-1);
+  margin-bottom: 6px;
+}
+
+.nbd-body-line {
+  font-size: 12px;
+  color: var(--text-1);
+  line-height: 1.55;
+}
+
+.nbd-stats {
+  margin-top: 14px;
+  font-size: 11px;
+  color: var(--text-2);
+}
+
+.nbd-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  background: #ffffff;
+}
+
+.nbd-like {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  color: var(--brand-brown);
+}
+
+.nbd-like.on {
+  color: var(--brand-brown);
+}
+
+.nbd-like:not(.on) {
+  color: rgba(117, 64, 31, 0.35);
+}
+
+.nbd-chat {
+  flex: 1;
+  height: 48px;
+  border-radius: 999px;
+  border: none;
+  background: var(--brand-brown);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.nbd-home-indicator {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 8px;
+  width: 140px;
+  height: 4px;
+  border-radius: 999px;
+  background: #000;
+  opacity: 0.15;
+}
