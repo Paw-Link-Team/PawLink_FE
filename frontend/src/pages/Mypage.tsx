@@ -10,8 +10,6 @@ type WalkHistoryItem = {
   poop: "O" | "X";
 };
 
-type PayMode = "charge" | "withdraw";
-
 export default function Mypage() {
   const navigate = useNavigate();
 
@@ -24,34 +22,8 @@ export default function Mypage() {
     []
   );
 
-  const [balance, setBalance] = useState(0);
-  const [payOpen, setPayOpen] = useState(false);
-  const [payMode, setPayMode] = useState<PayMode>("charge");
-  const [amount, setAmount] = useState("");
-
-  const openPay = (mode: PayMode) => {
-    setPayMode(mode);
-    setAmount("");
-    setPayOpen(true);
-  };
-
-  const closePay = () => {
-    setPayOpen(false);
-    setAmount("");
-  };
-
-  const submitPay = () => {
-    const n = Number(amount.replaceAll(",", ""));
-    if (!Number.isFinite(n) || n <= 0) return;
-
-    if (payMode === "charge") setBalance((b) => b + n);
-    if (payMode === "withdraw") setBalance((b) => Math.max(0, b - n));
-
-    closePay();
-  };
-
-  const title = payMode === "charge" ? "충전" : "출금";
-  const hint = payMode === "charge" ? "충전할 금액" : "출금할 금액";
+  // ✅ 잔액은 일단 로컬 상태로 유지 (충전 페이지에서 나중에 연동 가능)
+  const [balance] = useState(0);
 
   return (
     <div className="mp-wrapper">
@@ -60,7 +32,8 @@ export default function Mypage() {
 
         <header className="mp-header">마이페이지</header>
 
-        <section className="mp-profile-row" onClick={() => navigate("/parent-profile")}>
+        {/* ✅ 마이프로필로 가고 싶으면 /mypage/profile로 바꿔도 됨 */}
+        <section className="mp-profile-row" onClick={() => navigate("/mypage/profile")}>
           <div className="mp-profile-left">
             <div className="mp-avatar">👤</div>
             <div className="mp-name">강형욱</div>
@@ -79,11 +52,12 @@ export default function Mypage() {
               <span className="mp-pay-won">원</span>
             </div>
 
+            {/* ✅ 모달 삭제하고 페이지 이동으로 변경 */}
             <div className="mp-pay-actions">
-              <button className="mp-pill" onClick={() => openPay("charge")}>
+              <button className="mp-pill" onClick={() => navigate("/pay/charge")}>
                 충전
               </button>
-              <button className="mp-pill" onClick={() => openPay("withdraw")}>
+              <button className="mp-pill" onClick={() => navigate("/pay/withdraw")}>
                 출금
               </button>
             </div>
@@ -120,64 +94,6 @@ export default function Mypage() {
             </button>
           ))}
         </section>
-
-        {/* ✅ Pay Modal (Figma 느낌 바텀시트) */}
-        {payOpen && (
-          <div className="mp-modal-dim" onClick={closePay}>
-            <div className="mp-modal" onClick={(e) => e.stopPropagation()}>
-              <div className="mp-modal-handle" />
-
-              <div className="mp-modal-head">
-                <div className="mp-modal-title">{title}</div>
-                <button className="mp-x" onClick={closePay} aria-label="close">
-                  ✕
-                </button>
-              </div>
-
-              <div className="mp-modal-sub">
-                현재 잔액 <strong>{balance.toLocaleString("ko-KR")}원</strong>
-              </div>
-
-              <div className="mp-amount-box">
-                <label className="mp-amount-label">{hint}</label>
-                <div className="mp-amount-input">
-                  <input
-                    value={amount}
-                    inputMode="numeric"
-                    placeholder="0"
-                    onChange={(e) => {
-                      const only = e.target.value.replace(/[^\d]/g, "");
-                      const withComma =
-                        only.length === 0 ? "" : Number(only).toLocaleString("ko-KR");
-                      setAmount(withComma);
-                    }}
-                  />
-                  <span className="mp-amount-won">원</span>
-                </div>
-              </div>
-
-              <div className="mp-quick">
-                {[1000, 3000, 5000, 10000].map((v) => (
-                  <button
-                    key={v}
-                    className="mp-quick-btn"
-                    onClick={() => {
-                      const cur = Number(amount.replaceAll(",", "")) || 0;
-                      const next = cur + v;
-                      setAmount(next.toLocaleString("ko-KR"));
-                    }}
-                  >
-                    +{v.toLocaleString("ko-KR")}
-                  </button>
-                ))}
-              </div>
-
-              <button className="mp-submit" onClick={submitPay}>
-                {title}하기
-              </button>
-            </div>
-          </div>
-        )}
 
         <NavBar active="mypage" />
         <div className="mp-safe-pad" />

@@ -1,4 +1,6 @@
+// frontend/src/pages/Chat.tsx (또는 ChatPage.tsx)
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import "./Chat.css";
 
@@ -36,13 +38,18 @@ const CHAT_DATA = [
 ];
 
 export default function ChatPage() {
+  const nav = useNavigate();
   const [tab, setTab] = useState<TabKey>("all");
 
   const filteredData = CHAT_DATA.filter((chat) => {
     if (tab === "unread") return chat.unread;
-    if (tab === "done") return false;
+    if (tab === "done") return false; // 완료된 산책 탭은 지금 비워둔 상태
     return true;
   });
+
+  const goRoom = (roomId: number) => {
+    nav(`/chat/${roomId}`);
+  };
 
   return (
     <div className="chat-wrapper">
@@ -56,18 +63,21 @@ export default function ChatPage() {
         {/* 탭 */}
         <div className="chat-tabs">
           <button
+            type="button"
             className={`chat-tab ${tab === "all" ? "active" : ""}`}
             onClick={() => setTab("all")}
           >
             전체
           </button>
           <button
+            type="button"
             className={`chat-tab ${tab === "unread" ? "active" : ""}`}
             onClick={() => setTab("unread")}
           >
             안 읽은 채팅방
           </button>
           <button
+            type="button"
             className={`chat-tab ${tab === "done" ? "active" : ""}`}
             onClick={() => setTab("done")}
           >
@@ -78,7 +88,16 @@ export default function ChatPage() {
         {/* 채팅 리스트 */}
         <ul className={`chat-list ${tab === "unread" ? "unread-bg" : ""}`}>
           {filteredData.map((chat) => (
-            <li key={chat.id} className="chat-item">
+            <li
+              key={chat.id}
+              className="chat-item"
+              role="button"
+              tabIndex={0}
+              onClick={() => goRoom(chat.id)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") goRoom(chat.id);
+              }}
+            >
               <div className="chat-avatar">👤</div>
 
               <div className="chat-content">

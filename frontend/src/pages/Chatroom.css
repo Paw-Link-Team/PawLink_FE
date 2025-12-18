@@ -304,3 +304,18 @@
   background: #0e0e0e;
   opacity: 0.9;
 }
+
+/* ✅ 키보드 올라온 상태 (사진 2번 느낌) */
+.cr-bottom.keyboard-open {
+  bottom: 300px; /* 아이폰 키보드 높이 연출 */
+}
+
+/* ✅ 플러스 패널 열린 상태 (사진 3번 느낌) */
+.cr-bottom.plus-open {
+  bottom: 18px;
+}
+
+/* 전환 부드럽게 */
+.cr-bottom {
+  transition: bottom 0.25s ease;
+}
