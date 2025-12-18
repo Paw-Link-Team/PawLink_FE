@@ -122,3 +122,29 @@
   align-items: center;
   justify-content: center;
 }
+
+/* ✅ 채팅방 클릭 가능하게(커서/호버/눌림) */
+.chat-item {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.chat-item:hover {
+  background: #faf7f3;
+}
+
+.chat-item:active {
+  background: #f3ede7;
+}
+
+/* ✅ 키보드 접근(Enter/Space) 포커스 표시 */
+.chat-item:focus {
+  outline: none;
+}
+
+.chat-item:focus-visible {
+  outline: 2px solid #7a4a22;
+  outline-offset: -2px;
+  border-radius: 10px;
+}
