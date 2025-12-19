@@ -25,7 +25,7 @@ import Myprofilepage from "./pages/Myprofilepage";
 
 import UnNoticeBoardPage from "./pages/unNoticeBoardpage";
 
-
+import LoginPage from "./pages/login/LoginPage";
 
 
 export default function App() {
@@ -33,6 +33,8 @@ export default function App() {
     <Routes>
       {/* 기본 진입 */}
       <Route path="/" element={<Navigate to="/splash" replace />} />
+      {/* 로그인 */}
+      <Route path="/login" element={<LoginPage />} />
 
       {/* 스플래시 / 홈 */}
       <Route path="/splash" element={<SplashPage />} />
