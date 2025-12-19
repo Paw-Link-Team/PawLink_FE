@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import "./chatroom.css";
+import "./Chatroom.css";
 
 type Msg = {
   id: number;

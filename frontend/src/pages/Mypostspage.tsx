@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
-import "./MyPostsPage.css";
+import "./Mypostspage.css";
 
 const DUMMY_POSTS = [
   { id: 1, title: "게시글 제목", desc: "(마감) 산책구..." },

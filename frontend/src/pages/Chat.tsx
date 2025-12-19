@@ -1,6 +1,6 @@
 import { useState } from "react";
 import NavBar from "../components/NavBar";
-import "./chat.css";
+import "./Chat.css";
 
 type TabKey = "all" | "unread" | "done";
 

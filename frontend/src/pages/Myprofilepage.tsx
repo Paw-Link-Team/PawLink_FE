@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import NavBar from "../components/NavBar";
-import "./MyProfilePage.css";
+import "./Myprofilepage.css";
 
 type DogProfile = {
   name: string;
