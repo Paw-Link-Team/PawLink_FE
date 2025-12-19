@@ -4,6 +4,7 @@
   display: flex;
   justify-content: center;
 }
+
 .sub-screen {
   width: 100%;
   max-width: 390px;
@@ -11,9 +12,11 @@
   background: #fff;
   position: relative;
 }
+
 .sub-status {
   height: 24px;
 }
+
 .sub-top {
   display: flex;
   align-items: center;
@@ -21,6 +24,7 @@
   padding: 12px 12px;
   border-bottom: 1px solid #eee;
 }
+
 .sub-back {
   width: 36px;
   height: 36px;
@@ -30,14 +34,25 @@
   color: #7a4a22;
   cursor: pointer;
 }
+
+/* ✅ 헤더 중앙 제목은 이제 사용 안 함(남겨도 무방) */
 .sub-title {
   font-size: 15px;
   font-weight: 900;
   color: #1a1a1a;
 }
+
 .sub-right {
   width: 36px;
   height: 36px;
+}
+
+/* ✅ 리스트 위 제목 (두번째 사진 느낌) */
+.sub-section-title {
+  padding: 14px 16px 8px;
+  font-size: 14px;
+  font-weight: 900;
+  color: #1a1a1a;
 }
 
 .sub-list {
@@ -45,6 +60,7 @@
   margin: 0;
   padding: 8px 16px 0;
 }
+
 .sub-item {
   display: flex;
   align-items: center;
@@ -53,22 +69,26 @@
   border-bottom: 1px solid #f0f0f0;
   cursor: pointer;
 }
+
 .sub-thumb {
   width: 44px;
   height: 44px;
   border-radius: 12px;
   background: #f5efe9;
 }
+
 .sub-text {
   flex: 1;
   min-width: 0;
 }
+
 .sub-item-title {
   font-size: 13px;
   font-weight: 800;
   color: #2a2a2a;
   margin-bottom: 4px;
 }
+
 .sub-item-desc {
   font-size: 12px;
   color: #9a9a9a;
@@ -76,10 +96,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .sub-chevron {
   color: #bdbdbd;
   font-size: 22px;
 }
+
 .sub-safe {
   height: 72px;
 }

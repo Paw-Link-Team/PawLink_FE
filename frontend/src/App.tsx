@@ -27,7 +27,8 @@ import UnNoticeBoardPage from "./pages/unNoticeBoardpage";
 import Chargepage from "./pages/Chargepage";
 import Auth from "./pages/Auth";
 import Withdrawpage from "./pages/Withdrawpage";
-import AppointmentPage from "./pages/AppointmentPage";
+import AppointmentPage from "./pages/Appointmentpage";
+import WritePostPage from "./pages/Writepostpage";
 
 export default function App() {
   return (
@@ -74,6 +75,13 @@ export default function App() {
           <Route path="/auth" element={<Auth />} />
           {/* 약속잡기 */}
           <Route path="/chat/:roomId/appointment" element={<AppointmentPage />} />
+
+          {/* 게시판 */}
+          <Route path="/board" element={<NoticeBoardPage />} />
+          <Route path="/board/write" element={<WritePostPage />} />  {/* ✅ 추가 + 순서 중요 */}
+          <Route path="/board/done" element={<UnNoticeBoardPage />} />
+          <Route path="/board/:id" element={<NoticeBoardDetailPage />} />
+
 
 
           {/* 없는 주소 */}

@@ -16,17 +16,24 @@ export default function MyPostsPage() {
       <div className="sub-screen">
         <div className="sub-status" />
 
+        {/* ✅ 헤더: 뒤로가기만 */}
         <header className="sub-top">
           <button className="sub-back" onClick={() => navigate(-1)}>
             ‹
           </button>
-          <div className="sub-title">내가 올린 게시글</div>
           <div className="sub-right" />
         </header>
 
+        {/* ✅ 제목을 리스트 위로 이동 */}
+        <div className="sub-section-title">내가 올린 게시글</div>
+
         <ul className="sub-list">
           {DUMMY_POSTS.map((p) => (
-            <li key={p.id} className="sub-item" onClick={() => navigate(`/board/${p.id}`)}>
+            <li
+              key={p.id}
+              className="sub-item"
+              onClick={() => navigate(`/board/${p.id}`)}
+            >
               <div className="sub-thumb" />
               <div className="sub-text">
                 <div className="sub-item-title">{p.title}</div>

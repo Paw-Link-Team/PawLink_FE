@@ -80,9 +80,15 @@ export default function NoticeBoardPage() {
         </ul>
 
         {/* 플로팅 + 버튼 (전체에서만) */}
-        <button className="nb-fab" aria-label="create">
-          +
+       <button
+        type="button"
+        className="nb-fab"
+        aria-label="create"
+        onClick={() => navigate("/board/write")}
+        >
+         +
         </button>
+
 
         <NavBar active="board" />
         <div className="nb-safe" />

@@ -43,7 +43,7 @@ export default function ChatPage() {
 
   const filteredData = CHAT_DATA.filter((chat) => {
     if (tab === "unread") return chat.unread;
-    if (tab === "done") return false; // 완료된 산책 탭은 지금 비워둔 상태
+    if (tab === "done") return false;
     return true;
   });
 
@@ -54,11 +54,12 @@ export default function ChatPage() {
   return (
     <div className="chat-wrapper">
       <div className="chat-screen">
-        {/* 상태바 여백 */}
         <div className="chat-status-bar" />
 
-        {/* 헤더 */}
-        <header className="chat-header">채팅</header>
+        {/* ✅ 상단 왼쪽 타이틀(2번째 사진처럼) */}
+        <header className="chat-header">
+          <span className="chat-header-title">채팅</span>
+        </header>
 
         {/* 탭 */}
         <div className="chat-tabs">
@@ -98,7 +99,10 @@ export default function ChatPage() {
                 if (e.key === "Enter" || e.key === " ") goRoom(chat.id);
               }}
             >
-              <div className="chat-avatar">👤</div>
+              {/* ✅ 아바타: 2번째 사진 느낌(아이콘/원형) */}
+              <div className="chat-avatar" aria-hidden="true">
+                🐾
+              </div>
 
               <div className="chat-content">
                 <div className="chat-name">{chat.name}</div>
@@ -113,7 +117,6 @@ export default function ChatPage() {
           ))}
         </ul>
 
-        {/* 하단 네비 */}
         <NavBar active="chat" />
       </div>
     </div>
