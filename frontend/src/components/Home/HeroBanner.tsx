@@ -1,6 +1,3 @@
-import type { FC } from "react";
-import type { SwiperOptions } from "swiper/types";
-
 import {Swiper, SwiperSlide} from "swiper/react";
 import { Autoplay, Pagination } from 'swiper/modules';
 

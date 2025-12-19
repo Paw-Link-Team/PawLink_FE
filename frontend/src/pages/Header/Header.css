@@ -1,0 +1,11 @@
+.global-header {
+    color: #3F3028;
+
+    /* text/H1-Bold */
+    font-family: Pretendard;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 29px;
+    /* 131.818% */
+}

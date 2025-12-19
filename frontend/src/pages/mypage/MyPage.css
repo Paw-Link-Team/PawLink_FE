@@ -1,0 +1,25 @@
+.social-login {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+  align-items: center;
+}
+
+/* 공통 버튼 */
+.social-btn {
+  width: 100%;
+  max-width: 320px;   /* 🔥 핵심 */
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* 이미지 공통 */
+.social-btn img {
+  width: 100%;
+  height: 48px;       /* 🔥 모바일 표준 */
+  object-fit: contain;
+  display: block;
+}

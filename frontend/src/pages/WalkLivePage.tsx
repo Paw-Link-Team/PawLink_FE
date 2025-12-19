@@ -164,8 +164,8 @@ export default function WalkLivePage() {
           </div>
         </section>
 
-        {/* ✅ 공통 하단 네브 */}
-        {/* <NavBar active="walk" /> */}
+       
+        <NavBar active="home" />
 
         <div className="wl-home-indicator" />
       </div>
