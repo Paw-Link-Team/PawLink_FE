@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import NavBar from "../components/NavBar";
-import "./WalkHistoryDetailpage.css";
+import "./Walkhistorydetailpage.css";
 
 export default function WalkHistoryDetailPage() {
   const navigate = useNavigate();
