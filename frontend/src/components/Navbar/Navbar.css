@@ -1,0 +1,41 @@
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: 512px;
+  display: flex;
+  justify-content: space-around;
+  background: #ffffff;
+  border-top: 1px solid #ddd;
+  padding: 8px 0;
+  margin: 0 auto;
+}
+
+.bottom-nav-item {
+  text-align: center;
+  flex: 1;
+  background: none;
+  border: none;
+}
+
+.bottom-nav-item .bottom-nav-icon {
+  font-size: 22px;
+  display: block;
+}
+
+.bottom-nav-item .bottom-nav-label {
+  font-size: 12px;
+}
+@media (min-width: 768px) {
+  .bottom-nav {
+    position: sticky;
+    bottom: auto;
+    border-top: none;
+    width: auto;
+    max-width: none;
+    background: transparent;
+    justify-content: center;
+    gap: 32px; 
+  }
+}

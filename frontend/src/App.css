@@ -1,35 +1,55 @@
-/* frontend/src/App.css */
 
-/* 기본 리셋 */
+:root {
+  /* ==== PawLink 공식 팔레트 ==== */
+  --paw-brand-brown: #75401f;       /* Brand Brown / 로고, 버튼, 강조 */
+  --paw-deep-brown: #3f3028;        /* Deep Brown / 메인 텍스트 */
+  --paw-sand-brown: #8c7f74;        /* Sand Brown / 서브 텍스트 */
+  --paw-light-gray-brown: #bab0a6;  /* Light Gray Brown / Disabled, 구분선 */
+
+  --paw-bg-soft-beige: #f2e8dd;     /* Soft Beige / 섹션 배경 */
+  --paw-bg-ivory: #fef7e9;          /* Ivory Base / 기본 배경 */
+  --paw-white: #ffffff;             /* White / 카드, 컴포넌트 */
+  --paw-light-basic: #f8f8f8;       /* Light Basic / 라이트 모드 배경 */
+
+  --paw-text-t1: #3f3028;           /* 메인 텍스트 */
+  --paw-text-t2: #75401f;           /* 강조 텍스트 */
+  --paw-text-t3: #8c7f74;           /* 보조 텍스트 */
+  --paw-text-t4: #bab0a6;           /* 비활성 텍스트 */
+
+  --paw-font: -apple-system, BlinkMacSystemFont, "Noto Sans KR",
+    system-ui, sans-serif;
+
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --shadow-card: 0 10px 28px rgba(0, 0, 0, 0.08);
+
+  /* Layout tokens (웹 기준) */
+  --header-height: 64px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 html,
-body {
+body,
+#root {
   margin: 0;
   padding: 0;
   width: 100%;
-  min-height: 100vh;
-  background: #ffffff; /* ✅ 회색 X */
+  height: 100%;
 }
 
-#root {
-  width: 100%;
-  min-height: 100vh;
+body {
+  font-family: var(--paw-font);
+  background: var(--paw-light-basic);
+  color: var(--paw-text-t1);
+  overflow-x: hidden;
 }
 
-/* ✅ 앱 전체를 가로 중앙 정렬 */
-.app-wrapper {
-  width: 100%;
+/* 앱 루트 */
+.app-root {
   min-height: 100vh;
   display: flex;
-  justify-content: center; /* ✅ 가운데 */
-  align-items: flex-start;
-  background: #ffffff; /* ✅ 회색 X */
-}
-
-/* ✅ 아이폰 14 사이즈 고정 (390px) */
-.app-phone {
-  width: 390px;
-  min-height: 100vh;
-  background: #ffffff;
-  position: relative;
-  overflow-x: hidden;
+  flex-direction: column;
 }

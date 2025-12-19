@@ -1,0 +1,33 @@
+:root {
+  --header-height: 56px;
+
+  --color-white: #ffffff;
+  --color-border: #eaeaea;
+  --color-text-main: #222;
+  --color-text-sub: #777;
+  --color-text-muted: #999;
+
+  --font-base: -apple-system, BlinkMacSystemFont, "Noto Sans KR",
+    system-ui, sans-serif;
+}
+
+/* reset */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-base);
+  background: var(--color-white);
+  color: var(--color-text-main);
+  overflow-x: hidden;
+}

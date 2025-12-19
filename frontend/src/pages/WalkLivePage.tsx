@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import "./WalkLivePage.css";
-import NavBar from "../components/NavBar";
+//import NavBar from "../components/NavBar";
 
 type WalkPhase = "before" | "walking" | "after";
 
