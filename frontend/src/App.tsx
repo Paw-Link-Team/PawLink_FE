@@ -26,15 +26,21 @@ import Myprofilepage from "./pages/Myprofilepage";
 import UnNoticeBoardPage from "./pages/unNoticeBoardpage";
 
 import LoginPage from "./pages/login/LoginPage";
-
+import OauthCallback from "./pages/oauth/OauthCallback";
+import AuthProcessing from "./pages/auth/processing/AuthProcessing";
+import SignupNickname from "./pages/signup/SignupNickname";
 
 export default function App() {
   return (
     <Routes>
       {/* 기본 진입 */}
-      <Route path="/" element={<Navigate to="/splash" replace />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
       {/* 로그인 */}
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/oauth/callback" element={<OauthCallback />} />
+      <Route path="/auth/processing" element={<AuthProcessing />} />
+      {/* 회원가입 */}
+      <Route path="/signup/nickname" element={<SignupNickname />} />
 
       {/* 스플래시 / 홈 */}
       <Route path="/splash" element={<SplashPage />} />
@@ -62,7 +68,7 @@ export default function App() {
       <Route path="/mypage/history/:id" element={<WalkHistoryDetailPage />} />
 
       {/* 없는 주소 */}
-      <Route path="*" element={<Navigate to="/splash" replace />} />
+      {/* <Route path="*" element={<Navigate to="/splash" replace />} /> */}
 
       <Route path="/mypage/profile" element={<Myprofilepage />} />
 

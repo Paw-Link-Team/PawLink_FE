@@ -8,6 +8,7 @@
   --paw-bg-soft-beige: #f2e8dd;     /* Soft Beige / 섹션 배경 */
   --paw-bg-ivory: #fef7e9;          /* Ivory Base / 기본 배경 */
   --paw-white: #ffffff;             /* White / 카드, 컴포넌트 */
+  --paw-light-basic: #f8f8f8;       /* Light Basic / 라이트 모드 배경 */
 
   --paw-text-t1: #3f3028;           /* 메인 텍스트 */
   --paw-text-t2: #75401f;           /* 강조 텍스트 */
@@ -29,10 +30,6 @@
   box-sizing: border-box;
 }
 
-* {
-  box-sizing: border-box;
-}
-
 html,
 body,
 #root {
@@ -44,7 +41,7 @@ body,
 
 body {
   font-family: var(--paw-font);
-  background: var(--paw-white);
+  background: var(--paw-light-basic);
   color: var(--paw-text-t1);
   overflow-x: hidden;
 }
