@@ -1,24 +1,33 @@
-:root{
-    /* 색상 */
-    --color-primary: #ff7b00;
-    --color-secondary: #ffe3c1;
-    --color-text: #222;
-    --color-bg: #fff;
+:root {
+  --header-height: 56px;
 
-    /* 폰트 */
-    --fs-xs: 12px;
-    --fs-sm: 14px;
-    --fs-md: 16px;
-    --fs-lg: 20px;
-    --fs-xl: 24px;
+  --color-white: #ffffff;
+  --color-border: #eaeaea;
+  --color-text-main: #222;
+  --color-text-sub: #777;
+  --color-text-muted: #999;
 
-    /* 공간 */
-    --spacing-sm: 8px;
-    --spacing-md: 16px;
-    --spacing-lg: 24px;
+  --font-base: -apple-system, BlinkMacSystemFont, "Noto Sans KR",
+    system-ui, sans-serif;
 }
 
-.dark{
-    --color-bg: #111;
-    --color-text: #fff;
+/* reset */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-base);
+  background: var(--color-white);
+  color: var(--color-text-main);
+  overflow-x: hidden;
 }
