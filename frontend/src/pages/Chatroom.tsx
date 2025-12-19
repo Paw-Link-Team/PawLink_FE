@@ -19,8 +19,11 @@ export default function ChatRoomPage() {
 
   const listRef = useRef<HTMLDivElement | null>(null);
 
-  const headerName = "김파우";
-  const headerSub = "보통 10분 이내에 응답";
+  // ✅ 앨범/카메라 트리거용 input
+  const albumInputRef = useRef<HTMLInputElement | null>(null);
+  const cameraInputRef = useRef<HTMLInputElement | null>(null);
+
+  const headerName = "강형욱";
 
   const messages: Msg[] = useMemo(
     () => [
@@ -30,7 +33,7 @@ export default function ChatRoomPage() {
       {
         id: 4,
         side: "left",
-        text: "내일 오후 3시 황송목록원 어떠신가요?",
+        text: "내일 오후 3시 항승목록원 어떠신가요?",
         time: "오전 9:40",
       },
       { id: 5, side: "right", text: "좋습니다!", time: "오전 9:41" },
@@ -60,33 +63,55 @@ export default function ChatRoomPage() {
     setIsKeyboardOpen(false);
   };
 
+  // ✅ 앨범/카메라 열기 (모바일에서 동작)
+  const openAlbum = () => {
+    albumInputRef.current?.click();
+  };
+
+  const openCamera = () => {
+    cameraInputRef.current?.click();
+  };
+
+  // (지금은 선택만 받고, 실제 업로드/전송 로직은 나중에 연결)
+  const onPickFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    // ✅ 같은 파일 다시 선택 가능하게 초기화
+    e.target.value = "";
+  };
+
   return (
     <div className="cr-wrapper">
       <div className="cr-screen">
         <div className="cr-status" />
 
-        {/* 헤더 */}
+        {/* ✅ 헤더 (팀 디자인) */}
         <header className="cr-topbar">
-          <button className="cr-ico-btn" onClick={() => navigate(-1)}>
-            ‹
+          <button
+            className="cr-ico-btn"
+            aria-label="back"
+            onClick={() => navigate(-1)}
+          >
+            <span className="cr-back">‹</span>
           </button>
 
-          <div className="cr-title">
+          <div className="cr-title-center">
             <div className="cr-name">{headerName}</div>
-            <div className="cr-sub">{headerSub}</div>
           </div>
 
-          <button className="cr-ico-btn">☎</button>
+          <button className="cr-ico-btn" aria-label="call">
+            <span className="cr-call">☎</span>
+          </button>
         </header>
 
-        {/* 프로필 배너 */}
-        <section className="cr-profile">
-          <div className="cr-profile-left">
-            <div className="cr-badge">산책자</div>
-            <div className="cr-profile-title">산책 해주실 분 찾습니다</div>
-            <div className="cr-profile-sub">오후 3시 | 황송목록원</div>
+        {/* ✅ 상단 게시글 카드 (팀 디자인) */}
+        <section className="cr-post">
+          <div className="cr-post-thumb" aria-hidden="true" />
+          <div className="cr-post-texts">
+            <div className="cr-post-title">산책 해주실 분 찾습니다</div>
+            <div className="cr-post-sub">오후 3시 | 항승 푸른수목원</div>
           </div>
-          <div className="cr-profile-ava">👤</div>
         </section>
 
         {/* 채팅 */}
@@ -95,7 +120,9 @@ export default function ChatRoomPage() {
 
           {messages.map((m) => (
             <div key={m.id} className={`cr-row ${m.side}`}>
-              {m.side === "left" && <div className="cr-mini-ava">👤</div>}
+              {m.side === "left" && (
+                <div className="cr-mini-ava" aria-hidden="true" />
+              )}
 
               <div className="cr-bubble-wrap">
                 {m.side === "left" && m.time && (
@@ -112,19 +139,39 @@ export default function ChatRoomPage() {
           ))}
         </div>
 
+        {/* ✅ 숨겨진 input들 (앨범/카메라) */}
+        <input
+          ref={albumInputRef}
+          className="cr-hidden-file"
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={onPickFiles}
+        />
+        <input
+          ref={cameraInputRef}
+          className="cr-hidden-file"
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={onPickFiles}
+        />
+
         {/* 하단 입력 영역 */}
         <div
-          className={`cr-bottom ${
-            isPlusOpen ? "plus-open" : ""
-          } ${isKeyboardOpen ? "keyboard-open" : ""}`}
+          className={`cr-bottom ${isPlusOpen ? "plus-open" : ""} ${
+            isKeyboardOpen ? "keyboard-open" : ""
+          }`}
         >
           <div className="cr-inputbar">
-            <button className="cr-plus" onClick={togglePlus}>
+            <button className="cr-plus" onClick={togglePlus} aria-label="plus">
               +
             </button>
 
             <div className="cr-inputbox">
-              <span className="cr-paw">🐾</span>
+              <span className="cr-paw" aria-hidden="true">
+                🐾
+              </span>
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -134,39 +181,53 @@ export default function ChatRoomPage() {
               />
             </div>
 
-            <button className="cr-send">▷</button>
+            <button className="cr-send" aria-label="send">
+              ▷
+            </button>
           </div>
 
-          {/* ✅ 플러스 패널 */}
+          {/* ✅ 플러스 패널: 앨범/카메라/약속 (지도 제거) */}
           {isPlusOpen && (
             <div className="cr-plus-panel">
-              <button className="cr-plus-item">
-                <div className="cr-plus-icon">🖼</div>
+              <button
+                className="cr-plus-item"
+                type="button"
+                aria-label="album"
+                onClick={openAlbum}
+              >
+                <div className="cr-plus-icon" aria-hidden="true">
+                  🖼
+                </div>
                 <div className="cr-plus-label">앨범</div>
               </button>
 
-              <button className="cr-plus-item">
-                <div className="cr-plus-icon">📷</div>
+              <button
+                className="cr-plus-item"
+                type="button"
+                aria-label="camera"
+                onClick={openCamera}
+              >
+                <div className="cr-plus-icon" aria-hidden="true">
+                  📷
+                </div>
                 <div className="cr-plus-label">카메라</div>
               </button>
 
-              <button className="cr-plus-item">
-                <div className="cr-plus-icon">📍</div>
-                <div className="cr-plus-label">지도</div>
-              </button>
-
-              {/* ✅ 약속 → 약속잡기 페이지 이동 */}
               <button
                 className="cr-plus-item"
-                onClick={() =>
-                  navigate(`/chat/${roomId}/appointment`)
-                }
+                type="button"
+                aria-label="appointment"
+                onClick={() => navigate(`/chat/${roomId}/appointment`)}
               >
-                <div className="cr-plus-icon">⏰</div>
+                <div className="cr-plus-icon" aria-hidden="true">
+                  ⏰
+                </div>
                 <div className="cr-plus-label">약속</div>
               </button>
             </div>
           )}
+
+          <div className="cr-keyboard-pad" />
         </div>
 
         <div className="cr-home-indicator" />

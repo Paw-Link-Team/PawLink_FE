@@ -19,13 +19,20 @@ export default function FavoritesPage() {
           <button className="sub-back" onClick={() => navigate(-1)}>
             ‹
           </button>
-          <div className="sub-title">관심 목록</div>
+          {/* ✅ 제목은 헤더에서 제거 (두번째 사진처럼) */}
           <div className="sub-right" />
         </header>
 
+        {/* ✅ 제목을 리스트 위로 이동 */}
+        <div className="sub-section-title">관심 목록</div>
+
         <ul className="sub-list">
           {DUMMY_FAVORITES.map((p) => (
-            <li key={p.id} className="sub-item" onClick={() => navigate(`/board/${p.id}`)}>
+            <li
+              key={p.id}
+              className="sub-item"
+              onClick={() => navigate(`/board/${p.id}`)}
+            >
               <div className="sub-thumb" />
               <div className="sub-text">
                 <div className="sub-item-title">{p.title}</div>

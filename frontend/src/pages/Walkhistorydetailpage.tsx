@@ -5,10 +5,10 @@ import "./Walkhistorydetailpage.css";
 
 type HistoryCard = {
   id: number;
-  date: string; // 2025. 12. 5 (금)
-  time: string; // 00:12:32
-  distance: string; // 0.82km
-  speed: string; // 3.9km/h
+  date: string;
+  time: string;
+  distance: string;
+  speed: string;
 };
 
 export default function Walkhistorydetailpage() {
@@ -27,7 +27,7 @@ export default function Walkhistorydetailpage() {
     <div className="wh-root">
       <div className="wh-status" />
 
-      {/* ✅ 상단 헤더: 왼쪽 상단 '<' + 제목(가리지 않게) */}
+      {/* ✅ 상단 헤더: 뒤로가기만 */}
       <header className="wh-top">
         <button
           type="button"
@@ -35,7 +35,6 @@ export default function Walkhistorydetailpage() {
           aria-label="back"
           onClick={() => nav(-1)}
         >
-          {/* '<' 모양 아이콘 */}
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
             <path
               d="M15 18l-6-6 6-6"
@@ -46,11 +45,12 @@ export default function Walkhistorydetailpage() {
             />
           </svg>
         </button>
-
-        <h1 className="wh-title">산책 히스토리</h1>
       </header>
 
       <main className="wh-body">
+        {/* ✅ 제목을 목록 위로 이동 (첫번째 사진처럼) */}
+        <h1 className="wh-page-title">산책 히스토리</h1>
+
         {HISTORY.map((h) => (
           <section key={h.id} className="wh-item">
             <div className="wh-date">{h.date}</div>

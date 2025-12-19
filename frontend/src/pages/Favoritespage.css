@@ -1,1 +1,18 @@
-@import "./Mypostspage.css";
+@import "./MyPostsPage.css";
+
+/* ✅ 관심 목록 제목이 확실히 보이게 강제 */
+.sub-section-title {
+  display: block;
+  padding: 14px 16px 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e1e1e;
+  background: transparent;
+  position: relative;
+  z-index: 5;
+}
+
+/* 제목과 리스트가 겹치지 않게 */
+.sub-list {
+  padding-top: 0;
+}
