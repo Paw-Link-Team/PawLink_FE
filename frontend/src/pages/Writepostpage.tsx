@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./WritePostPage.css";
+import "./Writepostpage.css";
 
-export default function WritePostPage() {
+export default function Writepostpage() {
   const nav = useNavigate();
 
   const [title, setTitle] = useState("");

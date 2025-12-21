@@ -1,42 +1,43 @@
-.cr-wrapper {
-  min-height: 100vh;
-  background: #fff7e9;
-  display: flex;
-  justify-content: center;
-}
+/* =========================
+   Chatroom (2번 화면 기준)
+   ========================= */
 
+/* ✅ 전체 화면 배경은 "흰색" (2번 이미지처럼) */
 .cr-screen {
   width: 100%;
-  max-width: 390px;
   min-height: 100vh;
-  background: #ffffff;
+  background: var(--bg-white);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 상태바 */
 .cr-status {
   height: 28px;
-  background: #fff7e9;
+  background: var(--bg-white);
 }
 
-/* 상단 바 */
+/* =========================
+   상단 바 (연베이지)
+   ========================= */
 .cr-topbar {
-  height: 38px;
-  background: #fff7e9;
-  border-bottom: 1px solid #f0e2cc;
+  height: 44px;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--line-soft);
   display: grid;
-  grid-template-columns: 38px 1fr 38px;
+  grid-template-columns: 44px 1fr 44px;
   align-items: center;
 }
 
 .cr-ico-btn {
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   border: none;
   background: transparent;
   font-size: 20px;
-  color: #7a4a22;
+  color: var(--c-deep);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -50,118 +51,174 @@
 }
 
 .cr-name {
-  font-size: 15px;
-  font-weight: 700;
-  color: #1e1e1e;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--c-deep);
   line-height: 1;
 }
 
-/* 상단 게시글 카드 */
+/* =========================
+   상단 게시글 카드 (흰색 row)
+   ========================= */
 .cr-post {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
-  background: #ffffff;
-  border-bottom: 1px solid #f3f3f3;
+  background: var(--bg-white); /* ✅ 2번처럼 흰색 */
+  border-bottom: 1px solid var(--line-soft);
 }
 
 .cr-post-thumb {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 8px;
-  background: #7a4a22;
-  opacity: 0.25;
+  background: var(--c-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* ✅ 산 아이콘 느낌 (대충이라도 2번처럼) */
+.cr-post-thumb::after {
+  content: "🗻";
+  font-size: 16px;
+  color: #fff;
+  line-height: 1;
 }
 
 .cr-post-title {
   font-size: 13px;
-  font-weight: 800;
-  color: #2a2a2a;
+  font-weight: 900;
+  color: var(--c-deep);
 }
 
 .cr-post-sub {
-  font-size: 11px;
-  color: #9a9a9a;
+  font-size: 12px;
+  color: var(--c-sand);
   margin-top: 2px;
 }
 
-/* 채팅 영역 */
+/* =========================
+   채팅 영역 (흰 배경)
+   ========================= */
 .cr-chat {
-  height: calc(100vh - 28px - 38px - 64px - 120px);
+  flex: 1;
   padding: 10px 14px 18px;
   overflow-y: auto;
-  background: #ffffff;
+  background: var(--bg-white);
 }
 
 .cr-date {
   width: fit-content;
-  margin: 6px auto 12px;
-  font-size: 11px;
-  color: #b0b0b0;
+  margin: 10px auto 12px;
+  font-size: 12px;
+  color: var(--c-sand);
+  position: relative;
+  padding: 0 10px;
 }
 
-/* 메시지 */
+/* ✅ 날짜 위/아래 라인 느낌 */
+.cr-date::before,
+.cr-date::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 120px;
+  height: 1px;
+  background: var(--line-soft);
+}
+
+.cr-date::before {
+  right: 100%;
+  margin-right: 10px;
+}
+
+.cr-date::after {
+  left: 100%;
+  margin-left: 10px;
+}
+
+/* =========================
+   메시지 row
+   ========================= */
 .cr-row {
   display: flex;
-  margin: 8px 0;
+  margin: 10px 0;
   gap: 8px;
+  align-items: flex-end;
 }
 
 .cr-row.right {
   justify-content: flex-end;
 }
 
+/* ✅ 왼쪽 아바타 (연속 메시지면 자리만 유지) */
 .cr-mini-ava {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: #7a4a22;
-  opacity: 0.9;
-  margin-top: 2px;
+  background: var(--c-brand);
   flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.cr-bubble-wrap {
+.cr-mini-ava::after {
+  content: "👤";
+  font-size: 14px;
+  color: #fff;
+  line-height: 1;
+}
+
+.cr-mini-ava.ghost {
+  opacity: 0; /* ✅ 자리만 유지해서 2번처럼 들쭉날쭉 안 보이게 */
+}
+
+/* ✅ 말풍선 + 시간 한 줄 */
+.cr-msgline {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: flex-end;
+  gap: 6px;
   max-width: 78%;
 }
 
+.cr-msgline.right {
+  flex-direction: row; /* time, bubble (time이 bubble 왼쪽처럼 보이게) */
+}
+
 .cr-time {
-  font-size: 10px;
-  color: #b0b0b0;
+  font-size: 11px;
+  color: var(--c-sand);
+  white-space: nowrap;
+  transform: translateY(2px);
 }
 
-.cr-time.left {
-  align-self: flex-start;
-}
-
-.cr-time.right {
-  align-self: flex-end;
-}
-
+/* 말풍선 */
 .cr-bubble {
   padding: 9px 12px;
-  border-radius: 14px;
+  border-radius: 16px;
   font-size: 13px;
   line-height: 1.35;
 }
 
 .cr-bubble.left {
-  background: #f3e7d6;
-  color: #2a2a2a;
-  border-top-left-radius: 6px;
+  background: var(--bg-soft);
+  color: var(--c-deep);
+  border-top-left-radius: 8px;
 }
 
 .cr-bubble.right {
-  background: #7a4a22;
+  background: var(--c-brand);
   color: #ffffff;
-  border-top-right-radius: 6px;
+  border-top-right-radius: 8px;
 }
 
-/* 하단 입력 바 */
+/* =========================
+   하단 입력 바 (2번처럼)
+   ========================= */
 .cr-bottom {
   position: absolute;
   left: 0;
@@ -171,12 +228,12 @@
 }
 
 .cr-inputbar {
-  height: 56px;
-  background: #fff7e9;
-  border-top: 1px solid #f0e2cc;
+  height: 64px;
+  background: var(--bg-soft);
+  border-top: 1px solid var(--line-soft);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   padding: 0 12px;
 }
 
@@ -184,7 +241,7 @@
   border: none;
   background: transparent;
   font-size: 22px;
-  color: #7a4a22;
+  color: var(--c-deep);
   cursor: pointer;
   padding: 0 4px;
 }
@@ -193,11 +250,11 @@
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 8px 10px;
-  border: 1px solid #efe2cc;
+  gap: 8px;
+  background: var(--bg-white);
+  border-radius: 14px; /* ✅ 2번처럼 더 pill */
+  padding: 10px 12px;
+  border: 1px solid var(--line-soft);
 }
 
 .cr-paw {
@@ -209,35 +266,36 @@
   width: 100%;
   border: none;
   outline: none;
-  font-size: 13px;
+  font-size: 14px;
   background: transparent;
+  color: var(--c-deep);
 }
 
 .cr-inputbox input::placeholder {
-  color: #b5b5b5;
+  color: var(--c-sand);
 }
 
 .cr-send {
   border: none;
   background: transparent;
   font-size: 18px;
-  color: #7a4a22;
+  color: var(--c-deep);
   cursor: pointer;
   padding: 0 4px;
 }
 
-/* ✅ 플러스 패널: 첫번째 사진 톤 + 3개 균등 */
+/* 플러스 패널 */
 .cr-plus-panel {
-  background: #fff7e9;
-  border-top: 1px solid #f0e2cc;
-  padding: 14px 18px 18px; /* 조금 더 좌우 여백 */
+  background: var(--bg-soft);
+  border-top: 1px solid var(--line-soft);
+  padding: 14px 18px 18px;
   display: flex;
-  justify-content: space-evenly; /* ✅ 3개라 가운데 예쁘게 */
+  justify-content: space-evenly;
   gap: 10px;
 }
 
 .cr-plus-item {
-  width: 84px; /* ✅ 3개 여유 있게 */
+  width: 84px;
   border: none;
   background: transparent;
   display: flex;
@@ -251,9 +309,9 @@
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  background: #ffffff;
-  border: 1px solid #efe2cc;
-  color: #7a4a22;
+  background: var(--bg-white);
+  border: 1px solid var(--line-soft);
+  color: var(--c-deep);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -262,8 +320,8 @@
 
 .cr-plus-label {
   font-size: 12px;
-  color: #2a2a2a;
-  font-weight: 600;
+  color: var(--c-deep);
+  font-weight: 700;
 }
 
 /* 홈 인디케이터 */
@@ -287,7 +345,7 @@
   bottom: 0;
 }
 
-/* ✅ 숨겨진 input */
+/* 숨김 input */
 .cr-hidden-file {
   position: absolute;
   width: 1px;

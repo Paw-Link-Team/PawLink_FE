@@ -1,6 +1,6 @@
 .ap-wrapper {
   min-height: 100vh;
-  background: #fff7e9;
+  background: var(--bg-ivory);
   display: flex;
   justify-content: center;
 }
@@ -30,7 +30,7 @@
   border: none;
   background: transparent;
   font-size: 22px;
-  color: #7a4a22;
+  color: var(--c-brand);
   cursor: pointer;
   width: 36px;
   height: 36px;
@@ -41,7 +41,7 @@
 .ap-title {
   font-size: 13px;
   font-weight: 800;
-  color: #1a1a1a;
+  color: var(--c-deep);
 }
 
 /* 바디 */
@@ -56,12 +56,12 @@
   grid-template-columns: 110px 1fr 20px;
   align-items: center;
   padding: 14px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--line-soft);
   cursor: pointer;
 }
 
 .ap-row:active {
-  background: #faf7f3;
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .ap-row-select {
@@ -82,22 +82,22 @@
 
 .ap-label {
   font-size: 12px;
-  color: #333;
+  color: var(--c-deep);
   font-weight: 700;
 }
 
 .ap-value {
   font-size: 12px;
-  color: #9a9a9a;
+  color: var(--c-sand);
 }
 
 .ap-value.filled {
-  color: #333;
+  color: var(--c-deep);
 }
 
 .ap-right {
   text-align: right;
-  color: #bdbdbd;
+  color: var(--c-disabled);
   font-size: 14px;
 }
 
@@ -109,7 +109,7 @@
   outline: none;
   background: transparent;
   font-size: 12px;
-  color: #333;
+  color: var(--c-deep);
   appearance: none;
 }
 
@@ -133,7 +133,7 @@
 .ap-cal-nav {
   border: none;
   background: transparent;
-  color: #7a4a22;
+  color: var(--c-brand);
   font-size: 18px;
   width: 36px;
   height: 36px;
@@ -144,7 +144,7 @@
   text-align: center;
   font-size: 13px;
   font-weight: 800;
-  color: #1a1a1a;
+  color: var(--c-deep);
 }
 
 .ap-cal-week {
@@ -157,7 +157,7 @@
 .ap-cal-w {
   text-align: center;
   font-size: 11px;
-  color: #333;
+  color: var(--c-deep);
 }
 
 .ap-cal-w.sun {
@@ -179,7 +179,7 @@
   background: transparent;
   height: 28px;
   font-size: 12px;
-  color: #333;
+  color: var(--c-deep);
   cursor: pointer;
   border-radius: 8px;
 }
@@ -189,7 +189,7 @@
 }
 
 .ap-cal-cell.selected {
-  background: #7a4a22;
+  background: var(--c-brand);
   color: #fff;
 }
 
@@ -210,16 +210,18 @@
 
 .ap-time-head {
   font-size: 11px;
-  color: #7a7a7a;
+  color: var(--c-sand);
 }
 
 .ap-time-select {
   height: 40px;
   border-radius: 10px;
-  border: 1px solid #eee;
+  border: 1px solid var(--line-soft);
   padding: 0 10px;
   font-size: 12px;
   outline: none;
+  color: var(--c-deep);
+  background: #fff;
 }
 
 /* 지도(모형) */
@@ -237,7 +239,7 @@
 .ap-map-pin {
   width: 18px;
   height: 18px;
-  background: #7a4a22;
+  background: var(--c-brand);
   border-radius: 50%;
   position: absolute;
   left: 50%;
@@ -252,7 +254,7 @@
   top: calc(52% + 18px);
   transform: translateX(-50%);
   font-size: 12px;
-  color: #333;
+  color: var(--c-deep);
   font-weight: 700;
   background: rgba(255, 255, 255, 0.9);
   padding: 6px 10px;
@@ -273,14 +275,14 @@
   height: 46px;
   border-radius: 24px;
   border: none;
-  background: #7a4a22;
+  background: var(--c-brand);
   color: #fff;
   font-size: 14px;
   font-weight: 800;
 }
 
 .ap-btn.disabled {
-  background: #c8beb5;
+  background: var(--c-disabled);
 }
 
 /* 완료 화면 */
@@ -291,17 +293,11 @@
   align-items: center;
 }
 
-.ap-x-abs {
-  position: absolute;
-  left: 10px;
-  top: 28px;
-}
-
 .ap-complete-icon {
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background: #7a4a22;
+  background: var(--c-brand);
   color: #fff;
   display: grid;
   place-items: center;
@@ -314,7 +310,7 @@
   text-align: center;
   font-size: 16px;
   font-weight: 900;
-  color: #1a1a1a;
+  color: var(--c-deep);
   line-height: 1.35;
   margin-bottom: 26px;
 }
@@ -329,22 +325,22 @@
   grid-template-columns: 140px 1fr;
   gap: 10px;
   padding: 12px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--line-soft);
 }
 
 .ap-slabel {
   font-size: 12px;
-  color: #333;
+  color: var(--c-deep);
   font-weight: 700;
 }
 
 .ap-svalue {
   font-size: 12px;
-  color: #333;
+  color: var(--c-deep);
   text-align: right;
 }
 
-/* 완료 버튼 위치(스크린샷 느낌) */
+/* 완료 버튼 위치 */
 .ap-footer-complete {
   bottom: 18px;
 }

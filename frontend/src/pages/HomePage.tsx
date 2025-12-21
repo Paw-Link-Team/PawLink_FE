@@ -3,8 +3,9 @@ import NavBar from "../components/NavBar";
 import "./HomePage.css";
 
 // ✅ 실제 존재하는 이미지 파일명 그대로 사용
-const banner1 = new URL("../assets/paw_HomePage2.png", import.meta.url).href;
-const banner3 = new URL("../assets/paw_HomePage1.png", import.meta.url).href;
+// ✅ assets에 있는 배너 이미지로 교체
+const banner1 = new URL("../assets/pawlink-logo.png", import.meta.url).href;
+const banner3 = new URL("../assets/pawlink-logo3.png", import.meta.url).href;
 
 type RankItem = {
   id: number;
@@ -20,9 +21,9 @@ type Slide =
 export default function HomePage() {
   const RANKING_DATA: RankItem[] = useMemo(
     () => [
-      { id: 1, name: "강형욱", distance: "산책거리 15km", dogs: "함께 걸은 강아지 25마리" },
-      { id: 2, name: "우리초코가계에빠", distance: "산책거리 12km", dogs: "함께 걸은 강아지 21마리" },
-      { id: 3, name: "모르는개산책", distance: "산책거리 9km", dogs: "함께 걸은 강아지 18마리" },
+      { id: 1, name: "예림팀장님", distance: "산책거리 15km", dogs: "함께 걸은 강아지 25마리" },
+      { id: 2, name: "마요최고", distance: "산책거리 12km", dogs: "함께 걸은 강아지 21마리" },
+      { id: 3, name: "모르는마요산책", distance: "산책거리 9km", dogs: "함께 걸은 강아지 18마리" },
       { id: 4, name: "보리보리쌀", distance: "산책거리 7km", dogs: "함께 걸은 강아지 15마리" },
     ],
     []
@@ -65,7 +66,17 @@ export default function HomePage() {
         {/* 헤더 */}
         <header className="hp-header">
           <div className="hp-logo">PawLink</div>
-          <button className="hp-loc" type="button">📍</button>
+
+          {/* ✅ 지도 핀 아이콘으로 교체 */}
+          <button className="hp-loc" type="button" aria-label="map">
+            <svg className="hp-loc-pin" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 2C7.86 2 4.5 5.36 4.5 9.5c0 5.25 7.5 12.5 7.5 12.5s7.5-7.25 7.5-12.5C19.5 5.36 16.14 2 12 2z"
+                fill="currentColor"
+              />
+              <circle cx="12" cy="9.5" r="2.6" fill="#ffffff" />
+            </svg>
+          </button>
         </header>
 
         {/* 배너 */}
@@ -135,7 +146,18 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <button className="hp-rank-paw" type="button">🐾</button>
+                {/* ✅ 여기만 변경: 2번 사진처럼 "갈색 원 + 흰 발바닥" */}
+                <button className="hp-rank-paw" type="button" aria-label="paw">
+                  <svg className="hp-rank-paw-ico" viewBox="0 0 24 24" aria-hidden="true">
+                    {/* toes */}
+                    <circle cx="7.3" cy="8.4" r="2.0" />
+                    <circle cx="12" cy="6.9" r="2.1" />
+                    <circle cx="16.7" cy="8.4" r="2.0" />
+                    <circle cx="19.1" cy="11.6" r="1.85" />
+                    {/* pad */}
+                    <path d="M6.2 16.4c0-3.0 2.9-5.3 5.8-5.3s5.8 2.3 5.8 5.3c0 2.5-2.2 4.6-5.8 4.6s-5.8-2.1-5.8-4.6z" />
+                  </svg>
+                </button>
               </li>
             ))}
           </ul>

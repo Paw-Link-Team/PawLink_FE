@@ -37,9 +37,20 @@
   height: 36px;
   border: none;
   background: transparent;
-  font-size: 18px;
-  color: #7a4a22;
+  color: #7a4a22; /* ✅ 아이콘 색(갈색) */
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+/* ✅ 추가: 돋보기 SVG */
+.nb-search-ico {
+  width: 22px;
+  height: 22px;
+  display: block;
 }
 
 /* 탭(알약) */

@@ -49,6 +49,12 @@
   color: var(--pl-brown);
   font-size: 18px;
   cursor: pointer;
+
+  /* ✅ SVG 중앙정렬용 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
 /* 배너 */
@@ -266,6 +272,7 @@
   display: grid;
   place-items: center;
   cursor: pointer;
+  padding: 0; /* ✅ SVG 넣어도 사이즈 안 흔들리게 */
 }
 
 /* NavBar 공간 */
@@ -290,4 +297,22 @@
   min-height: 100vh;
   background: #ffffff;
   position: relative;
+}
+
+/* =========================
+   ✅ 추가(아이콘용) - 다른 디자인 안 건드림
+   ========================= */
+.hp-loc-pin {
+  width: 22px;
+  height: 22px;
+  display: block;
+  color: #75401f; /* 갈색 핀 */
+}
+
+/* ✅ 추가(랭킹 우측 발바닥 아이콘) */
+.hp-rank-paw-ico {
+  width: 18px;
+  height: 18px;
+  display: block;
+  fill: #ffffff; /* 흰색 발바닥 */
 }

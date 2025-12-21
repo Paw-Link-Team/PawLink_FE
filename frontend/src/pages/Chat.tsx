@@ -56,7 +56,7 @@ export default function ChatPage() {
       <div className="chat-screen">
         <div className="chat-status-bar" />
 
-        {/* ✅ 상단 왼쪽 타이틀(2번째 사진처럼) */}
+        {/* 상단 타이틀 */}
         <header className="chat-header">
           <span className="chat-header-title">채팅</span>
         </header>
@@ -99,9 +99,17 @@ export default function ChatPage() {
                 if (e.key === "Enter" || e.key === " ") goRoom(chat.id);
               }}
             >
-              {/* ✅ 아바타: 2번째 사진 느낌(아이콘/원형) */}
+              {/* ✅ 두번째 사진처럼: 갈색 원 + 흰 발바닥 로고(SVG) */}
               <div className="chat-avatar" aria-hidden="true">
-                🐾
+                <svg className="chat-avatar-paw" viewBox="0 0 24 24">
+                  {/* toes */}
+                  <circle cx="7.3" cy="8.4" r="2.0" />
+                  <circle cx="12" cy="6.9" r="2.1" />
+                  <circle cx="16.7" cy="8.4" r="2.0" />
+                  <circle cx="19.1" cy="11.6" r="1.85" />
+                  {/* pad */}
+                  <path d="M6.2 16.4c0-3.0 2.9-5.3 5.8-5.3s5.8 2.3 5.8 5.3c0 2.5-2.2 4.6-5.8 4.6s-5.8-2.1-5.8-4.6z" />
+                </svg>
               </div>
 
               <div className="chat-content">
