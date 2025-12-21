@@ -27,7 +27,7 @@ import UnNoticeBoardPage from "./pages/unNoticeBoardpage";
 import Chargepage from "./pages/Chargepage";
 import Auth from "./pages/Auth";
 import Withdrawpage from "./pages/Withdrawpage";
-import AppointmentPage from "./pages/AppointmentPage";
+import AppointmentPage from "./pages/Appointmentpage";
 
 export default function App() {
   return (
