@@ -2,73 +2,107 @@
 
 :root {
   --brand-brown: #75401f;
-  --deep-brown: #3f3028;
-  --sand: #f2e8dd;
+  --beige: #f2e8dd;
   --ivory: #fef7e9;
   --text-1: #3f3028;
   --text-2: #8c7f74;
   --line: rgba(63, 48, 40, 0.12);
 }
 
-.nbd-root {
+/* ✅ 다른 페이지랑 규격 통일: 바깥 회색 + 가운데 390 */
+.nbd-wrapper {
   min-height: 100vh;
-  background: #2b2b2b;
+  width: 100%;
+  background: #3a3a3a;
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 24px 12px;
+  align-items: flex-start;
 }
 
-.nbd-phone {
-  width: 393px;
-  height: 852px;
+.nbd-screen {
+  width: 100%;
+  max-width: 390px;
+  min-height: 100vh;
   background: #ffffff;
-  border-radius: 22px;
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
+}
+
+/* ✅ 상단 흰줄 방지용: status/top/hero 모두 같은 베이지 계열로 */
+.nbd-status {
+  height: 24px;
+  background: var(--beige);
 }
 
 .nbd-top {
-  height: 64px;
-  padding: 0 14px;
+  height: 44px;
+  padding: 0 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--sand);
+  background: var(--beige);
   color: var(--brand-brown);
 }
 
 .nbd-icon-btn {
+  width: 36px;
+  height: 36px;
   border: none;
   background: transparent;
   color: var(--brand-brown);
   cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
 }
 
+.nbd-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+/* 히어로 */
 .nbd-hero {
-  height: 270px;
-  background: var(--sand);
+  height: 260px;
+  background: var(--beige);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
 }
 
-/* 강아지 일러스트 느낌(가짜) */
-.nbd-hero::after {
-  content: "";
-  width: 220px;
-  height: 220px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #f3b062, #e58e3e);
-  opacity: 0.95;
-  transform: rotate(0deg);
+.nbd-dog {
+  width: 230px;
+  height: auto;
+  display: block;
 }
 
+/* 점(아주 작게) */
+.nbd-hero-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+.nbd-hero-dots .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.22);
+}
+.nbd-hero-dots .dot.on {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+/* 작성자 */
 .nbd-author {
   height: 74px;
   background: #ffffff;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -94,8 +128,9 @@
   margin-top: 2px;
 }
 
+/* 본문 */
 .nbd-content {
-  padding: 18px 16px 140px;
+  padding: 16px 16px 0;
 }
 
 .nbd-title {
@@ -108,7 +143,7 @@
 .nbd-meta {
   font-size: 12px;
   color: var(--text-2);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .nbd-body-head {
@@ -130,12 +165,18 @@
   color: var(--text-2);
 }
 
+/* ✅ 하단 버튼 고정이라 안전 여백 */
+.nbd-safe {
+  height: 120px;
+}
+
+/* 하단 액션바 */
 .nbd-bottom {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 22px;
-  height: 90px;
+  bottom: 18px;
+  height: 64px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -143,27 +184,41 @@
   background: #ffffff;
 }
 
-.nbd-like {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
+.nbd-heart {
+  width: 52px;
+  height: 52px;
   border: none;
-  cursor: pointer;
   background: transparent;
-  color: var(--brand-brown);
+  cursor: pointer;
+  padding: 0;
+  display: grid;
+  place-items: center;
 }
 
-.nbd-like.on {
-  color: var(--brand-brown);
+.nbd-heart-ico {
+  width: 30px;
+  height: 30px;
+  display: block;
 }
 
-.nbd-like:not(.on) {
-  color: rgba(117, 64, 31, 0.35);
+/* ✅ 기본(안눌림): 브라운 아웃라인 */
+.nbd-heart-ico.stroke path {
+  stroke: #75401f;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
+/* ✅ 눌림: 빨간 꽉찬 하트 */
+.nbd-heart-ico.fill {
+  fill: #ff2d2d;
+}
+
+
+/* 채팅하기 버튼(긴 알약) */
 .nbd-chat {
   flex: 1;
-  height: 48px;
+  height: 52px;
   border-radius: 999px;
   border: none;
   background: var(--brand-brown);
@@ -173,11 +228,12 @@
   cursor: pointer;
 }
 
+/* 홈 인디케이터 */
 .nbd-home-indicator {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 8px;
+  bottom: 6px;
   width: 140px;
   height: 4px;
   border-radius: 999px;

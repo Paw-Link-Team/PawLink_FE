@@ -11,7 +11,8 @@
   --white: #ffffff;
 }
 
-.wp-root {
+/* ✅ 폰 프레임 공통 규격: wrapper + screen(390px, min-height:100vh) */
+.wp-wrapper {
   min-height: 100vh;
   background: #2b2b2b;
   display: flex;
@@ -19,48 +20,63 @@
   padding: 24px 12px;
 }
 
-.wp-phone {
-  width: 393px;
-  height: 852px;
-  background: var(--white);
-  border-radius: 24px;
-  overflow: hidden;
+/* ✅ 상단 흰줄 방지: screen 배경을 bg-soft로 통일 */
+.wp-screen {
+  width: 100%;
+  max-width: 390px;
+  min-height: 100vh;
+  background: var(--bg-soft); /* ★ 중요 */
   position: relative;
+  overflow: hidden;
 }
 
-/* 헤더 */
-.wp-header {
-  height: 150px;
+/* ✅ 상태바 24px 유지 */
+.wp-status-bar {
+  height: 24px;
   background: var(--bg-soft);
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 16px 16px 0;
 }
 
-.wp-header-spacer {
-  flex: 1;
+/* ✅ 헤더: 56px, 56-1fr-56 그리드 / 상단 배경 통일 */
+.wp-header {
+  height: 56px;
+  background: var(--bg-soft); /* ★ 중요 */
+  display: grid;
+  grid-template-columns: 56px 1fr 56px;
+  align-items: center;
+}
+
+.wp-header-title {
+  height: 100%;
 }
 
 .wp-icon-btn {
   width: 36px;
   height: 36px;
+  margin: 0 auto;
   border: 0;
   background: transparent;
   color: var(--brown-700);
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* 본문 */
+/* ✅ 본문: NavBar 위 safe padding 72px */
 .wp-content {
-  height: calc(852px - 150px - 78px);
-  overflow: auto;
   background: var(--white);
-  padding-bottom: 24px;
+  padding-bottom: 72px;
 }
 
+/* ✅ 상단 연베이지 헤더/히어로 영역 */
+.wp-hero {
+  height: 130px;
+  background: var(--bg-soft);
+}
+
+/* 프로필 카드 */
 .wp-card {
-  margin-top: -36px;
+  margin-top: -34px;
   background: var(--white);
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
@@ -71,7 +87,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding-top: 8px;
+  padding-top: 6px;
 }
 
 .wp-avatar {
@@ -109,7 +125,7 @@
   line-height: 1.2;
 }
 
-/* 지표 */
+/* 지표 3개 */
 .wp-metrics {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -225,56 +241,6 @@
   white-space: pre-line;
 }
 
-/* 하단 네브 */
-.wp-nav {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 18px;
-  height: 60px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  align-items: center;
-  background: var(--white);
-  border-top: 1px solid #f2f2f2;
-}
-
-.wp-nav-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  align-items: center;
-  justify-content: center;
-  color: #111;
-  opacity: 0.9;
-}
-
-.wp-nav-item.active {
-  opacity: 1;
-}
-
-.wp-nav-ico {
-  font-size: 18px;
-  line-height: 1;
-}
-
-.wp-nav-txt {
-  font-size: 11px;
-}
-
-/* iOS 홈 인디케이터 느낌 */
-.wp-home-indicator {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 6px;
-  width: 130px;
-  height: 4px;
-  border-radius: 999px;
-  background: #000;
-  opacity: 0.12;
-}
-
 /* 공유 모달 */
 .wp-modal-backdrop {
   position: absolute;
@@ -327,3 +293,15 @@
   font-size: 12px;
   background: #f0f0f0;
 }
+
+/* ✅ 상단 흰줄(헤더 흰배경) 강제 제거 */
+.wp-screen .wp-status-bar,
+.wp-screen .wp-header {
+  background: var(--bg-soft) !important;
+}
+
+/* 혹시 header 태그 전역 스타일이 더 세게 들어오는 경우까지 방어 */
+.wp-screen header.wp-header {
+  background: var(--bg-soft) !important;
+}
+

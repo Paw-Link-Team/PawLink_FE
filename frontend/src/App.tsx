@@ -1,4 +1,4 @@
-// frontend/src/App.tsx
+import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import SplashPage from "./pages/SplashPage";
@@ -30,15 +30,29 @@ import OauthCallback from "./pages/oauth/OauthCallback";
 import AuthProcessing from "./pages/auth/processing/AuthProcessing";
 import SignupNickname from "./pages/signup/SignupNickname";
 
+import AppointmentPage from "./pages/Appointmentpage";
+
+import ChargePage from "./pages/Chargepage";
+import WithdrawPage from "./pages/Withdrawpage";
+
+// App.tsx Routes 안에 추가
+import NoticeBoardSearchPage from "./pages/Noticeboardsearchpage";
+
+
+// ✅ ✅ 추가: 글쓰기 페이지
+import Writepostpage from "./pages/Writepostpage";
+
 export default function App() {
   return (
     <Routes>
       {/* 기본 진입 */}
       <Route path="/" element={<Navigate to="/login" replace />} />
+
       {/* 로그인 */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/oauth/callback" element={<OauthCallback />} />
       <Route path="/auth/processing" element={<AuthProcessing />} />
+
       {/* 회원가입 */}
       <Route path="/signup/nickname" element={<SignupNickname />} />
 
@@ -49,6 +63,10 @@ export default function App() {
       {/* 게시판 */}
       <Route path="/board" element={<NoticeBoardPage />} />
       <Route path="/board/:id" element={<NoticeBoardDetailPage />} />
+      <Route path="/board/done" element={<UnNoticeBoardPage />} />
+
+      {/* ✅ ✅ 추가: 글쓰기 라우트 */}
+      <Route path="/board/write" element={<Writepostpage />} />
 
       {/* 프로필 */}
       <Route path="/walker-profile" element={<WalkerProfile />} />
@@ -60,20 +78,24 @@ export default function App() {
       {/* 채팅 */}
       <Route path="/chat" element={<ChatPage />} />
       <Route path="/chat/:roomId" element={<ChatRoomPage />} />
+      <Route path="/chat/:roomId/appointment" element={<AppointmentPage />} />
 
       {/* 마이페이지 */}
       <Route path="/mypage" element={<Mypage />} />
       <Route path="/mypage/posts" element={<MyPostsPage />} />
       <Route path="/mypage/favorites" element={<FavoritesPage />} />
       <Route path="/mypage/history/:id" element={<WalkHistoryDetailPage />} />
+      <Route path="/mypage/profile" element={<Myprofilepage />} />
+
+      {/* 결제 */}
+      <Route path="/pay/charge" element={<ChargePage />} />
+      <Route path="/pay/withdraw" element={<WithdrawPage />} />
+
+    
+      <Route path="/board/search" element={<NoticeBoardSearchPage />} />
 
       {/* 없는 주소 */}
       {/* <Route path="*" element={<Navigate to="/splash" replace />} /> */}
-
-      <Route path="/mypage/profile" element={<Myprofilepage />} />
-
-      <Route path="/board/done" element={<UnNoticeBoardPage />} />
-
     </Routes>
   );
 }

@@ -1,3 +1,5 @@
+/* frontend/src/pages/WalkLivePage.css */
+
 .wl-root {
   min-height: 100vh;
   background: #2b2b2b;
@@ -7,17 +9,39 @@
 }
 
 .wl-phone {
-  width: 390px;
-  height: 844px;
+  width: 100%;
+  max-width: 390px;
+  min-height: 100vh;
   background: #fff;
   position: relative;
   overflow: hidden;
 }
 
+.wl-phone.is-overlay {
+  background: #fff;
+}
+
 .wl-map {
-  height: 330px;
-  background: #e9e1d8; /* 지도 자리 */
+  height: 300px;
+  background: #e9e1d8;
   position: relative;
+}
+
+.wl-back-btn {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  border: none;
+  background: #ffffff;
+  color: #75401f;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  z-index: 3;
 }
 
 .wl-map-pin {
@@ -31,6 +55,7 @@
   place-items: center;
   background: #fff;
   border: 1px solid #ddd;
+  z-index: 2;
 }
 
 .wl-metrics {
@@ -90,8 +115,10 @@
   border: 1px solid #e5e5e5;
 }
 
+/* 저장버튼/인디케이터 공간 확보 */
 .wl-memo {
   padding: 18px 18px 0;
+  padding-bottom: 120px;
 }
 
 .wl-memo-title {
@@ -148,6 +175,37 @@
   color: #75401f;
 }
 
+/* ✅ 저장 버튼 (완료 버튼과 "같은 위치") */
+.wl-save-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;          /* ✅ 더 아래로(완료 버튼과 일치) */
+  padding: 0 18px;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+.wl-save-btn {
+  width: 100%;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid #d9c7b5;
+  background: #f3f3f3;
+  color: #b9b9b9;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: not-allowed;
+}
+
+.wl-save-btn.active {
+  background: #75401f;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+/* 홈 인디케이터 */
 .wl-home-indicator {
   position: absolute;
   left: 50%;
@@ -158,4 +216,130 @@
   background: #000;
   opacity: 0.12;
   border-radius: 999px;
+  z-index: 11;
+}
+
+/* =========================
+   저장 후 결과 오버레이
+   ========================= */
+.wl-result {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  z-index: 30;
+}
+
+/* 상단 X */
+.wl-result-close {
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: #7a3e12;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 31;
+}
+
+/* 바디 */
+.wl-result-body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 62px 22px 120px; /* ✅ 하단 버튼 영역 확보 */
+  box-sizing: border-box;
+}
+
+/* ✅ 1번 아이콘: PNG 그대로 */
+.wl-done-icon-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+  margin-bottom: 14px;
+}
+
+.wl-done-icon {
+  width: 64px;
+  height: 64px;
+  display: block;
+}
+
+/* 1번/2번 타이틀 */
+.wl-result-title,
+.wl-result-title2 {
+  text-align: center;
+  color: #3f3028;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+/* ✅ 2번: 배경(confetti) + 일러스트(가운데) */
+.wl-congrats-hero {
+  margin-top: 10px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover; /* ✅ 배경이 감싸는 느낌 */
+}
+
+.wl-congrats-illu {
+  width: 88%;
+  height: auto;
+  display: block;
+}
+
+/* 지표 테이블 */
+.wl-result-metrics {
+  margin-top: 28px;
+  border-top: 1px solid #f1ede8;
+}
+
+.wl-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #f1ede8;
+}
+
+.wl-result-label {
+  color: #8c7f74;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.wl-result-value {
+  color: #3f3028;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* ✅ 완료 버튼도 저장 버튼과 완전히 동일 위치 */
+.wl-result-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;         /* ✅ 저장 버튼과 동일 */
+  padding: 0 18px;      /* ✅ 저장 버튼과 동일 */
+  box-sizing: border-box;
+  z-index: 40;
+}
+
+.wl-result-btn {
+  width: 100%;
+  height: 44px;
+  border: none;
+  border-radius: 999px;
+  background: #75401f;
+  color: #fff;
+  font-weight: 900;
+  font-size: 14px;
+  cursor: pointer;
 }
