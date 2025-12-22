@@ -1,7 +1,7 @@
 // frontend/src/pages/NoticeBoardPage.tsx
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
-import "./NoticeBoardpage.css";
+import "./NoticeBoardPage.css";
 
 const POSTS_ALL = [
   { id: 1, title: "산책 해주실 분 찾습니다", desc: "소형견 푸들이고 성격은 활발한 편입니다!", thumb: "🐕" },
