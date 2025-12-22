@@ -27,6 +27,13 @@ import UnNoticeBoardPage from "./pages/unNoticeBoardpage";
 import Chargepage from "./pages/Chargepage";
 import Auth from "./pages/Auth";
 import Withdrawpage from "./pages/Withdrawpage";
+import LoginPage from "./pages/login/LoginPage";
+import OauthCallback from "./pages/oauth/OauthCallback";
+import AuthProcessing from "./pages/auth/processing/AuthProcessing";
+import SignupNickname from "./pages/signup/SignupNickname";
+import NetworkErrorPage from "./pages/error/NetworkErrorPage";
+import LoginScreenPage from "./pages/login/LoginScreenPage";
+
 import AppointmentPage from "./pages/Appointmentpage";
 
 export default function App() {
@@ -45,6 +52,16 @@ export default function App() {
           <Route path="/board" element={<NoticeBoardPage />} />
           <Route path="/board/:id" element={<NoticeBoardDetailPage />} />
           <Route path="/board/done" element={<UnNoticeBoardPage />} />
+      {/* 기본 진입 */}
+      <Route path="/" element={<Navigate to="/splash" replace />} />
+      {/* 로그인 */}
+      <Route path="/login/screen" element={<LoginScreenPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/oauth/callback" element={<OauthCallback />} />
+      <Route path="/auth/processing" element={<AuthProcessing />} />
+      <Route path="/error/network" element={<NetworkErrorPage />} />
+      {/* 회원가입 */}
+      <Route path="/signup/nickname" element={<SignupNickname />} />
 
           {/* 프로필 */}
           <Route path="/walker-profile" element={<WalkerProfile />} />
