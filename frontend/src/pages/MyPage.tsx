@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
-import "./Mypage.css";
+import "./MyPage.css";
 
 type WalkHistoryItem = {
   id: number;
