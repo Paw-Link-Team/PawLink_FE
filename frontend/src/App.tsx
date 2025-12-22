@@ -30,7 +30,8 @@ import OauthCallback from "./pages/oauth/OauthCallback";
 import AuthProcessing from "./pages/auth/processing/AuthProcessing";
 import SignupInfo from "./pages/signup/SignupInfo";
 import SignupAgreementPage from "./pages/signup/SignupAgreementPage";
-import LoginScreenPage from "./pages/login/LoginScreenPage"
+import LoginScreenPage from "./pages/login/LoginScreenPage";
+import NetworkErrorPage from "./pages/error/NetworkErrorPage";
 
 import AppointmentPage from "./pages/AppointmentPage";
 
@@ -56,6 +57,8 @@ export default function App() {
       {/* 회원가입 */}
       <Route path="/singup/agreement" element={<SignupAgreementPage />} />
       <Route path="/signup/info" element={<SignupInfo />} />
+
+      <Route path="/error/network" element={<NetworkErrorPage />} />
       
       {/* 스플래시 / 홈 */}
       <Route path="/splash" element={<SplashPage />} />
