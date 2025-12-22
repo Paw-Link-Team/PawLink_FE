@@ -1,3 +1,4 @@
+
 import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
 
@@ -28,12 +29,17 @@ import UnNoticeBoardPage from "./pages/unNoticeBoardpage";
 import LoginPage from "./pages/login/LoginPage";
 import OauthCallback from "./pages/oauth/OauthCallback";
 import AuthProcessing from "./pages/auth/processing/AuthProcessing";
-import SignupNickname from "./pages/signup/SignupAgreementPage";
+import SignupInfo from "./pages/signup/SignupInfo";
+import SignupAgreement from "./pages/signup/SignupAgreementPage";
 
 import AppointmentPage from "./pages/Appointmentpage";
 
 import ChargePage from "./pages/Chargepage";
 import WithdrawPage from "./pages/Withdrawpage";
+
+// App.tsx Routes 안에 추가
+import NoticeBoardSearchPage from "./pages/Noticeboardsearchpage";
+
 
 // ✅ ✅ 추가: 글쓰기 페이지
 import Writepostpage from "./pages/Writepostpage";
@@ -50,7 +56,8 @@ export default function App() {
       <Route path="/auth/processing" element={<AuthProcessing />} />
 
       {/* 회원가입 */}
-      <Route path="/signup/nickname" element={<SignupNickname />} />
+      <Route path="/signup/info" element={<SignupInfo />} />
+      <Route path="signup/agreement" element={<SignupAgreement />} />
 
       {/* 스플래시 / 홈 */}
       <Route path="/splash" element={<SplashPage />} />
@@ -87,8 +94,12 @@ export default function App() {
       <Route path="/pay/charge" element={<ChargePage />} />
       <Route path="/pay/withdraw" element={<WithdrawPage />} />
 
+    
+      <Route path="/board/search" element={<NoticeBoardSearchPage />} />
+
       {/* 없는 주소 */}
       {/* <Route path="*" element={<Navigate to="/splash" replace />} /> */}
     </Routes>
   );
 }
+
