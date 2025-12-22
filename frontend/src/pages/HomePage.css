@@ -1,0 +1,318 @@
+/* 사진 느낌 맞춘 팔레트 */
+:root {
+  --pl-brown: #7a3e12;
+  --pl-bg: #fff7e9;
+  --pl-beige: #f5efe9;
+  --pl-gray: #8b8b8b;
+  --pl-black: #1a1a1a;
+}
+
+.hp-wrapper {
+  min-height: 100vh;
+  background: var(--pl-bg);
+  display: flex;
+  justify-content: center;
+}
+
+.hp-screen {
+  width: 100%;
+  max-width: 390px;
+  min-height: 100vh;
+  background: #fff;
+  position: relative;
+}
+
+.hp-status {
+  height: 24px;
+}
+
+/* 헤더 */
+.hp-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 10px 16px 6px;
+}
+
+.hp-logo {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--pl-brown);
+  letter-spacing: -0.5px;
+}
+
+.hp-loc {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: var(--pl-brown);
+  font-size: 18px;
+  cursor: pointer;
+
+  /* ✅ SVG 중앙정렬용 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+/* 배너 */
+.hp-banner {
+  padding: 6px 0 0;
+}
+
+.hp-banner-photo {
+  height: 170px;
+  margin: 0 12px;
+  border-radius: 2px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hp-banner-logo {
+  height: 170px;
+  margin: 0 12px;
+  border-radius: 2px;
+  background: #f3efe9;
+  position: relative;
+  overflow: hidden;
+}
+
+.hp-banner-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 6px;
+  margin: 0 10px;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-weight: 900;
+  font-size: 13px;
+  border-radius: 6px;
+}
+
+.hp-banner-topline {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #3a3a3a;
+  opacity: 0.8;
+}
+
+.hp-brand {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.hp-brand-paw {
+  font-size: 34px;
+  color: var(--pl-brown);
+}
+
+.hp-brand-text {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--pl-brown);
+}
+
+.hp-banner-page {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.hp-banner-logo .hp-banner-page {
+  color: #333;
+  text-shadow: none;
+  opacity: 0.75;
+}
+
+/* 점(슬라이드 인디케이터) */
+.hp-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.hp-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+}
+.hp-dot.on {
+  width: 14px;
+  background: rgba(255, 255, 255, 0.95);
+}
+.hp-banner-logo .hp-dot {
+  background: rgba(0, 0, 0, 0.18);
+}
+.hp-banner-logo .hp-dot.on {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* 말풍선 */
+.hp-chip-wrap {
+  padding: 10px 0 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.hp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid #eee;
+  font-size: 12px;
+  font-weight: 800;
+  color: #3a3a3a;
+}
+
+.hp-chip-ico {
+  font-size: 13px;
+}
+
+/* 랭킹 */
+.hp-rank {
+  padding: 6px 0 0;
+}
+
+.hp-rank-head {
+  margin: 0 0 2px;
+  height: 38px;
+  background: var(--pl-brown);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.hp-rank-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hp-rank-item {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.hp-rank-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.hp-rank-no {
+  width: 18px;
+  font-weight: 900;
+  color: #333;
+}
+
+.hp-rank-info {
+  min-width: 0;
+}
+
+.hp-rank-name {
+  font-size: 13px;
+  font-weight: 900;
+  color: #2a2a2a;
+  margin-bottom: 3px;
+}
+
+.hp-rank-meta {
+  font-size: 11px;
+  color: #8d8d8d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hp-rank-paw {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: none;
+  background: var(--pl-brown);
+  color: #fff;
+  font-size: 16px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0; /* ✅ SVG 넣어도 사이즈 안 흔들리게 */
+}
+
+/* NavBar 공간 */
+.hp-safe {
+  height: 72px;
+}
+
+/* 홈 전체 배경 + 폰 화면 가운데 정렬 */
+.hp-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  background: #3a3a3a; /* 바깥 회색 배경 */
+  display: flex;
+  justify-content: center; /* ✅ 가운데 */
+  align-items: flex-start;
+}
+
+/* 폰 화면 고정 폭 */
+.hp-screen {
+  width: 100%;
+  max-width: 390px; /* ✅ 폰 너비 */
+  min-height: 100vh;
+  background: #ffffff;
+  position: relative;
+}
+
+/* =========================
+   ✅ 추가(아이콘용) - 다른 디자인 안 건드림
+   ========================= */
+.hp-loc-pin {
+  width: 22px;
+  height: 22px;
+  display: block;
+  color: #75401f; /* 갈색 핀 */
+}
+
+/* ✅ 추가(랭킹 우측 발바닥 아이콘) */
+.hp-rank-paw-ico {
+  width: 18px;
+  height: 18px;
+  display: block;
+  fill: #ffffff; /* 흰색 발바닥 */
+}

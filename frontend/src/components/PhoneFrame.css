@@ -1,0 +1,15 @@
+.pf-wrapper {
+  min-height: 100vh;
+  background: var(--bg-ivory);
+  display: flex;
+  justify-content: center;
+}
+
+.pf-screen {
+  width: 100%;
+  max-width: 390px;
+  min-height: 100vh;
+  background: var(--bg-white);
+  position: relative;
+  overflow: hidden;
+}

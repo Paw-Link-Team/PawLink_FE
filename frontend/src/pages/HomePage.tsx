@@ -1,106 +1,171 @@
-import "../App.css";
+import { useEffect, useMemo, useState } from "react";
 import NavBar from "../components/NavBar";
+import "./HomePage.css";
 
-const RANKING_DATA = [
-  {
-    id: 1,
-    name: "강정욱",
-    distance: "산책거리 15km",
-    dogs: "함께 걷은 강아지 25마리",
-  },
-  {
-    id: 2,
-    name: "우리초코가계에빠",
-    distance: "산책거리 12km",
-    dogs: "함께 걷은 강아지 21마리",
-  },
-  {
-    id: 3,
-    name: "모르는개산책",
-    distance: "산책거리 9km",
-    dogs: "함께 걷은 강아지 18마리",
-  },
-  {
-    id: 4,
-    name: "보리보리쌀",
-    distance: "산책거리 7km",
-    dogs: "함께 걷은 강아지 15마리",
-  },
-];
+// ✅ 실제 존재하는 이미지 파일명 그대로 사용
+// ✅ assets에 있는 배너 이미지로 교체
+const banner1 = new URL("../assets/pawlink-logo.png", import.meta.url).href;
+const banner3 = new URL("../assets/pawlink-logo3.png", import.meta.url).href;
+
+type RankItem = {
+  id: number;
+  name: string;
+  distance: string;
+  dogs: string;
+};
+
+type Slide =
+  | { kind: "photo"; img: string; overlay: string }
+  | { kind: "logo"; topLine: string };
 
 export default function HomePage() {
+  const RANKING_DATA: RankItem[] = useMemo(
+    () => [
+      { id: 1, name: "예림팀장님", distance: "산책거리 15km", dogs: "함께 걸은 강아지 25마리" },
+      { id: 2, name: "마요최고", distance: "산책거리 12km", dogs: "함께 걸은 강아지 21마리" },
+      { id: 3, name: "모르는마요산책", distance: "산책거리 9km", dogs: "함께 걸은 강아지 18마리" },
+      { id: 4, name: "보리보리쌀", distance: "산책거리 7km", dogs: "함께 걸은 강아지 15마리" },
+    ],
+    []
+  );
+
+  const slides: Slide[] = useMemo(
+    () => [
+      {
+        kind: "photo",
+        img: banner1,
+        overlay: "우리 강아지와 함께 산책할 동네 친구를 모집해요!",
+      },
+      {
+        kind: "logo",
+        topLine: "📣 v2.1 업데이트 : 실시간 산책 유저 지도 오픈",
+      },
+      {
+        kind: "photo",
+        img: banner3,
+        overlay: "PawLink 제휴로 15% 할인 쿠폰 증정!",
+      },
+    ],
+    []
+  );
+
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setIdx((v) => (v + 1) % slides.length), 4500);
+    return () => clearInterval(t);
+  }, [slides.length]);
+
+  const current = slides[idx];
+
   return (
-    <div
-      className="home-screen-wrapper"
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#FFF7E9",
-        display: "flex",
-        justifyContent: "center",
-      }}
-    >
-      <div
-        className="home-screen"
-        style={{
-          width: "100%",
-          maxWidth: "390px",
-          backgroundColor: "#FFFFFF",
-          minHeight: "100vh",
-          position: "relative",
-        }}
-      >
-        {/* 상태바 여백 */}
-        <div style={{ height: "24px" }} />
+    <div className="hp-wrapper">
+      <div className="hp-screen">
+        <div className="hp-status" />
 
         {/* 헤더 */}
-        <header className="home-header">
-          <div className="home-logo">PawLink</div>
-          <div className="home-location">📍</div>
+        <header className="hp-header">
+          <div className="hp-logo">PawLink</div>
+
+          {/* ✅ 지도 핀 아이콘으로 교체 */}
+          <button className="hp-loc" type="button" aria-label="map">
+            <svg className="hp-loc-pin" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 2C7.86 2 4.5 5.36 4.5 9.5c0 5.25 7.5 12.5 7.5 12.5s7.5-7.25 7.5-12.5C19.5 5.36 16.14 2 12 2z"
+                fill="currentColor"
+              />
+              <circle cx="12" cy="9.5" r="2.6" fill="#ffffff" />
+            </svg>
+          </button>
         </header>
 
-        {/* 상단 베이지 영역 */}
-        <section
-          className="home-hero"
-          style={{
-            height: "160px",
-            backgroundColor: "#F2E3D3",
-          }}
-        />
+        {/* 배너 */}
+        <section className="hp-banner">
+          {current.kind === "photo" ? (
+            <div
+              className="hp-banner-photo"
+              style={{ backgroundImage: `url(${current.img})` }}
+            >
+              <div className="hp-banner-overlay">{current.overlay}</div>
+              <div className="hp-banner-page">{idx + 1}/3</div>
 
-        {/* 말풍선 */}
-        <section className="home-chip-wrap">
-          <div className="home-chip">
-            <span>🐾 산책시 리드줄은 필수예요!</span>
-          </div>
+              <div className="hp-dots">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    className={`hp-dot ${i === idx ? "on" : ""}`}
+                    onClick={() => setIdx(i)}
+                    type="button"
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="hp-banner-logo">
+              <div className="hp-banner-topline">{current.topLine}</div>
+
+              <div className="hp-brand">
+                <div className="hp-brand-paw">🐾</div>
+                <div className="hp-brand-text">PawLink</div>
+              </div>
+
+              <div className="hp-banner-page">{idx + 1}/3</div>
+              <div className="hp-dots">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    className={`hp-dot ${i === idx ? "on" : ""}`}
+                    onClick={() => setIdx(i)}
+                    type="button"
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </section>
 
-        {/* 주간 랭킹 */}
-        <section className="home-ranking">
-          <div className="home-ranking-header">우리동네 주간 산책랭크</div>
+        {/* 말풍선 */}
+        <section className="hp-chip-wrap">
+          <div className="hp-chip">🐾 산책시 리드줄은 필수예요!</div>
+        </section>
 
-          <ul className="home-ranking-list">
-            {RANKING_DATA.map((item) => (
-              <li key={item.id} className="home-ranking-item">
-                <div>
-                  <strong>
-                    {item.id}. {item.name}
-                  </strong>
-                  <div style={{ fontSize: "13px", opacity: 0.7 }}>
-                    {item.distance} | {item.dogs}
+        {/* 랭킹 */}
+        <section className="hp-rank">
+          <div className="hp-rank-head">우리동네 주간 산책랭크</div>
+
+          <ul className="hp-rank-list">
+            {RANKING_DATA.map((r) => (
+              <li key={r.id} className="hp-rank-item">
+                <div className="hp-rank-left">
+                  <div className="hp-rank-no">{r.id}</div>
+                  <div className="hp-rank-info">
+                    <div className="hp-rank-name">{r.name}</div>
+                    <div className="hp-rank-meta">
+                      {r.distance} / {r.dogs}
+                    </div>
                   </div>
                 </div>
 
-                <div className="home-ranking-avatar">👤</div>
+                {/* ✅ 여기만 변경: 2번 사진처럼 "갈색 원 + 흰 발바닥" */}
+                <button className="hp-rank-paw" type="button" aria-label="paw">
+                  <svg className="hp-rank-paw-ico" viewBox="0 0 24 24" aria-hidden="true">
+                    {/* toes */}
+                    <circle cx="7.3" cy="8.4" r="2.0" />
+                    <circle cx="12" cy="6.9" r="2.1" />
+                    <circle cx="16.7" cy="8.4" r="2.0" />
+                    <circle cx="19.1" cy="11.6" r="1.85" />
+                    {/* pad */}
+                    <path d="M6.2 16.4c0-3.0 2.9-5.3 5.8-5.3s5.8 2.3 5.8 5.3c0 2.5-2.2 4.6-5.8 4.6s-5.8-2.1-5.8-4.6z" />
+                  </svg>
+                </button>
               </li>
             ))}
           </ul>
         </section>
-        <NavBar active="home"></NavBar>
-        
-        {/* 안전 패딩 */}
-        <div style={{ height: "72px" }} />
+
+        <NavBar active="home" />
+        <div className="hp-safe" />
       </div>
     </div>
   );
 }
-

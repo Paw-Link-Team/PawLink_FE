@@ -41,17 +41,37 @@ export default function UnNoticeBoardPage() {
         {/* 헤더 */}
         <header className="unb-header">
           <div className="unb-title">게시판</div>
-          <button className="unb-search" aria-label="search">
-            🔍
+
+          {/* ✅ NoticeBoardPage랑 "완전 동일" 돋보기 아이콘(SVG) */}
+          <button className="unb-search" aria-label="search" type="button">
+            <svg className="unb-search-ico" viewBox="0 0 24 24" aria-hidden="true">
+              <circle
+                cx="10.5"
+                cy="10.5"
+                r="6.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.6"
+              />
+              <path
+                d="M15.6 15.6L21 21"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.6"
+                strokeLinecap="round"
+              />
+            </svg>
           </button>
         </header>
 
         {/* 탭 */}
         <div className="unb-tabs">
-          <button className="unb-tab" onClick={() => navigate("/board")}>
+          <button className="unb-tab" type="button" onClick={() => navigate("/board")}>
             전체
           </button>
-          <button className="unb-tab active">완료된 산책</button>
+          <button className="unb-tab active" type="button">
+            완료된 산책
+          </button>
         </div>
 
         {/* ✅ 완료된 산책 톤다운 배경 영역 */}

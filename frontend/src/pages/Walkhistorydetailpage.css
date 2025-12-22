@@ -1,115 +1,140 @@
-.wh-wrapper {
-  min-height: 100vh;
-  background: #fff7e9;
-  display: flex;
-  justify-content: center;
-}
+/* Walkhistorydetailpage.css */
+/* 목표: 두번째 사진처럼
+   - 제목/날짜 글자 작게
+   - 카드 둥글게 + 얇은 브라운 테두리
+   - 카드 안 라벨은 연한 색/작게
+   - 값은 브라운 + 살짝 굵게
+   - 컬럼 사이 얇은 구분선
+*/
 
-.wh-screen {
+.wh-root {
   width: 100%;
-  max-width: 390px;
   min-height: 100vh;
-  background: #fff;
-  position: relative;
+  background: var(--bg-white);
+  color: var(--c-deep);
+  display: flex;
+  flex-direction: column;
 }
 
+/* 상단 상태바 */
 .wh-status {
   height: 24px;
+  width: 100%;
 }
 
+/* 상단 헤더: 뒤로가기만 */
 .wh-top {
+  width: 100%;
+  padding: 10px 16px 0;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 12px 12px;
-  border-bottom: 1px solid #eee;
+  border-bottom: none; /* 두번째 사진은 라인 거의 없음 */
 }
 
 .wh-back {
-  width: 36px;
-  height: 36px;
   border: none;
   background: transparent;
-  font-size: 22px;
-  color: #7a4a22;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  color: var(--c-deep);
   cursor: pointer;
 }
 
-.wh-title {
-  font-size: 15px;
-  font-weight: 900;
-  color: #1a1a1a;
-}
-
-.wh-right {
-  width: 36px;
-  height: 36px;
-}
-
-.wh-card {
-  margin: 14px 16px 10px;
-  border: 1px solid #e6e1db;
-  border-radius: 14px;
-  padding: 12px;
-}
-
-.wh-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 2px;
-  border-bottom: 1px solid #f2f2f2;
-}
-.wh-row:last-child {
-  border-bottom: none;
-}
-
-.wh-label {
-  font-size: 12px;
-  font-weight: 800;
-  color: #6b4a2d;
-}
-.wh-value {
-  font-size: 13px;
-  font-weight: 800;
-  color: #2a2a2a;
-}
-
-.wh-map,
-.wh-memo {
+/* 본문 */
+.wh-body {
+  width: 100%;
+  box-sizing: border-box;
   padding: 10px 16px 0;
 }
 
-.wh-map-title {
-  font-size: 13px;
-  font-weight: 900;
-  color: #2a2a2a;
+/* ✅ 타이틀: 두번째 사진처럼 작고 담백하게 */
+.wh-page-title {
+  margin: 6px 0 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c-deep);
+}
+
+/* 목록 아이템 */
+.wh-item {
+  margin-top: 14px;
+}
+
+/* ✅ 날짜: 작고 연한 느낌 */
+.wh-date {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--c-deep);
   margin-bottom: 8px;
 }
 
-.wh-map-box {
-  height: 160px;
-  border-radius: 14px;
-  background: #f5efe9;
-  border: 1px solid #eee;
+/* ✅ 카드 버튼(전역 button 스타일 강제 무력화 포함) */
+.wh-card {
+  width: 100%;
+  border: 1px solid var(--c-brand);
+  background: var(--bg-soft);
+  border-radius: 12px;
+
+  /* 전역 button 기본값(검정 배경/큰 padding 등) 방지 */
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  color: inherit;
+
+  padding: 14px 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+
+  cursor: pointer;
+  text-align: center;
+}
+
+/* 컬럼 */
+.wh-col {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #8a8a8a;
-  font-size: 12px;
-  font-weight: 800;
+  gap: 6px;
+  position: relative;
+  min-width: 0;
+  padding: 0 8px;
 }
 
-.wh-memo-box {
-  border-radius: 14px;
-  border: 1px solid #eee;
-  padding: 12px;
-  color: #666;
+/* ✅ 컬럼 사이 얇은 구분선 */
+.wh-col:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: rgba(63, 48, 40, 0.12);
+}
+
+/* ✅ 라벨(상단): 아주 작고 연하게 */
+.wh-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--c-disabled);
+  line-height: 1;
+}
+
+/* ✅ 값(하단): 브라운 + 살짝 굵게 */
+.wh-value {
   font-size: 13px;
-  line-height: 1.45;
-  background: #fff;
+  font-weight: 800;
+  color: var(--c-brand);
+  line-height: 1.1;
 }
 
+/* NavBar 공간 */
 .wh-safe {
   height: 72px;
+  width: 100%;
 }

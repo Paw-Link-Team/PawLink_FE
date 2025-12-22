@@ -11,6 +11,7 @@
   min-height: 100vh;
   background: #ffffff;
   position: relative;
+  overflow: hidden; /* ✅ 추가 */
 }
 
 .nb-status {
@@ -36,9 +37,20 @@
   height: 36px;
   border: none;
   background: transparent;
-  font-size: 18px;
-  color: #7a4a22;
+  color: #7a4a22; /* ✅ 아이콘 색(갈색) */
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+/* ✅ 추가: 돋보기 SVG */
+.nb-search-ico {
+  width: 22px;
+  height: 22px;
+  display: block;
 }
 
 /* 탭(알약) */
@@ -114,20 +126,29 @@
   text-overflow: ellipsis;
 }
 
-/* 플로팅 + 버튼 */
+/* 플로팅 + 버튼 (390px 화면 안 우측 하단 고정) */
 .nb-fab {
-  position: absolute;
-  right: 18px;
-  bottom: 88px; /* NavBar 위로 */
+  position: absolute;           /* ✅ fixed → absolute */
+  right: 16px;
+  bottom: 88px;                 /* NavBar 위 */
+
   width: 56px;
   height: 56px;
   border-radius: 50%;
   border: none;
   background: #7a4a22;
-  color: #fff;
-  font-size: 28px;
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 30px;
+  line-height: 1;
+
   cursor: pointer;
   box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
+  z-index: 20;
 }
 
 /* 안전 패딩 */
