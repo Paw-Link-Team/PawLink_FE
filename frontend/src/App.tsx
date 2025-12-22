@@ -42,7 +42,7 @@ export default function App() {
   return (
     <Routes>
       {/* 기본 진입 */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<Navigate to="/splash" replace />} />
 
       {/* 로그인 */}
       <Route path="/login" element={<LoginPage />} />
