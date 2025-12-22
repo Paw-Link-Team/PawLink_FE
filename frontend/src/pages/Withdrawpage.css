@@ -1,9 +1,9 @@
-.wp-root {
+.wd-root {
   width: 100%;
   height: 100%;
 }
 
-.wp-phone {
+.wd-phone {
   width: 100%;
   height: 100%;
   background: #ffffff;
@@ -12,7 +12,7 @@
 }
 
 /* Top */
-.wp-top {
+.wd-top {
   height: 56px;
   display: grid;
   grid-template-columns: 56px 1fr 56px;
@@ -20,7 +20,7 @@
   padding: 0 6px;
 }
 
-.wp-x {
+.wd-x {
   width: 40px;
   height: 40px;
   border: none;
@@ -31,20 +31,20 @@
   cursor: pointer;
 }
 
-.wp-title {
+.wd-title {
   text-align: center;
   font-weight: 700;
   color: #2b2b2b;
   font-size: 16px;
 }
 
-.wp-top-right {
+.wd-top-right {
   width: 40px;
   height: 40px;
 }
 
 /* Main */
-.wp-main {
+.wd-main {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -52,7 +52,7 @@
   padding: 14px 18px 0;
 }
 
-.wp-bank {
+.wd-bank {
   margin-top: 24px;
   display: flex;
   flex-direction: column;
@@ -60,7 +60,7 @@
   gap: 8px;
 }
 
-.wp-paw {
+.wd-paw {
   width: 34px;
   height: 34px;
   border-radius: 10px;
@@ -68,7 +68,7 @@
   position: relative;
 }
 
-.wp-paw::after {
+.wd-paw::after {
   content: "🐾";
   position: absolute;
   inset: 0;
@@ -78,49 +78,49 @@
   transform: translateY(-1px);
 }
 
-.wp-bank-text {
+.wd-bank-text {
   text-align: center;
   color: #2b2b2b;
 }
 
-.wp-bank-name {
+.wd-bank-name {
   font-weight: 700;
   font-size: 13px;
   margin-bottom: 2px;
 }
 
-.wp-bank-no {
+.wd-bank-no {
   font-size: 11px;
   color: #9d9d9d;
 }
 
-.wp-ask {
+.wd-ask {
   margin-top: 18px;
   font-size: 18px;
   font-weight: 700;
   color: #b9b1a8;
 }
 
-.wp-amount {
+.wd-amount {
   margin-top: 18px;
   font-size: 22px;
   font-weight: 900;
   color: #2b2b2b;
 }
 
-.wp-amount-won {
+.wd-amount-won {
   margin-left: 2px;
   font-weight: 900;
 }
 
-.wp-sub {
+.wd-sub {
   margin-top: 6px;
   font-size: 12px;
   color: #b9b1a8;
 }
 
 /* Keypad */
-.wp-keypad {
+.wd-keypad {
   width: 100%;
   max-width: 320px;
   margin-top: 40px;
@@ -128,13 +128,13 @@
   gap: 18px;
 }
 
-.wp-key-row {
+.wd-key-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
 }
 
-.wp-key {
+.wd-key {
   height: 44px;
   border: none;
   background: transparent;
@@ -145,44 +145,40 @@
   border-radius: 10px;
 }
 
-.wp-key:active {
+.wd-key:active {
   background: #f5f5f5;
 }
 
-.wp-key-back {
+.wd-key-back {
   font-size: 20px;
 }
 
 /* Bottom button */
-.wp-bottom {
+.wd-bottom {
   padding: 14px 18px 18px;
 }
 
-.wp-submit {
+.wd-submit {
   width: 100%;
   height: 44px;
   border: none;
   border-radius: 22px;
-  font-weight: 900;
+  font-weight: 800;
   font-size: 13px;
   color: #ffffff;
   background: #b9b1a8; /* disabled */
 }
 
-.wp-submit.on {
+.wd-submit.on {
   background: #7a4a2a; /* enabled brown */
 }
 
-.wp-submit:disabled {
+.wd-submit:disabled {
   cursor: not-allowed;
 }
 
-.wp-bottom-gap {
-  height: 44px;
-}
-
 /* Dim + Sheet */
-.wp-dim {
+.wd-dim {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
@@ -192,11 +188,11 @@
 }
 
 /* app-phone 안에서만 예쁘게 보이도록 */
-.app-wrapper .wp-dim {
+.app-wrapper .wd-dim {
   justify-content: center;
 }
 
-.wp-sheet {
+.wd-sheet {
   width: 100%;
   max-width: 430px;
   background: #ffffff;
@@ -206,7 +202,7 @@
   box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
 }
 
-.wp-sheet-paw {
+.wd-sheet-paw {
   width: 34px;
   height: 34px;
   border-radius: 10px;
@@ -215,7 +211,7 @@
   position: relative;
 }
 
-.wp-sheet-paw::after {
+.wd-sheet-paw::after {
   content: "🐾";
   position: absolute;
   inset: 0;
@@ -225,7 +221,7 @@
   transform: translateY(-1px);
 }
 
-.wp-sheet-title {
+.wd-sheet-title {
   text-align: center;
   font-weight: 800;
   font-size: 15px;
@@ -234,18 +230,18 @@
   margin-bottom: 8px;
 }
 
-.wp-sheet-strong {
+.wd-sheet-strong {
   font-weight: 900;
 }
 
-.wp-sheet-sub {
+.wd-sheet-sub {
   text-align: center;
   font-size: 11px;
   color: #b9b1a8;
   margin-bottom: 16px;
 }
 
-.wp-sheet-btn {
+.wd-sheet-btn {
   width: 100%;
   height: 44px;
   border: none;
@@ -257,6 +253,6 @@
   cursor: pointer;
 }
 
-.wp-sheet-btn:active {
+.wd-sheet-btn:active {
   filter: brightness(0.95);
 }

@@ -19,7 +19,7 @@
   background: #ffffff;
 }
 
-/* ✅ 헤더: 왼쪽 타이틀 */
+/* 헤더 */
 .chat-header {
   height: 44px;
   display: flex;
@@ -34,7 +34,7 @@
   color: #1a1a1a;
 }
 
-/* 탭: 2번째 사진처럼 연한 칩 */
+/* 탭 */
 .chat-tabs {
   display: flex;
   gap: 10px;
@@ -74,22 +74,40 @@
   gap: 10px;
   padding: 12px 16px;
   border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
-/* ✅ 아바타: 갈색 원 + 흰 아이콘 */
+.chat-item:hover {
+  background: #faf7f3;
+}
+
+.chat-item:active {
+  background: #f3ede7;
+}
+
+/* ✅ 아바타: 갈색 원 (그대로) */
 .chat-avatar {
   width: 44px;
   height: 44px;
   border-radius: 50%;
   background: #7a4a22;
-  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
   flex: 0 0 auto;
 }
 
+/* ✅ 발바닥 로고: 살짝 크게 */
+.chat-avatar-paw {
+  width: 30px;   /* ⬅ 기존 22px → 26px */
+  height: 26px;
+  display: block;
+  fill: #ffffff;
+}
+
+/* 본문 */
 .chat-content {
   flex: 1;
   min-width: 0;
@@ -124,40 +142,15 @@
   color: #b0b0b0;
 }
 
-/* ✅ 뱃지: 2번째 사진처럼 작은 원 */
+/* 읽지 않은 메시지 뱃지 */
 .chat-badge {
   width: 18px;
   height: 18px;
   border-radius: 50%;
   background: #ff7a2f;
-  color: #fff;
+  color: #ffffff;
   font-size: 11px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* 클릭/호버/눌림 */
-.chat-item {
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-}
-
-.chat-item:hover {
-  background: #faf7f3;
-}
-
-.chat-item:active {
-  background: #f3ede7;
-}
-
-.chat-item:focus {
-  outline: none;
-}
-
-.chat-item:focus-visible {
-  outline: 2px solid #7a4a22;
-  outline-offset: -2px;
-  border-radius: 10px;
 }

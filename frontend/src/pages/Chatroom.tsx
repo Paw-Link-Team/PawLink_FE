@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import PhoneFrame from "../components/PhoneFrame";
 import "./Chatroom.css";
 
 type Msg = {
@@ -63,175 +64,152 @@ export default function ChatRoomPage() {
     setIsKeyboardOpen(false);
   };
 
-  // ✅ 앨범/카메라 열기 (모바일에서 동작)
-  const openAlbum = () => {
-    albumInputRef.current?.click();
-  };
+  // ✅ 앨범/카메라 열기
+  const openAlbum = () => albumInputRef.current?.click();
+  const openCamera = () => cameraInputRef.current?.click();
 
-  const openCamera = () => {
-    cameraInputRef.current?.click();
-  };
-
-  // (지금은 선택만 받고, 실제 업로드/전송 로직은 나중에 연결)
   const onPickFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
-
-    // ✅ 같은 파일 다시 선택 가능하게 초기화
     e.target.value = "";
   };
 
   return (
-    <div className="cr-wrapper">
-      <div className="cr-screen">
-        <div className="cr-status" />
+    <PhoneFrame className="cr-screen">
+      <div className="cr-status" />
 
-        {/* ✅ 헤더 (팀 디자인) */}
-        <header className="cr-topbar">
-          <button
-            className="cr-ico-btn"
-            aria-label="back"
-            onClick={() => navigate(-1)}
-          >
-            <span className="cr-back">‹</span>
-          </button>
+      {/* ✅ 헤더 (2번 이미지처럼: 베이지 바 + 좌 뒤로가기 + 중앙 이름 + 우 전화아이콘) */}
+      <header className="cr-topbar">
+        <button className="cr-ico-btn" aria-label="back" onClick={() => navigate(-1)}>
+          <span className="cr-back">‹</span>
+        </button>
 
-          <div className="cr-title-center">
-            <div className="cr-name">{headerName}</div>
-          </div>
+        <div className="cr-title-center">
+          <div className="cr-name">{headerName}</div>
+        </div>
 
-          <button className="cr-ico-btn" aria-label="call">
-            <span className="cr-call">☎</span>
-          </button>
-        </header>
+        <button className="cr-ico-btn" aria-label="call">
+          <span className="cr-call">📞</span>
+        </button>
+      </header>
 
-        {/* ✅ 상단 게시글 카드 (팀 디자인) */}
-        <section className="cr-post">
-          <div className="cr-post-thumb" aria-hidden="true" />
-          <div className="cr-post-texts">
-            <div className="cr-post-title">산책 해주실 분 찾습니다</div>
-            <div className="cr-post-sub">오후 3시 | 항승 푸른수목원</div>
-          </div>
-        </section>
+      {/* ✅ 상단 게시글 카드 (2번 이미지처럼: 흰색 row + 좌 썸네일 + 텍스트) */}
+      <section className="cr-post">
+        <div className="cr-post-thumb" aria-hidden="true" />
+        <div className="cr-post-texts">
+          <div className="cr-post-title">산책 해주실 분 찾습니다</div>
+          <div className="cr-post-sub">오후 3시 | 항승 푸른수목원</div>
+        </div>
+      </section>
 
-        {/* 채팅 */}
-        <div className="cr-chat" ref={listRef}>
-          <div className="cr-date">2025년 11월 30일</div>
+      {/* ✅ 채팅 */}
+      <div className="cr-chat" ref={listRef}>
+        <div className="cr-date">2025년 11월 30일</div>
 
-          {messages.map((m) => (
+        {messages.map((m, idx) => {
+          const prev = messages[idx - 1];
+          const showAva = m.side === "left" && (!prev || prev.side !== "left");
+
+          return (
             <div key={m.id} className={`cr-row ${m.side}`}>
+              {/* ✅ 왼쪽은 연속 메시지면 아바타 1번만 (2번 이미지처럼) */}
               {m.side === "left" && (
-                <div className="cr-mini-ava" aria-hidden="true" />
+                <div className={`cr-mini-ava ${showAva ? "" : "ghost"}`} aria-hidden="true" />
               )}
 
-              <div className="cr-bubble-wrap">
-                {m.side === "left" && m.time && (
-                  <div className="cr-time left">{m.time}</div>
-                )}
+              {/* ✅ 2번 이미지처럼 "시간은 말풍선 옆"에 배치 */}
+              <div className={`cr-msgline ${m.side}`}>
+                {/* 왼쪽 메시지 시간 (말풍선 왼쪽) */}
+                {m.side === "left" && m.time && <div className="cr-time">{m.time}</div>}
 
                 <div className={`cr-bubble ${m.side}`}>{m.text}</div>
 
-                {m.side === "right" && m.time && (
-                  <div className="cr-time right">{m.time}</div>
-                )}
+                {/* 오른쪽 메시지 시간 (말풍선 왼쪽에 붙는 형태로 보이게) */}
+                {m.side === "right" && m.time && <div className="cr-time">{m.time}</div>}
               </div>
             </div>
-          ))}
-        </div>
+          );
+        })}
+      </div>
 
-        {/* ✅ 숨겨진 input들 (앨범/카메라) */}
-        <input
-          ref={albumInputRef}
-          className="cr-hidden-file"
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={onPickFiles}
-        />
-        <input
-          ref={cameraInputRef}
-          className="cr-hidden-file"
-          type="file"
-          accept="image/*"
-          capture="environment"
-          onChange={onPickFiles}
-        />
+      {/* ✅ 숨겨진 input들 (앨범/카메라) */}
+      <input
+        ref={albumInputRef}
+        className="cr-hidden-file"
+        type="file"
+        accept="image/*"
+        multiple
+        onChange={onPickFiles}
+      />
+      <input
+        ref={cameraInputRef}
+        className="cr-hidden-file"
+        type="file"
+        accept="image/*"
+        capture="environment"
+        onChange={onPickFiles}
+      />
 
-        {/* 하단 입력 영역 */}
-        <div
-          className={`cr-bottom ${isPlusOpen ? "plus-open" : ""} ${
-            isKeyboardOpen ? "keyboard-open" : ""
-          }`}
-        >
-          <div className="cr-inputbar">
-            <button className="cr-plus" onClick={togglePlus} aria-label="plus">
-              +
-            </button>
+      {/* 하단 입력 영역 */}
+      <div className={`cr-bottom ${isPlusOpen ? "plus-open" : ""} ${isKeyboardOpen ? "keyboard-open" : ""}`}>
+        <div className="cr-inputbar">
+          <button className="cr-plus" onClick={togglePlus} aria-label="plus">
+            +
+          </button>
 
-            <div className="cr-inputbox">
-              <span className="cr-paw" aria-hidden="true">
-                🐾
-              </span>
-              <input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onFocus={onFocusInput}
-                onBlur={onBlurInput}
-                placeholder="산책시 리드줄은 필수예요!"
-              />
-            </div>
-
-            <button className="cr-send" aria-label="send">
-              ▷
-            </button>
+          <div className="cr-inputbox">
+            <span className="cr-paw" aria-hidden="true">
+              🐾
+            </span>
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onFocus={onFocusInput}
+              onBlur={onBlurInput}
+              placeholder="산책시 리드줄은 필수예요!"
+            />
           </div>
 
-          {/* ✅ 플러스 패널: 앨범/카메라/약속 (지도 제거) */}
-          {isPlusOpen && (
-            <div className="cr-plus-panel">
-              <button
-                className="cr-plus-item"
-                type="button"
-                aria-label="album"
-                onClick={openAlbum}
-              >
-                <div className="cr-plus-icon" aria-hidden="true">
-                  🖼
-                </div>
-                <div className="cr-plus-label">앨범</div>
-              </button>
-
-              <button
-                className="cr-plus-item"
-                type="button"
-                aria-label="camera"
-                onClick={openCamera}
-              >
-                <div className="cr-plus-icon" aria-hidden="true">
-                  📷
-                </div>
-                <div className="cr-plus-label">카메라</div>
-              </button>
-
-              <button
-                className="cr-plus-item"
-                type="button"
-                aria-label="appointment"
-                onClick={() => navigate(`/chat/${roomId}/appointment`)}
-              >
-                <div className="cr-plus-icon" aria-hidden="true">
-                  ⏰
-                </div>
-                <div className="cr-plus-label">약속</div>
-              </button>
-            </div>
-          )}
-
-          <div className="cr-keyboard-pad" />
+          <button className="cr-send" aria-label="send">
+            ▷
+          </button>
         </div>
 
-        <div className="cr-home-indicator" />
+        {/* ✅ 플러스 패널 */}
+        {isPlusOpen && (
+          <div className="cr-plus-panel">
+            <button className="cr-plus-item" type="button" aria-label="album" onClick={openAlbum}>
+              <div className="cr-plus-icon" aria-hidden="true">
+                🖼
+              </div>
+              <div className="cr-plus-label">앨범</div>
+            </button>
+
+            <button className="cr-plus-item" type="button" aria-label="camera" onClick={openCamera}>
+              <div className="cr-plus-icon" aria-hidden="true">
+                📷
+              </div>
+              <div className="cr-plus-label">카메라</div>
+            </button>
+
+            <button
+              className="cr-plus-item"
+              type="button"
+              aria-label="appointment"
+              onClick={() => navigate(`/chat/${roomId}/appointment`)}
+            >
+              <div className="cr-plus-icon" aria-hidden="true">
+                ⏰
+              </div>
+              <div className="cr-plus-label">약속</div>
+            </button>
+          </div>
+        )}
+
+        <div className="cr-keyboard-pad" />
       </div>
-    </div>
+
+      <div className="cr-home-indicator" />
+    </PhoneFrame>
   );
 }

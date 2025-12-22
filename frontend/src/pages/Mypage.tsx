@@ -33,7 +33,10 @@ export default function Mypage() {
         <header className="mp-header">마이페이지</header>
 
         {/* ✅ 마이프로필로 가고 싶으면 /mypage/profile로 바꿔도 됨 */}
-        <section className="mp-profile-row" onClick={() => navigate("/mypage/profile")}>
+        <section
+          className="mp-profile-row"
+          onClick={() => navigate("/mypage/profile")}
+        >
           <div className="mp-profile-left">
             <div className="mp-avatar">👤</div>
             <div className="mp-name">강형욱</div>
@@ -54,10 +57,27 @@ export default function Mypage() {
 
             {/* ✅ 모달 삭제하고 페이지 이동으로 변경 */}
             <div className="mp-pay-actions">
-              <button className="mp-pill" onClick={() => navigate("/pay/charge")}>
+              <button
+                type="button"
+                className="mp-pill"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation(); // ✅ 부모 클릭 전파 차단
+                  navigate("/pay/charge");
+                }}
+              >
                 충전
               </button>
-              <button className="mp-pill" onClick={() => navigate("/pay/withdraw")}>
+
+              <button
+                type="button"
+                className="mp-pill"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation(); // ✅ 부모 클릭 전파 차단
+                  navigate("/pay/withdraw");
+                }}
+              >
                 출금
               </button>
             </div>
@@ -67,12 +87,20 @@ export default function Mypage() {
         <section className="mp-section">
           <div className="mp-section-title">나의 산책</div>
 
-          <button className="mp-row" onClick={() => navigate("/mypage/posts")}>
+          <button
+            type="button"
+            className="mp-row"
+            onClick={() => navigate("/mypage/posts")}
+          >
             <span className="mp-row-label">내가 올린 게시글</span>
             <span className="mp-chevron">›</span>
           </button>
 
-          <button className="mp-row" onClick={() => navigate("/mypage/favorites")}>
+          <button
+            type="button"
+            className="mp-row"
+            onClick={() => navigate("/mypage/favorites")}
+          >
             <span className="mp-row-label">관심 목록</span>
             <span className="mp-chevron">›</span>
           </button>
@@ -84,6 +112,7 @@ export default function Mypage() {
           {WALK_HISTORY.map((w) => (
             <button
               key={w.id}
+              type="button"
               className="mp-row"
               onClick={() => navigate(`/mypage/history/${w.id}`)}
             >

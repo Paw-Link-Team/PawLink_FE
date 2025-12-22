@@ -1,14 +1,35 @@
 :root {
+  /* PawLink Color Palette */
+  --c-brand: #75401f;     /* Brand Brown (강조/버튼/포인트) */
+  --c-deep: #3f3028;      /* Deep Brown (메인 텍스트/제목) */
+  --c-sand: #8c7f74;      /* Sand Brown (서브 텍스트/경계) */
+  --c-disabled: #bab0a6;  /* Light Gray Brown (비활성) */
+
+  --bg-soft: #f2e8dd;     /* Soft Beige (섹션 배경) */
+  --bg-ivory: #fef7e9;    /* Ivory Base (기본 배경) */
+  --bg-white: #ffffff;    /* 카드/컴포넌트 배경 */
+
+  --line-soft: rgba(63, 48, 40, 0.08);
+  --shadow-fab: 0 10px 18px rgba(0, 0, 0, 0.18);
+
+  /* Radius */
+  --r-10: 10px;
+  --r-12: 12px;
+  --r-14: 14px;
+  --r-pill: 999px;
+
+  /* Typography */
+  --fz-h1: 18px;
+  --fz-h2: 15px;
+  --fz-b1: 13px;
+  --fz-b2: 12px;
+  --fz-c: 11px;
+
+  /* Layout */
   --header-height: 56px;
 
-  --color-white: #ffffff;
-  --color-border: #eaeaea;
-  --color-text-main: #222;
-  --color-text-sub: #777;
-  --color-text-muted: #999;
-
-  --font-base: -apple-system, BlinkMacSystemFont, "Noto Sans KR",
-    system-ui, sans-serif;
+  /* Font */
+  --font-base: -apple-system, BlinkMacSystemFont, "Noto Sans KR", system-ui, sans-serif;
 }
 
 /* reset */
