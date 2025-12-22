@@ -1,5 +1,7 @@
 // frontend/src/pages/WalkerProfile.tsx
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import NavBar from "../components/NavBar";
 import "./WalkerProfile.css";
 
 type Review = {
@@ -10,6 +12,7 @@ type Review = {
 };
 
 export default function WalkerProfile() {
+  const navigate = useNavigate();
   const [isShareOpen, setIsShareOpen] = useState(false);
 
   const tags = useMemo(() => ["#소형견산책", "#리드줄착용", "#시간엄수"], []);
@@ -27,24 +30,31 @@ export default function WalkerProfile() {
   );
 
   return (
-    <div className="wp-root">
-      <div className="wp-phone">
-        {/* 상단 헤더 */}
+    <div className="wp-wrapper">
+      <div className="wp-screen">
+        {/* 상태바 (24px 유지) */}
+        <div className="wp-status-bar" />
+
+        {/* 헤더 (56-1fr-56) */}
         <header className="wp-header">
-          <button className="wp-icon-btn" aria-label="back">
-            {/* back icon */}
+          <button
+            className="wp-icon-btn"
+            aria-label="back"
+            type="button"
+            onClick={() => navigate(-1)}
+          >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <path
                 d="M15 6l-6 6 6 6"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="2.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
             </svg>
           </button>
 
-          <div className="wp-header-spacer" />
+          <div className="wp-header-title" />
 
           <button
             className="wp-icon-btn"
@@ -52,24 +62,23 @@ export default function WalkerProfile() {
             onClick={() => setIsShareOpen(true)}
             type="button"
           >
-            {/* share icon */}
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <path
                 d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="2.2"
                 strokeLinecap="round"
               />
               <path
                 d="M12 16V4"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="2.2"
                 strokeLinecap="round"
               />
               <path
                 d="M7.5 8.5L12 4l4.5 4.5"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="2.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
@@ -79,7 +88,10 @@ export default function WalkerProfile() {
 
         {/* 본문 */}
         <main className="wp-content">
-          {/* 프로필 상단 카드 영역 */}
+          {/* 히어로(연베이지 헤더 영역) */}
+          <section className="wp-hero" aria-hidden />
+
+          {/* 프로필 카드 */}
           <section className="wp-card">
             <div className="wp-profile-row">
               <div className="wp-avatar" aria-hidden />
@@ -138,27 +150,8 @@ export default function WalkerProfile() {
           </section>
         </main>
 
-        {/* 하단 네브(모양만) */}
-        <nav className="wp-nav">
-          <div className="wp-nav-item">
-            <div className="wp-nav-ico">⌂</div>
-            <div className="wp-nav-txt">홈</div>
-          </div>
-          <div className="wp-nav-item">
-            <div className="wp-nav-ico">▣</div>
-            <div className="wp-nav-txt">게시판</div>
-          </div>
-          <div className="wp-nav-item">
-            <div className="wp-nav-ico">💬</div>
-            <div className="wp-nav-txt">채팅</div>
-          </div>
-          <div className="wp-nav-item active">
-            <div className="wp-nav-ico">👤</div>
-            <div className="wp-nav-txt">마이페이지</div>
-          </div>
-        </nav>
-
-        <div className="wp-home-indicator" />
+        {/* ✅ 공통 NavBar 사용 */}
+        <NavBar active="mypage" />
 
         {/* 공유 모달 */}
         {isShareOpen && (

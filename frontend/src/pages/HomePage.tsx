@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import "./HomePage.css";
 
 // ✅ 실제 존재하는 이미지 파일명 그대로 사용
-// ✅ assets에 있는 배너 이미지로 교체
 const banner1 = new URL("../assets/pawlink-logo.png", import.meta.url).href;
 const banner3 = new URL("../assets/pawlink-logo3.png", import.meta.url).href;
 
@@ -19,6 +19,8 @@ type Slide =
   | { kind: "logo"; topLine: string };
 
 export default function HomePage() {
+  const navigate = useNavigate();
+
   const RANKING_DATA: RankItem[] = useMemo(
     () => [
       { id: 1, name: "예림팀장님", distance: "산책거리 15km", dogs: "함께 걸은 강아지 25마리" },
@@ -58,6 +60,13 @@ export default function HomePage() {
 
   const current = slides[idx];
 
+  // ✅ 랭킹 클릭 시 WalkerProfile로 이동
+  const goWalkerProfile = (rankId: number) => {
+    // 지금 WalkerProfile이 정적 페이지면 그냥 이동만
+    // 나중에 유저별 프로필로 확장하면 /walker-profile/:id 로 바꾸면 됨
+    navigate("/walker-profile", { state: { fromRankId: rankId } });
+  };
+
   return (
     <div className="hp-wrapper">
       <div className="hp-screen">
@@ -67,7 +76,6 @@ export default function HomePage() {
         <header className="hp-header">
           <div className="hp-logo">PawLink</div>
 
-          {/* ✅ 지도 핀 아이콘으로 교체 */}
           <button className="hp-loc" type="button" aria-label="map">
             <svg className="hp-loc-pin" viewBox="0 0 24 24" aria-hidden="true">
               <path
@@ -136,27 +144,36 @@ export default function HomePage() {
           <ul className="hp-rank-list">
             {RANKING_DATA.map((r) => (
               <li key={r.id} className="hp-rank-item">
-                <div className="hp-rank-left">
-                  <div className="hp-rank-no">{r.id}</div>
-                  <div className="hp-rank-info">
-                    <div className="hp-rank-name">{r.name}</div>
-                    <div className="hp-rank-meta">
-                      {r.distance} / {r.dogs}
+                {/* ✅ li 전체를 버튼으로 만들어 “칸 클릭”이 되게 */}
+                <button
+                  type="button"
+                  className="hp-rank-rowbtn"
+                  onClick={() => goWalkerProfile(r.id)}
+                  aria-label={`${r.name} 산책자 프로필 보기`}
+                >
+                  <div className="hp-rank-left">
+                    <div className="hp-rank-no">{r.id}</div>
+                    <div className="hp-rank-info">
+                      <div className="hp-rank-name">{r.name}</div>
+                      <div className="hp-rank-meta">
+                        {r.distance} / {r.dogs}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* ✅ 여기만 변경: 2번 사진처럼 "갈색 원 + 흰 발바닥" */}
-                <button className="hp-rank-paw" type="button" aria-label="paw">
-                  <svg className="hp-rank-paw-ico" viewBox="0 0 24 24" aria-hidden="true">
-                    {/* toes */}
-                    <circle cx="7.3" cy="8.4" r="2.0" />
-                    <circle cx="12" cy="6.9" r="2.1" />
-                    <circle cx="16.7" cy="8.4" r="2.0" />
-                    <circle cx="19.1" cy="11.6" r="1.85" />
-                    {/* pad */}
-                    <path d="M6.2 16.4c0-3.0 2.9-5.3 5.8-5.3s5.8 2.3 5.8 5.3c0 2.5-2.2 4.6-5.8 4.6s-5.8-2.1-5.8-4.6z" />
-                  </svg>
+                  <div className="hp-rank-paw" aria-hidden="true">
+                    <svg
+                      className="hp-rank-paw-ico"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <circle cx="7.3" cy="8.4" r="2.0" />
+                      <circle cx="12" cy="6.9" r="2.1" />
+                      <circle cx="16.7" cy="8.4" r="2.0" />
+                      <circle cx="19.1" cy="11.6" r="1.85" />
+                      <path d="M6.2 16.4c0-3.0 2.9-5.3 5.8-5.3s5.8 2.3 5.8 5.3c0 2.5-2.2 4.6-5.8 4.6s-5.8-2.1-5.8-4.6z" />
+                    </svg>
+                  </div>
                 </button>
               </li>
             ))}

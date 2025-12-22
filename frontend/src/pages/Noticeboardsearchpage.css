@@ -1,0 +1,243 @@
+/* frontend/src/pages/Noticeboardsearchpage.css */
+
+:root {
+  /* ✅ PawLink 브라운 톤 */
+  --brown-main: #75401f;
+  --brown-soft: #8c7f74;
+  --brown-light: #bab0a6;
+}
+
+.nbs-wrapper {
+  min-height: 100vh;
+  background: #fff7e9;
+  display: flex;
+  justify-content: center;
+}
+
+.nbs-screen {
+  width: 100%;
+  max-width: 390px;
+  min-height: 100vh;
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.nbs-status {
+  height: 24px;
+}
+
+/* 헤더 */
+.nbs-header {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  padding: 10px 12px 6px;
+  gap: 8px;
+}
+
+.nbs-back {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: #7a4a22;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.nbs-close {
+  justify-self: end;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 800;
+  color: #1a1a1a;
+  cursor: pointer;
+  padding: 6px 6px;
+}
+
+/* 검색바 */
+.nbs-searchbar {
+  height: 36px;
+  border-radius: 12px;
+  background: #f5efe9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+}
+
+.nbs-paw {
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.95;
+}
+
+.nbs-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 13px;
+  color: #2a2a2a;
+}
+
+.nbs-input::placeholder {
+  color: #9b8f86;
+  font-weight: 700;
+}
+
+.nbs-clear {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(0, 0, 0, 0.12);
+  color: #fff;
+  font-size: 12px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+/* 본문 */
+.nbs-body {
+  padding: 8px 16px 16px;
+}
+
+/* 섹션 헤더 */
+.nbs-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 10px 0 8px;
+}
+
+/* ✅ (1) 최근검색어 타이틀: 얇게 + 브라운톤 */
+.nbs-section-title {
+  font-size: 13px;
+  font-weight: 500;          /* 🔹 기존 900 → 얇게 */
+  color: var(--brown-soft);  /* 🔹 소프트 브라운 */
+}
+
+.nbs-clearall {
+  border: none;
+  background: transparent;
+  color: #b3aba3;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* 최근검색어 리스트 */
+.nbs-recent {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nbs-recent-item {
+  display: grid;
+  grid-template-columns: 18px 1fr auto 22px;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 0;
+}
+
+/* ✅ (2) 시계/아이콘 톤: 연한 브라운 */
+.nbs-clock {
+  font-size: 14px;
+  opacity: 1;                 /* 🔹 흐림 제거 */
+  color: var(--brown-light);  /* 🔹 연한 브라운 */
+}
+
+/* ✅ (2) 최근검색어 텍스트: 얇게 + 메인 브라운 */
+.nbs-recent-q {
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 400;           /* 🔹 기존 900 → 얇게 */
+  color: var(--brown-main);   /* 🔹 메인 브라운 */
+  cursor: pointer;
+}
+
+.nbs-recent-time {
+  font-size: 12px;
+  font-weight: 600;           /* 🔹 살짝만 강조 */
+  color: #bdb5ad;
+}
+
+.nbs-recent-x {
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: transparent;
+  color: #bdb5ad;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* 검색 결과 */
+.nbs-results {
+  padding-top: 10px;
+}
+
+.nbs-result-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+}
+
+.nbs-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #f5efe9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.nbs-rbody {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ✅ (3) 검색 결과 타이틀: bold 제거 + 브라운톤 */
+.nbs-rtitle {
+  font-size: 14px;
+  font-weight: 500;          /* 🔹 기존 900 → 얇게 */
+  color: var(--brown-main);  /* 🔹 브라운 */
+  margin-bottom: 6px;
+}
+
+/* ✅ (3) 검색 결과 설명도 살짝 브라운 톤 */
+.nbs-rdesc {
+  font-size: 12px;
+  color: #9b8f86;            /* 🔹 회색 → 브라운그레이 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nbs-empty {
+  padding: 28px 0;
+  text-align: center;
+  color: #9b8f86;
+  font-weight: 600;          /* 🔹 너무 두껍지 않게 */
+  font-size: 13px;
+}
+
+/* ✅ (4) 터치 피드백: 눌렀을 때 살짝 톤다운 */
+.nbs-recent-q:active,
+.nbs-result-item:active {
+  opacity: 0.7;
+}
