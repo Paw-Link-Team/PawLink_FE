@@ -316,6 +316,7 @@
   display: block;
   fill: #ffffff; /* 흰색 발바닥 */
 }
+<<<<<<< HEAD
 
 /* ✅ 랭킹 칸 전체 클릭 가능 버튼 */
 .hp-rank-rowbtn {
@@ -341,3 +342,5 @@
 .hp-rank-rowbtn:active {
   opacity: 0.85;
 }
+=======
+>>>>>>> 8308aeca1ab9285cc1581162d2d694fb85d8253a

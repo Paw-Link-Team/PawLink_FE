@@ -1,0 +1,43 @@
+.network-error-root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.network-error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.network-error-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.network-error-desc {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 24px;
+  line-height: 1.4;
+}
+
+.network-error-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  background-color: #ff7a00;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.network-error-button:active {
+  opacity: 0.85;
+}

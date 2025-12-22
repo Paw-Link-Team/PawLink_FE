@@ -1,0 +1,11 @@
+.header-brand {
+  width: 100%;
+  max-width: 420px;
+
+  font-size: 28px;
+  font-weight: 800;
+  color: #6b3f1d;           /* PawLink 브랜드 브라운 */
+  letter-spacing: -0.3px;  /* 로고 느낌 핵심 */
+
+  margin-bottom: 20px;
+}

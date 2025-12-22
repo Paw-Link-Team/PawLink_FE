@@ -25,7 +25,7 @@ export default function AuthProcessing() {
 
                 // 🔑 온보딩 필요
                 if (data.newUser === true) {
-                    navigate("/signup/nickname", { replace: true });
+                    navigate("/signup/SignAgreementPage", { replace: true });
                     return;
                 }
 
@@ -52,5 +52,15 @@ export default function AuthProcessing() {
             });
     }, [navigate]);
 
-    return <div>인증 처리 중...</div>;
+    return (
+    <div className="auth-processing">
+      <div className="auth-box">
+        <div className="brand">PawLink</div>
+
+        <div className="spinner" />
+
+        <p className="message">인증 처리 중입니다</p>
+      </div>
+    </div>
+  );
 }
