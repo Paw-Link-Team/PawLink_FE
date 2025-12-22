@@ -25,7 +25,7 @@ export default function AuthProcessing() {
 
                 // 🔑 온보딩 필요
                 if (data.newUser === true) {
-                    navigate("/signup/SignAgreementPage", { replace: true });
+                    navigate("/signup/agreement", { replace: true });
                     return;
                 }
 

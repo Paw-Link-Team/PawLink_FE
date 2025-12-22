@@ -1,0 +1,45 @@
+.auth-processing {
+  min-height: 100vh;
+  background: #f2f2f2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* 브랜드 */
+.brand {
+  font-size: 28px;
+  font-weight: 800;
+  color: #6b3f1d;
+  letter-spacing: -0.3px;
+}
+
+/* 스피너 */
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e5e5e5;
+  border-top-color: #6b3f1d;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+/* 메시지 */
+.message {
+  font-size: 14px;
+  color: #777;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
