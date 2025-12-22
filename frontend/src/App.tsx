@@ -30,11 +30,19 @@ import Withdrawpage from "./pages/Withdrawpage";
 import LoginPage from "./pages/login/LoginPage";
 import OauthCallback from "./pages/oauth/OauthCallback";
 import AuthProcessing from "./pages/auth/processing/AuthProcessing";
-import SignupNickname from "./pages/signup/SignupNickname";
+import SignupInfo from "./pages/signup/SignupInfo";
 import NetworkErrorPage from "./pages/error/NetworkErrorPage";
 import LoginScreenPage from "./pages/login/LoginScreenPage";
 
 import AppointmentPage from "./pages/Appointmentpage";
+
+import ChargePage from "./pages/Chargepage";
+import WithdrawPage from "./pages/Withdrawpage";
+
+// ✅ ✅ 추가: 글쓰기 페이지
+import Writepostpage from "./pages/Writepostpage";
+
+import SignupAgreementPage from "./pages/signup/SignupAgreementPage";
 
 export default function App() {
   return (
@@ -61,7 +69,8 @@ export default function App() {
       <Route path="/auth/processing" element={<AuthProcessing />} />
       <Route path="/error/network" element={<NetworkErrorPage />} />
       {/* 회원가입 */}
-      <Route path="/signup/nickname" element={<SignupNickname />} />
+      <Route path="/signup/info" element={<SignupInfo />} />
+      <Route path="/signup/agreement" element={<SignupAgreementPage />} />
 
           {/* 프로필 */}
           <Route path="/walker-profile" element={<WalkerProfile />} />
