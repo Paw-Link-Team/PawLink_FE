@@ -55,7 +55,7 @@ export default function App() {
       <Route path="/auth/processing" element={<AuthProcessing />} />
 
       {/* 회원가입 */}
-      <Route path="/singup/agreement" element={<SignupAgreementPage />} />
+      <Route path="/signup/agreement" element={<SignupAgreementPage />} />
       <Route path="/signup/info" element={<SignupInfo />} />
 
       <Route path="/error/network" element={<NetworkErrorPage />} />
