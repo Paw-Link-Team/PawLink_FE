@@ -4,7 +4,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import SplashPage from "./pages/splash/SplashPage";
 import HomePage from "./pages/HomePage";
 
-import NoticeBoardPage from "./pages/NoticeBoardpage";
+import NoticeBoardPage from "./pages/NoticeBoardPage";
 import NoticeBoardDetailPage from "./pages/NoticeBoardDetailPage";
 
 import WalkerProfile from "./pages/WalkerProfile";
@@ -13,30 +13,31 @@ import ParentProfile from "./pages/ParentProfile";
 import WalkLivePage from "./pages/WalkLivePage";
 
 import ChatPage from "./pages/Chat";
-import ChatRoomPage from "./pages/Chatroom";
+import ChatRoomPage from "./pages/ChatRoom";
 
 // ✅ 마이페이지 + 서브페이지
-import Mypage from "./pages/Mypage";
+import MyPage from "./pages/MyPage";
 import MyPostsPage from "./pages/MyPostsPage";
-import FavoritesPage from "./pages/Favoritespage";
-import WalkHistoryDetailPage from "./pages/Walkhistorydetailpage";
+import FavoritesPage from "./pages/FavoritesPage";
+import WalkHistoryDetailPage from "./pages/WalkHistoryDetailPage";
 
-import Myprofilepage from "./pages/Myprofilepage";
+import MyProfilePage from "./pages/MyProfilePage";
 
-import UnNoticeBoardPage from "./pages/unNoticeBoardpage";
+import UnNoticeBoardPage from "./pages/UnNoticeBoardPage";
 
 import LoginPage from "./pages/login/LoginPage";
 import OauthCallback from "./pages/oauth/OauthCallback";
 import AuthProcessing from "./pages/auth/processing/AuthProcessing";
 import SignupNickname from "./pages/signup/SignupAgreementPage";
 
-import AppointmentPage from "./pages/Appointmentpage";
+import AppointmentPage from "./pages/AppointmentPage";
 
-import ChargePage from "./pages/Chargepage";
-import WithdrawPage from "./pages/Withdrawpage";
+import ChargePage from "./pages/ChargePage";
+import WithdrawPage from "./pages/WithdrawPage";
 
-// ✅ ✅ 추가: 글쓰기 페이지
-import Writepostpage from "./pages/Writepostpage";
+// ✅ 글쓰기 페이지
+import WritePostPage from "./pages/WritePostPage";
+
 
 export default function App() {
   return (
@@ -62,7 +63,7 @@ export default function App() {
       <Route path="/board/done" element={<UnNoticeBoardPage />} />
 
       {/* ✅ ✅ 추가: 글쓰기 라우트 */}
-      <Route path="/board/write" element={<Writepostpage />} />
+      <Route path="/board/write" element={<WritePostPage />} />
 
       {/* 프로필 */}
       <Route path="/walker-profile" element={<WalkerProfile />} />
@@ -77,11 +78,11 @@ export default function App() {
       <Route path="/chat/:roomId/appointment" element={<AppointmentPage />} />
 
       {/* 마이페이지 */}
-      <Route path="/mypage" element={<Mypage />} />
+      <Route path="/mypage" element={<MyPage />} />
       <Route path="/mypage/posts" element={<MyPostsPage />} />
       <Route path="/mypage/favorites" element={<FavoritesPage />} />
       <Route path="/mypage/history/:id" element={<WalkHistoryDetailPage />} />
-      <Route path="/mypage/profile" element={<Myprofilepage />} />
+      <Route path="/mypage/profile" element={<MyProfilePage />} />
 
       {/* 결제 */}
       <Route path="/pay/charge" element={<ChargePage />} />
