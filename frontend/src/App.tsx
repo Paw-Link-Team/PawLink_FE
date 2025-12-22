@@ -1,7 +1,7 @@
 import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
 
-import SplashPage from "./pages/SplashPage";
+import SplashPage from "./pages/splash/SplashPage";
 import HomePage from "./pages/HomePage";
 
 import NoticeBoardPage from "./pages/NoticeBoardpage";
@@ -28,16 +28,12 @@ import UnNoticeBoardPage from "./pages/unNoticeBoardpage";
 import LoginPage from "./pages/login/LoginPage";
 import OauthCallback from "./pages/oauth/OauthCallback";
 import AuthProcessing from "./pages/auth/processing/AuthProcessing";
-import SignupNickname from "./pages/signup/SignupNickname";
+import SignupNickname from "./pages/signup/SignupAgreementPage";
 
 import AppointmentPage from "./pages/Appointmentpage";
 
 import ChargePage from "./pages/Chargepage";
 import WithdrawPage from "./pages/Withdrawpage";
-
-// App.tsx Routes 안에 추가
-import NoticeBoardSearchPage from "./pages/Noticeboardsearchpage";
-
 
 // ✅ ✅ 추가: 글쓰기 페이지
 import Writepostpage from "./pages/Writepostpage";
@@ -90,9 +86,6 @@ export default function App() {
       {/* 결제 */}
       <Route path="/pay/charge" element={<ChargePage />} />
       <Route path="/pay/withdraw" element={<WithdrawPage />} />
-
-    
-      <Route path="/board/search" element={<NoticeBoardSearchPage />} />
 
       {/* 없는 주소 */}
       {/* <Route path="*" element={<Navigate to="/splash" replace />} /> */}

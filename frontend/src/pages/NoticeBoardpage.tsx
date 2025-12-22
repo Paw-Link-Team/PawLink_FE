@@ -22,13 +22,8 @@ export default function NoticeBoardPage() {
         <header className="nb-header">
           <div className="nb-title">게시판</div>
 
-          {/* ✅ 여기 onClick 추가 */}
-          <button
-            className="nb-search"
-            aria-label="search"
-            type="button"
-            onClick={() => navigate("/board/search")}
-          >
+          {/* ✅ 돋보기 아이콘(SVG)로 교체 */}
+          <button className="nb-search" aria-label="search" type="button">
             <svg className="nb-search-ico" viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" strokeWidth="2.6" />
               <path d="M15.6 15.6L21 21" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
@@ -37,7 +32,9 @@ export default function NoticeBoardPage() {
         </header>
 
         <div className="nb-tabs">
-          <button className="nb-tab active" type="button">전체</button>
+          <button className="nb-tab active" type="button">
+            전체
+          </button>
           <button className="nb-tab" type="button" onClick={() => navigate("/board/done")}>
             완료된 산책
           </button>
@@ -45,7 +42,11 @@ export default function NoticeBoardPage() {
 
         <ul className="nb-list">
           {POSTS_ALL.map((p) => (
-            <li key={p.id} className="nb-item" onClick={() => navigate(`/board/${p.id}`)}>
+            <li
+              key={p.id}
+              className="nb-item"
+              onClick={() => navigate(`/board/${p.id}`)}
+            >
               <div className="nb-thumb">
                 <span className="nb-thumb-ico">{p.thumb}</span>
               </div>
@@ -57,7 +58,13 @@ export default function NoticeBoardPage() {
           ))}
         </ul>
 
-        <button type="button" className="nb-fab" aria-label="create" onClick={() => navigate("/board/write")}>
+        {/* 플로팅 + 버튼 (전체에서만) */}
+        <button
+          type="button"
+          className="nb-fab"
+          aria-label="create"
+          onClick={() => navigate("/board/write")}
+        >
           +
         </button>
 
