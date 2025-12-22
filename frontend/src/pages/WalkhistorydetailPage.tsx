@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import PhoneFrame from "../components/PhoneFrame";
-import "./Walkhistorydetailpage.css";
+import "./WalkHistoryDetailPage.css";
 
 type HistoryCard = {
   id: number;

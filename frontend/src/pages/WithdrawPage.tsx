@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PhoneFrame from "../components/PhoneFrame";
-import "./Withdrawpage.css";
+import "./WithdrawPage.css";
 
 type Step = "input" | "confirm" | "done";
 

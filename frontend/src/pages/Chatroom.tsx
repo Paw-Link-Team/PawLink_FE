@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PhoneFrame from "../components/PhoneFrame";
-import "./Chatroom.css";
+import "./ChatRoom.css";
 
 type Msg = {
   id: number;

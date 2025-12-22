@@ -28,7 +28,9 @@ import UnNoticeBoardPage from "./pages/UnNoticeBoardPage";
 import LoginPage from "./pages/login/LoginPage";
 import OauthCallback from "./pages/oauth/OauthCallback";
 import AuthProcessing from "./pages/auth/processing/AuthProcessing";
-import SignupNickname from "./pages/signup/SignupAgreementPage";
+import SignupInfo from "./pages/signup/SignupInfo";
+import SignupAgreementPage from "./pages/signup/SignupAgreementPage";
+import LoginScreenPage from "./pages/login/LoginScreenPage"
 
 import AppointmentPage from "./pages/AppointmentPage";
 
@@ -46,13 +48,15 @@ export default function App() {
       <Route path="/" element={<Navigate to="/splash" replace />} />
 
       {/* 로그인 */}
+      <Route path="/login/screen" element={<LoginScreenPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/oauth/callback" element={<OauthCallback />} />
       <Route path="/auth/processing" element={<AuthProcessing />} />
 
       {/* 회원가입 */}
-      <Route path="/signup/nickname" element={<SignupNickname />} />
-
+      <Route path="/singup/agreement" element={<SignupAgreementPage />} />
+      <Route path="/signup/info" element={<SignupInfo />} />
+      
       {/* 스플래시 / 홈 */}
       <Route path="/splash" element={<SplashPage />} />
       <Route path="/home" element={<HomePage />} />

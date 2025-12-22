@@ -1,7 +1,7 @@
 // frontend/src/pages/NoticeboardSearchPage.tsx
 import { useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Noticeboardsearchpage.css";
+import "./NoticeBoardsearchPage.css";
 
 type Post = {
   id: number;

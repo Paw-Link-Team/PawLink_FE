@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
-import "./unNoticeBoardpage.css";
+import "./UnNoticeBoardPage.css";
 
 const DONE_POSTS = [
   {

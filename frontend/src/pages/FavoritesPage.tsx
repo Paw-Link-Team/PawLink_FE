@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
-import "./Favoritespage.css";
+import "./FavoritesPage.css";
 
 const DUMMY_FAVORITES = [
   { id: 11, title: "게시글 제목", desc: "(관심) 산책구..." },
