@@ -17,7 +17,7 @@ import ChatRoomPage from "./pages/Chatroom";
 
 // ✅ 마이페이지 + 서브페이지
 import Mypage from "./pages/Mypage";
-import MyPostsPage from "./pages/Mypostspage";
+import MyPostsPage from "./pages/MyPostsPage";
 import FavoritesPage from "./pages/Favoritespage";
 import WalkHistoryDetailPage from "./pages/Walkhistorydetailpage";
 
