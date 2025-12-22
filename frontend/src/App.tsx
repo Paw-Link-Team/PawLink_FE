@@ -35,6 +35,10 @@ import AppointmentPage from "./pages/Appointmentpage";
 import ChargePage from "./pages/Chargepage";
 import WithdrawPage from "./pages/Withdrawpage";
 
+// App.tsx Routes 안에 추가
+import NoticeBoardSearchPage from "./pages/Noticeboardsearchpage";
+
+
 // ✅ ✅ 추가: 글쓰기 페이지
 import Writepostpage from "./pages/Writepostpage";
 
@@ -86,6 +90,9 @@ export default function App() {
       {/* 결제 */}
       <Route path="/pay/charge" element={<ChargePage />} />
       <Route path="/pay/withdraw" element={<WithdrawPage />} />
+
+    
+      <Route path="/board/search" element={<NoticeBoardSearchPage />} />
 
       {/* 없는 주소 */}
       {/* <Route path="*" element={<Navigate to="/splash" replace />} /> */}

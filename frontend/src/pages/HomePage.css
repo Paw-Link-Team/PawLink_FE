@@ -316,3 +316,28 @@
   display: block;
   fill: #ffffff; /* 흰색 발바닥 */
 }
+
+/* ✅ 랭킹 칸 전체 클릭 가능 버튼 */
+.hp-rank-rowbtn {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+}
+
+/* 기존 .hp-rank-item 패딩은 이제 버튼이 담당하므로 0으로 */
+.hp-rank-item {
+  padding: 0;
+  display: block;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+/* 눌림 피드백 */
+.hp-rank-rowbtn:active {
+  opacity: 0.85;
+}
