@@ -1,0 +1,120 @@
+.pe-wrapper {
+  min-height: 100vh;
+  background: #fff7e9;
+  display: flex;
+  justify-content: center;
+}
+
+.pe-screen {
+  width: 100%;
+  max-width: 390px;
+  min-height: 100vh;
+  background: #ffffff;
+  position: relative;
+}
+
+.pe-status {
+  height: 24px;
+}
+
+.pe-header {
+  height: 44px;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: 36px 1fr 36px;
+  align-items: center;
+}
+
+.pe-back {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: #7a4a22;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.pe-title {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 900;
+  color: #1a1a1a;
+}
+
+.pe-right {
+  width: 36px;
+  height: 36px;
+}
+
+.pe-body {
+  padding: 18px 16px 0;
+}
+
+.pe-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pe-paw {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #7a4a22;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.pe-paw-ico {
+  width: 22px;
+  height: 22px;
+  fill: #ffffff;
+}
+
+/* ✅ input + 체크버튼 래퍼 */
+.pe-input-wrap {
+  position: relative;
+  flex: 1;
+}
+
+.pe-input {
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  border: 1.5px solid #e6d6c3;
+  padding: 0 40px 0 12px; /* ✅ 오른쪽에 체크 자리 확보 */
+  font-size: 14px;
+  font-weight: 700;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.pe-input::placeholder {
+  color: #b2aaa3;
+  font-weight: 600;
+}
+
+/* ✅ 체크버튼: input 오른쪽 끝 */
+.pe-check {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #7a4a22;
+  font-size: 18px;
+  font-weight: 900;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.pe-safe {
+  height: 72px;
+}

@@ -1,3 +1,18 @@
+/* frontend/src/pages/AppointmentPage.css */
+
+/* (선택) 변수 기본값: 프로젝트에 이미 있으면 이 블록은 무시됨 */
+:root {
+  --bg-ivory: #fef7e9;
+  --c-brand: #75401f;
+  --c-deep: #3f3028;
+  --c-sand: #8c7f74;
+  --c-disabled: #bab0a6;
+  --line-soft: rgba(186, 176, 166, 0.45);
+}
+
+/* =========================
+   Wrapper / Screen
+   ========================= */
 .ap-wrapper {
   min-height: 100vh;
   background: var(--bg-ivory);
@@ -8,18 +23,32 @@
 .ap-screen {
   width: 100%;
   max-width: 390px;
-  min-height: 100vh;
+  height: 100vh;                 /* ✅ 화면 고정 */
   background: #fff;
   position: relative;
-  overflow: hidden;
+  overflow: hidden;              /* 바깥 스크롤 막기 */
+  display: flex;
+  flex-direction: column;
 }
 
 .ap-status {
   height: 24px;
+  flex: 0 0 auto;
 }
 
-/* 헤더 */
+/* ✅ header+status 아래 본문만 스크롤 */
+.ap-scroll {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 120px;         /* ✅ 하단 버튼 영역 확보 */
+}
+
+/* =========================
+   Header
+   ========================= */
 .ap-header {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -44,16 +73,26 @@
   color: var(--c-deep);
 }
 
-/* 바디 */
+/* =========================
+   Body
+   ========================= */
 .ap-body {
   padding: 8px 16px 0;
   display: flex;
   flex-direction: column;
 }
 
+/* Picker 공통 */
+.ap-body-picker {
+  padding-top: 0;
+}
+
+/* =========================
+   Row (한 줄)
+   ========================= */
 .ap-row {
   display: grid;
-  grid-template-columns: 110px 1fr 20px;
+  grid-template-columns: 110px 1fr 36px; /* ✅ 마지막 칸 버튼/아이콘 */
   align-items: center;
   padding: 14px 0;
   border-bottom: 1px solid var(--line-soft);
@@ -67,7 +106,6 @@
 .ap-row-select {
   cursor: default;
 }
-
 .ap-row-select:active {
   background: transparent;
 }
@@ -75,7 +113,6 @@
 .ap-row-static {
   cursor: default;
 }
-
 .ap-row-static:active {
   background: transparent;
 }
@@ -89,21 +126,42 @@
 .ap-value {
   font-size: 12px;
   color: var(--c-sand);
+  text-align: right;
+  padding-right: 6px;
 }
 
 .ap-value.filled {
   color: var(--c-deep);
+  font-weight: 700;
 }
 
+/* 오른쪽 기호 */
 .ap-right {
   text-align: right;
   color: var(--c-disabled);
   font-size: 14px;
+  transition: transform 0.18s ease;
+}
+
+/* ✅ 펼쳐졌을 때 화살표만 위로 */
+.ap-row.open .ap-right {
+  transform: rotate(180deg);
+}
+
+/* ✅ 오른쪽 아이콘 버튼 */
+.ap-right-btn {
+  border: none;
+  background: transparent;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
 }
 
 /* 알림 select */
 .ap-select {
-  grid-column: 2 / 3;
   width: 100%;
   border: none;
   outline: none;
@@ -111,16 +169,45 @@
   font-size: 12px;
   color: var(--c-deep);
   appearance: none;
+  text-align: right;
 }
 
-/* Picker 공통 */
-.ap-body-picker {
-  padding-top: 0;
+/* =========================
+   Panel (행 아래 펼침 영역)
+   ========================= */
+.ap-panel {
+  padding: 10px 0 14px;
+  border-bottom: 1px solid var(--line-soft);
 }
 
-/* 캘린더 */
+.ap-panel-actions {
+  padding: 12px 0 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ap-mini-btn {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: none;
+  background: var(--c-brand);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.ap-mini-btn.disabled {
+  background: var(--c-disabled);
+  cursor: not-allowed;
+}
+
+/* =========================
+   Calendar
+   ========================= */
 .ap-calendar {
-  padding: 18px 0 0;
+  padding: 10px 0 0; /* ✅ 중복 제거(최종값) */
 }
 
 .ap-cal-head {
@@ -163,7 +250,6 @@
 .ap-cal-w.sun {
   color: #e35b5b;
 }
-
 .ap-cal-w.sat {
   color: #3b6eea;
 }
@@ -193,13 +279,15 @@
   color: #fff;
 }
 
-/* 시간 선택 */
+/* =========================
+   Time (기본 select 방식)
+   ========================= */
 .ap-time {
-  margin-top: 22px;
+  margin-top: 8px; /* ✅ 중복 제거(최종값) */
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 12px;
-  padding-bottom: 8px;
+  padding-bottom: 2px; /* ✅ 중복 제거(최종값) */
 }
 
 .ap-time-col {
@@ -224,16 +312,20 @@
   background: #fff;
 }
 
-/* 지도(모형) */
-.ap-body-map {
-  padding: 0;
+/* =========================
+   Map / Place
+   ========================= */
+.ap-panel-map {
+  padding: 10px 0 14px;
 }
 
 .ap-map {
-  height: calc(100vh - 24px - 56px);
+  height: 220px;
   width: 100%;
   background: #f2f2f2;
   position: relative;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .ap-map-pin {
@@ -261,13 +353,63 @@
   border-radius: 999px;
 }
 
-/* 하단 버튼 */
-.ap-footer {
-  position: absolute;
-  left: 0;
-  right: 0;
+/* ✅ Place 선택 카드(중복 제거: 1번만 유지) */
+.ap-place-card {
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 12px 12px;
+  margin-bottom: 12px;
+  display: grid;
+  grid-template-columns: 1fr 18px;
+  gap: 6px;
+  cursor: pointer;
+  background: #fff;
+}
+
+.ap-place-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--c-deep);
+}
+
+.ap-place-sub {
+  font-size: 11px;
+  color: var(--c-sand);
+}
+
+.ap-place-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--line-soft);
+  align-self: center;
+  justify-self: end;
+}
+
+.ap-place-card.selected {
+  border-color: var(--c-brand);
+  background: rgba(242, 232, 221, 0.6);
+}
+
+.ap-place-card.selected .ap-place-check {
+  border-color: var(--c-brand);
+  background: var(--c-brand);
+}
+
+/* =========================
+   Footer (✅ portal fixed 하나만)
+   ========================= */
+.ap-footer-portal {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 18px;
+
+  width: min(390px, calc(100% - 32px));
   padding: 0 16px;
+
+  z-index: 2147483647;
+  pointer-events: auto;
 }
 
 .ap-btn {
@@ -281,11 +423,15 @@
   font-weight: 800;
 }
 
-.ap-btn.disabled {
+.ap-btn.disabled,
+.ap-btn:disabled {
   background: var(--c-disabled);
+  cursor: not-allowed;
 }
 
-/* 완료 화면 */
+/* =========================
+   Complete
+   ========================= */
 .ap-complete {
   padding: 24px 18px 0;
   display: flex;
@@ -340,11 +486,6 @@
   text-align: right;
 }
 
-/* 완료 버튼 위치 */
-.ap-footer-complete {
-  bottom: 18px;
-}
-
 /* 홈 인디케이터 */
 .ap-home-indicator {
   position: absolute;
@@ -355,4 +496,92 @@
   height: 5px;
   background: rgba(0, 0, 0, 0.15);
   border-radius: 999px;
+}
+
+/* =========================
+   Time Wheel (휠 방식)
+   ========================= */
+.ap-wheel {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 14px;
+  row-gap: 10px;
+  padding: 0 16px 8px;
+}
+
+.ap-wheel-head {
+  font-size: 11px;
+  color: var(--c-sand);
+  font-weight: 700;
+  text-align: left;
+}
+
+.ap-wheel-col {
+  position: relative;
+  height: 180px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.ap-wheel-scroll {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: y mandatory;
+  padding: 72px 0;
+}
+
+.ap-wheel-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.ap-wheel-item {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(63, 48, 40, 0.65);
+}
+
+.ap-wheel-item.active {
+  color: var(--c-deep);
+  font-weight: 900;
+}
+
+.ap-wheel-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-18px);
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(242, 232, 221, 0.95);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ap-wheel-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 70px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.ap-wheel-fade.top {
+  top: 0;
+  background: linear-gradient(to bottom, #fff 20%, rgba(255, 255, 255, 0));
+}
+
+.ap-wheel-fade.bottom {
+  bottom: 0;
+  background: linear-gradient(to top, #fff 20%, rgba(255, 255, 255, 0));
 }

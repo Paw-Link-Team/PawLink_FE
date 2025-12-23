@@ -126,15 +126,21 @@
   text-overflow: ellipsis;
 }
 
-/* 플로팅 + 버튼 (390px 화면 안 우측 하단 고정) */
+/* =========================
+   ✅ 플로팅 + 버튼 (2번째 사진 기준)
+   ========================= */
 .nb-fab {
-  position: absolute;           /* ✅ fixed → absolute */
-  right: 16px;
-  bottom: 88px;                 /* NavBar 위 */
+  position: absolute;
 
-  width: 56px;
-  height: 56px;
+  /* 📍 위치 조정 */
+  right: 20px;
+  bottom: 96px; /* NavBar 위 + 여유 */
+
+  /* 🔵 사이즈 */
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
+
   border: none;
   background: #7a4a22;
   color: #ffffff;
@@ -143,13 +149,24 @@
   align-items: center;
   justify-content: center;
 
-  font-size: 30px;
+  /* ➕ 아이콘 크기 */
+  font-size: 26px;
+  font-weight: 400;
   line-height: 1;
 
   cursor: pointer;
-  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
+
+  /* 그림자: 2번째 사진 느낌 */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+
   z-index: 20;
 }
+
+/* 눌림 효과 (선택) */
+.nb-fab:active {
+  transform: scale(0.95);
+}
+
 
 /* 안전 패딩 */
 .nb-safe {
