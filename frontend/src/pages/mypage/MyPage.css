@@ -42,13 +42,14 @@
 
 /* 갈색 원 */
 .mp-avatar {
-  width: 36px;              /* 🔽 기존보다 살짝 작게 */
-  height: 36px;
+  width: 44px;          /* ← 여기서 크기 조절 */
+  height: 44px;
   border-radius: 50%;
-  background: #7a4a22;      /* PawLink 브라운 */
+  overflow: hidden;     /* 중요 */
+  background-color: #6b3f1d; /* 기존 브라운 톤 */
   display: flex;
-  align-items: center;      /* ✅ 중앙 정렬 */
-  justify-content: center;  /* ✅ 중앙 정렬 */
+  align-items: center;
+  justify-content: center;
 }
 
 /* 흰색 발바닥 */
@@ -162,4 +163,9 @@
 /* 하단 네비 안전 패딩 */
 .mp-safe-pad {
   height: 72px;
+}
+.mp-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;    /* 핵심 */
 }
