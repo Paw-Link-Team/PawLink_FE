@@ -46,7 +46,7 @@ export default function SignupInfo() {
       localStorage.setItem("refreshToken", token.refreshToken);
       localStorage.removeItem("idToken");
 
-      navigate("/home", { replace: true });
+      navigate("/signup/complete", { replace: true });
     } catch (error) {
       console.error("Signup onboarding failed:", error);
       alert("회원가입에 실패했습니다.");

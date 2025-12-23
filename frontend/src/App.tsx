@@ -26,12 +26,17 @@ import MyProfilePage from "./pages/MyProfilePage";
 import UnNoticeBoardPage from "./pages/UnNoticeBoardPage";
 
 import LoginPage from "./pages/login/LoginPage";
+
 import OauthCallback from "./pages/oauth/OauthCallback";
 import AuthProcessing from "./pages/auth/processing/AuthProcessing";
+
 import SignupInfo from "./pages/signup/SignupInfo";
 import SignupAgreementPage from "./pages/signup/SignupAgreementPage";
+import SignupCompletePage from "./pages/signup/SignupCompletePage";
+
 import LoginScreenPage from "./pages/login/LoginScreenPage";
 import NetworkErrorPage from "./pages/error/NetworkErrorPage";
+
 
 import AppointmentPage from "./pages/AppointmentPage";
 
@@ -57,6 +62,7 @@ export default function App() {
       {/* 회원가입 */}
       <Route path="/signup/agreement" element={<SignupAgreementPage />} />
       <Route path="/signup/info" element={<SignupInfo />} />
+      <Route path="/signup/complete" element={<SignupCompletePage />} />
 
       <Route path="/error/network" element={<NetworkErrorPage />} />
       
