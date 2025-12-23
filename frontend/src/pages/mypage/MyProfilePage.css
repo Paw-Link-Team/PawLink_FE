@@ -45,28 +45,92 @@
 }
 
 /* ===== 내 프로필 ===== */
+/* ===== 내 프로필 ===== */
 .myp-profile-row {
   display: flex;
-  align-items: center;
+  align-items: center;                 /* 전체 수평 기준 */
   justify-content: space-between;
   margin-top: 6px;
 }
 
 .myp-left {
   display: flex;
-  align-items: center;
+  align-items: center;                 /* avatar + name 기준 */
   gap: 12px;
 }
 
-/* 갈색 원 */
+/* 프로필 아바타 */
 .myp-avatar {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: #7a4a22;
+  overflow: hidden;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  background-color: #6b3f1d;
+  flex-shrink: 0;
+}
+
+/* 프로필 이미지 */
+.myp-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 기본 아이콘 (이미지 없을 때) */
+.myp-avatar-fallback {
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* SVG 발바닥 아이콘 */
+.myp-paw-ico {
+  width: 25px;
+  height: 25px;
+  fill: #ffffff;
+  display: block;
+}
+
+/* 닉네임 */
+.myp-name {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;                      /* 글자 기준선 */
+  color: #2a2a2a;
+}
+
+/* 수정 버튼 */
+.myp-edit-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: transparent;
+  color: #7a4a22;
+  font-size: 16px;
+  cursor: pointer;
+
+  display: grid;
+  place-items: center;
+}
+
+
+/* 갈색 원 */
+.myp-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #6b3f1d;
+  flex-shrink: 0;        
 }
 
 /* 흰 발바닥 */
@@ -156,4 +220,16 @@
 
 .myp-safe {
   height: 72px;
+}
+
+.mp-profile-left {
+  display: flex;
+  align-items: center;   /* 🔥 핵심 */
+  gap: 12px;             /* 이미지-이름 간격 */
+}
+
+.mp-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

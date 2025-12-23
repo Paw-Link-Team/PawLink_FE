@@ -1,6 +1,9 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PhoneFrame from "../components/PhoneFrame";
+import { useWalletPoint } from "../api/wallet";
+import { useMyPage } from "../hooks/useMyPage";
+
 import "./ChargePage.css";
 
 type Step = "input" | "confirm" | "done";
@@ -8,11 +11,29 @@ type Step = "input" | "confirm" | "done";
 export default function Chargepage() {
   const nav = useNavigate();
 
+  const { balance, refreshBalance } = useMyPage();
+
   const accountName = "내 명명은행 계좌에서";
   const accountNo = useMemo(() => "12345678987456", []);
 
   const [step, setStep] = useState<Step>("input");
   const [digits, setDigits] = useState<string>(""); // 숫자만 저장 (콤마 X)
+
+  const handleCharge = async () => {
+    try {
+      await useWalletPoint({
+        amount: amountNum,
+        reason: "CHARGE",
+      });
+
+      await refreshBalance();
+      setStep("done");
+    } catch (e) {
+      console.error("충전 실패", e);
+      alert("충전에 실패했습니다. 다시 시도해주세요.");
+      setStep("input");
+    }
+  };
 
   const amountNum = useMemo(() => Number(digits || "0"), [digits]);
   const amountText = useMemo(() => {
@@ -45,9 +66,14 @@ export default function Chargepage() {
         <div className="cp-phone">
           {/* Top bar */}
           <header className="cp-top">
-            <button className="cp-x" type="button" onClick={resetAndGoBack} aria-label="close">
-              ✕
+            <button
+              className="cp-sheet-btn"
+              type="button"
+              onClick={handleCharge}
+            >
+              충전하기
             </button>
+
             <div className="cp-title">충전</div>
             <div className="cp-top-right" />
           </header>
@@ -66,7 +92,10 @@ export default function Chargepage() {
             {!digits ? (
               <>
                 <div className="cp-ask">얼마를 충전 할까요?</div>
-                <div className="cp-sub">현재 잔액 0원</div>
+                <div className="cp-sub">
+                  현재 잔액 {balance.toLocaleString("ko-KR")}원
+                </div>
+
               </>
             ) : (
               <>
@@ -74,7 +103,10 @@ export default function Chargepage() {
                   <span className="cp-amount-num">{amountText}</span>
                   <span className="cp-amount-won">원</span>
                 </div>
-                <div className="cp-sub">현재 잔액 0원</div>
+                <div className="cp-sub">
+                  현재 잔액 {balance.toLocaleString("ko-KR")}원
+                </div>
+
               </>
             )}
 

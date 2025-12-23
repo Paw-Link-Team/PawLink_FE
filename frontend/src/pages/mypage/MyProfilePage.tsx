@@ -1,128 +1,148 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
-import "./MyProfilePage.css";
+import { useMyPage } from "../../hooks/useMyPage";
+import "./MyPage.css";
 
-type DogProfile = {
-  name: string;
-  age: string;
-  gender: string;
-  breed: string;
-};
+export default function MyPage() {
+  const navigate = useNavigate();
+  const {
+    user,
+    walkHistories,
+    balance,
+    loading,
+  } = useMyPage();
 
-const LS_KEY = "pawlink_my_name";
-
-export default function MyProfilePage() {
-  const nav = useNavigate();
-  const location = useLocation();
-
-  const [myName, setMyName] = useState("강형욱");
-
-  // ✅ 프로필 수정 후 돌아오면 이름 다시 로드
-  useEffect(() => {
-    const saved = localStorage.getItem(LS_KEY);
-    if (saved && saved.trim()) setMyName(saved.trim());
-  }, [location.pathname]);
-
-  const [dog] = useState<DogProfile>({
-    name: "코코",
-    age: "3살",
-    gender: "남자",
-    breed: "푸들",
-  });
-
-  const dogFileRef = useRef<HTMLInputElement | null>(null);
-  const pickDogImage = () => dogFileRef.current?.click();
+  if (loading) {
+    return <div className="mp-loading">로딩 중...</div>;
+  }
 
   return (
-    <div className="myp-wrapper">
-      <div className="myp-screen">
-        <div className="myp-status" />
+    <div className="mp-wrapper">
+      <div className="mp-screen">
+        {/* Header */}
+        <header className="mp-header">마이페이지</header>
 
-        {/* 상단 타이틀 */}
-        <header className="myp-top">
-          <div className="myp-top-title">마이페이지</div>
-        </header>
+        {/* =========================
+         * User Summary
+         * ========================= */}
+        <section
+          className="mp-profile-row"
+          onClick={() => navigate("/mypage/profile")}
+        >
+          <div className="mp-profile-left">
+            <div className="mp-avatar">
+              {user?.profileImageUrl ? (
+                <img
+                  src={user.profileImageUrl}
+                  alt="프로필 이미지"
+                  className="mp-avatar-img"
+                />
+              ) : (
+                <svg
+                  className="mp-paw-ico"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <circle cx="7.3" cy="8.4" r="2.0" />
+                  <circle cx="12" cy="6.9" r="2.1" />
+                  <circle cx="16.7" cy="8.4" r="2.0" />
+                  <circle cx="19.1" cy="11.6" r="1.85" />
+                  <path d="M6.2 16.4c0-3.0 2.9-5.3 5.8-5.3s5.8 2.3 5.8 5.3c0 2.5-2.2 4.6-5.8 4.6s-5.8-2.1-5.8-4.6z" />
+                </svg>
+              )}
+            </div>
 
-        <main className="myp-body">
-          {/* ===== 내 프로필 ===== */}
-          <section className="myp-section">
-            <div className="myp-profile-row">
-              <div className="myp-left">
-                {/* 갈색 원 + 흰 발바닥 */}
-                <div className="myp-avatar" aria-hidden>
-                  <svg
-                    className="myp-paw-ico"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <circle cx="7.3" cy="8.4" r="2.0" />
-                    <circle cx="12" cy="6.9" r="2.1" />
-                    <circle cx="16.7" cy="8.4" r="2.0" />
-                    <circle cx="19.1" cy="11.6" r="1.85" />
-                    <path d="M6.2 16.4c0-3.0 2.9-5.3 5.8-5.3s5.8 2.3 5.8 5.3c0 2.5-2.2 4.6-5.8 4.6s-5.8-2.1-5.8-4.6z" />
-                  </svg>
-                </div>
+            <div className="mp-name">
+              {user?.nickname ?? "사용자"}
+            </div>
+          </div>
 
-                <div className="myp-name">{myName}</div>
-              </div>
+          <div className="mp-chevron">›</div>
+        </section>
 
-              {/* 연필 → 프로필 수정 */}
+        {/* =========================
+         * Pay
+         * ========================= */}
+        <section className="mp-pay-card">
+          <div className="mp-pay-left">
+            <div className="mp-pay-title">PawLink pay</div>
+          </div>
+
+          <div className="mp-pay-right">
+            <div className="mp-pay-amount">
+              <span className="mp-pay-num">
+                {balance.toLocaleString("ko-KR")}
+              </span>
+              <span className="mp-pay-won">원</span>
+            </div>
+
+            <div className="mp-pay-actions">
               <button
-                className="myp-edit-btn"
-                onClick={() => nav("/mypage/profile/edit")}
-                aria-label="edit profile"
+                className="mp-pill"
+                onClick={() => navigate("/pay/charge")}
               >
-                ✎
+                충전
+              </button>
+              <button
+                className="mp-pill"
+                onClick={() => navigate("/pay/withdraw")}
+              >
+                출금
               </button>
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* ===== 반려견 프로필 ===== */}
-          <section className="myp-section">
-            <div className="myp-section-title">반려견 프로필</div>
+        {/* =========================
+         * My Walk
+         * ========================= */}
+        <section className="mp-section">
+          <div className="mp-section-title">나의 산책</div>
 
-            <div className="myp-dog-card">
-              <button
-                type="button"
-                className="myp-dog-ava-img"
-                onClick={pickDogImage}
-                aria-label="dog image"
-              >
-                <span className="myp-dog-face">🐶</span>
-              </button>
+          <button
+            className="mp-row"
+            onClick={() => navigate("/mypage/posts")}
+          >
+            <span className="mp-row-label">내가 올린 게시글</span>
+            <span className="mp-chevron">›</span>
+          </button>
 
-              <input
-                ref={dogFileRef}
-                type="file"
-                accept="image/*"
-                className="myp-hidden-file"
-              />
+          <button
+            className="mp-row"
+            onClick={() => navigate("/mypage/favorites")}
+          >
+            <span className="mp-row-label">관심 목록</span>
+            <span className="mp-chevron">›</span>
+          </button>
+        </section>
 
-              <div className="myp-dog-info">
-                <div className="myp-dog-line">
-                  <span className="myp-dog-k">이름 :</span>
-                  <span className="myp-dog-v">{dog.name}</span>
-                </div>
-                <div className="myp-dog-line">
-                  <span className="myp-dog-k">나이 :</span>
-                  <span className="myp-dog-v">{dog.age}</span>
-                </div>
-                <div className="myp-dog-line">
-                  <span className="myp-dog-k">성별 :</span>
-                  <span className="myp-dog-v">{dog.gender}</span>
-                </div>
-                <div className="myp-dog-line">
-                  <span className="myp-dog-k">견종 :</span>
-                  <span className="myp-dog-v">{dog.breed}</span>
-                </div>
-              </div>
+        {/* =========================
+         * Walk History Preview
+         * ========================= */}
+        <section className="mp-section">
+          <div className="mp-section-title-row">
+            <span className="mp-section-title">산책 히스토리</span>
+            <button
+              className="mp-more"
+              onClick={() => navigate("/mypage/history")}
+            >
+              ›
+            </button>
+          </div>
+
+          {walkHistories.length === 0 && (
+            <div className="mp-empty">산책 기록이 없습니다</div>
+          )}
+
+          {walkHistories.slice(0, 3).map((w) => (
+            <div key={w.id} className="mp-history-line">
+              {w.date} / {w.distanceKm}km 산책 / 배변 {w.poop ? "O" : "X"}
             </div>
-          </section>
-        </main>
+          ))}
+        </section>
 
         <NavBar active="mypage" />
-        <div className="myp-safe" />
+        <div className="mp-safe-pad" />
       </div>
     </div>
   );
