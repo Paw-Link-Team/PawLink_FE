@@ -125,3 +125,14 @@
 .signup-footer button:disabled {
   background: var(--color-disabled);
 }
+
+.phone-input::placeholder {
+  color: var(--color-muted);
+  letter-spacing: 0.5px;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(107, 63, 29, 0.12);
+}

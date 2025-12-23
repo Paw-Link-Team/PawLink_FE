@@ -10,14 +10,19 @@ export default function SignupInfo() {
   const navigate = useNavigate();
 
   const [nickname, setNickname] = useState("");
+  const [phone, setPhone] = useState("");
   const [type, setType] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const isValid = nickname.trim() !== "" && type !== null;
+  const isValid =
+    nickname.trim() !== "" &&
+    phone.trim() !== "" &&
+    type !== null;
 
   const submit = async () => {
     if (!isValid) {
       if (!nickname.trim()) alert("닉네임을 입력해주세요.");
+      else if (!phone.trim()) alert("전화번호를 입력해주세요.");
       else alert("역할을 선택해주세요.");
       return;
     }
@@ -34,6 +39,7 @@ export default function SignupInfo() {
       const res = await api.post("/auth/onboarding", {
         idToken,
         nickname: nickname.trim(),
+        phone: phone.trim(),
         type,
       });
 
@@ -55,6 +61,11 @@ export default function SignupInfo() {
     }
   };
 
+  const handlePhoneChange = (value: string) => {
+    const onlyNumber = value.replace(/[^0-9]/g, "");
+    setPhone(onlyNumber);
+  };
+
   return (
     <div className="signup-root">
       <Header variant="brand" />
@@ -69,6 +80,18 @@ export default function SignupInfo() {
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               placeholder="닉네임"
+              disabled={loading}
+            />
+          </FormGroup>
+
+          {/* 🔹 전화번호 추가 */}
+          <FormGroup label="전화번호">
+            <input
+              className="text-input phone-input"
+              value={phone}
+              onChange={(e) => handlePhoneChange(e.target.value)}
+              placeholder="01012345678"
+              inputMode="numeric"
               disabled={loading}
             />
           </FormGroup>
