@@ -39,7 +39,7 @@ export default function SignupInfo() {
       const res = await api.post("/auth/onboarding", {
         idToken,
         nickname: nickname.trim(),
-        phone: phone.trim(),
+        phoneNumber: phone.trim(),
         type,
       });
 
