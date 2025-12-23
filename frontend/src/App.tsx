@@ -6,6 +6,10 @@ import HomePage from "./pages/HomePage";
 
 import NoticeBoardPage from "./pages/NoticeBoardPage";
 import NoticeBoardDetailPage from "./pages/NoticeBoardDetailPage";
+import UnNoticeBoardPage from "./pages/UnNoticeBoardPage";
+
+// ✅ ✅ 추가: 검색 페이지 (파일명/경로 네 실제 파일에 맞춰 수정)
+import NoticeBoardSearchPage from "./pages/NoticeBoardsearchPage";
 
 import WalkerProfile from "./pages/WalkerProfile";
 import ParentProfile from "./pages/ParentProfile";
@@ -23,8 +27,6 @@ import WalkHistoryDetailPage from "./pages/WalkHistoryDetailPage";
 
 import MyProfilePage from "./pages/MyProfilePage";
 
-import UnNoticeBoardPage from "./pages/UnNoticeBoardPage";
-
 import LoginPage from "./pages/login/LoginPage";
 
 import OauthCallback from "./pages/oauth/OauthCallback";
@@ -37,15 +39,15 @@ import SignupCompletePage from "./pages/signup/SignupCompletePage";
 import LoginScreenPage from "./pages/login/LoginScreenPage";
 import NetworkErrorPage from "./pages/error/NetworkErrorPage";
 
-
 import AppointmentPage from "./pages/AppointmentPage";
 
 import ChargePage from "./pages/ChargePage";
 import WithdrawPage from "./pages/WithdrawPage";
+import ProfileEditPage from "./pages/ProfileEditPage";
+
 
 // ✅ 글쓰기 페이지
 import WritePostPage from "./pages/WritePostPage";
-
 
 export default function App() {
   return (
@@ -65,18 +67,22 @@ export default function App() {
       <Route path="/signup/complete" element={<SignupCompletePage />} />
 
       <Route path="/error/network" element={<NetworkErrorPage />} />
-      
+
       {/* 스플래시 / 홈 */}
       <Route path="/splash" element={<SplashPage />} />
       <Route path="/home" element={<HomePage />} />
 
       {/* 게시판 */}
       <Route path="/board" element={<NoticeBoardPage />} />
-      <Route path="/board/:id" element={<NoticeBoardDetailPage />} />
-      <Route path="/board/done" element={<UnNoticeBoardPage />} />
 
-      {/* ✅ ✅ 추가: 글쓰기 라우트 */}
+      {/* ✅ ✅ 추가: 검색 라우트 (동적 라우트보다 위에!) */}
+      <Route path="/board/search" element={<NoticeBoardSearchPage />} />
+
+      <Route path="/board/done" element={<UnNoticeBoardPage />} />
       <Route path="/board/write" element={<WritePostPage />} />
+
+      {/* ⚠️ 동적 라우트는 맨 아래로 */}
+      <Route path="/board/:id" element={<NoticeBoardDetailPage />} />
 
       {/* 프로필 */}
       <Route path="/walker-profile" element={<WalkerProfile />} />
@@ -96,6 +102,8 @@ export default function App() {
       <Route path="/mypage/favorites" element={<FavoritesPage />} />
       <Route path="/mypage/history/:id" element={<WalkHistoryDetailPage />} />
       <Route path="/mypage/profile" element={<MyProfilePage />} />
+      <Route path="/mypage/profile/edit" element={<ProfileEditPage />} />
+
 
       {/* 결제 */}
       <Route path="/pay/charge" element={<ChargePage />} />

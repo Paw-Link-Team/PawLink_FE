@@ -1,7 +1,13 @@
+/* ✅ 전역 header 스타일(merge로 생긴 배경색)을 이 페이지에서만 무조건 무시 */
+.wp-screen header.wp-header {
+  background: #ffffff !important;
+}
+
+
 /* wrapper / screen 유지 */
 .wp-wrapper {
   min-height: 100vh;
-  background: #fff7e9;
+  background: #ffffff; /* ✅ 상단 '글쓰기' 영역 배경까지 흰색으로 */
   display: flex;
   justify-content: center;
 }

@@ -17,16 +17,18 @@
   height: 24px;
 }
 
+/* 상단 타이틀 */
 .myp-top {
   padding: 10px 16px 6px;
 }
 
-.myp-title {
-  font-size: 14px;
+.myp-top-title {
+  font-size: 18px;
   font-weight: 900;
-  color: #6b4a2d;
+  color: #1a1a1a; /* 검은색 */
 }
 
+/* 본문 */
 .myp-body {
   padding: 18px 16px 0;
 }
@@ -42,11 +44,12 @@
   margin-bottom: 10px;
 }
 
-/* ===== 나의 프로필 row ===== */
+/* ===== 내 프로필 ===== */
 .myp-profile-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 6px;
 }
 
 .myp-left {
@@ -55,158 +58,71 @@
   gap: 12px;
 }
 
-.myp-avatar-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-}
-
+/* 갈색 원 */
 .myp-avatar {
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: #7a4a22;
-  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
 }
 
-.myp-photo-btn {
-  border: 1px solid #e6e1db;
-  background: #fff;
-  color: #6b4a2d;
-  font-size: 11px;
-  font-weight: 800;
-  padding: 4px 8px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.myp-hidden-file {
-  display: none;
+/* 흰 발바닥 */
+.myp-paw-ico {
+  width: 25px;
+  height: 25px;
+  fill: #ffffff;
+  display: block;
 }
 
 .myp-name {
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 900;
   color: #2a2a2a;
 }
 
-.myp-name-input {
-  width: 170px;
-  border: none;
-  outline: none;
-  font-size: 14px;
-  font-weight: 800;
-  color: #2a2a2a;
-  padding: 6px 10px;
-  border-radius: 10px;
-  background: #f5efe9;
-}
-
-.myp-icon-btn {
-  width: 38px;
-  height: 38px;
+.myp-edit-btn {
+  width: 34px;
+  height: 34px;
   border: none;
   background: transparent;
   color: #7a4a22;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-/* ===== 사진 액션(앨범/카메라) ===== */
-.myp-photo-actions {
-  margin-top: 10px;
-  display: flex;
-  gap: 12px;
-}
-
-.myp-photo-actions.dog {
-  margin-left: auto;
-  justify-content: flex-end;
-}
-
-.myp-action {
-  width: 92px;
-  border: 1px solid #e6e1db;
-  background: #fff;
-  border-radius: 14px;
-  padding: 10px 0;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.myp-action-ico {
-  width: 34px;
-  height: 34px;
-  border-radius: 12px;
-  background: #f5efe9;
-  color: #7a4a22;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 16px;
-}
-
-.myp-action-txt {
-  font-size: 12px;
-  font-weight: 900;
-  color: #6b4a2d;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
 }
 
 /* ===== 반려견 카드 ===== */
 .myp-dog-card {
-  width: 100%;
-  max-width: 250px;
-  margin-left: auto;
-  margin-right: 6px;
+  width: 260px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   background: #f5efe9;
   border-radius: 16px;
   padding: 12px 14px;
 }
 
-.myp-dog-ava {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  align-items: flex-start;
-}
-
 .myp-dog-ava-img {
-  width: 88px;
-  height: 88px;
+  width: 86px;
+  height: 86px;
   border-radius: 50%;
   background: #7d746d;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  border: none;
+  cursor: pointer;
 }
 
 .myp-dog-face {
   font-size: 28px;
   filter: grayscale(1);
   opacity: 0.9;
-}
-
-.myp-dog-photo-btn {
-  border: 1px solid #e6e1db;
-  background: #fff;
-  color: #6b4a2d;
-  font-size: 11px;
-  font-weight: 800;
-  padding: 4px 8px;
-  border-radius: 10px;
-  cursor: pointer;
 }
 
 .myp-dog-info {
@@ -216,7 +132,6 @@
   font-size: 12px;
   color: #2a2a2a;
   font-weight: 700;
-  min-width: 0;
 }
 
 .myp-dog-line {
@@ -228,7 +143,6 @@
 .myp-dog-k {
   color: #5a5a5a;
   font-weight: 800;
-  white-space: nowrap;
 }
 
 .myp-dog-v {
@@ -236,19 +150,10 @@
   font-weight: 900;
 }
 
-.myp-dog-input {
-  width: 110px;
-  border: none;
-  outline: none;
-  border-radius: 10px;
-  background: #ffffff;
-  padding: 5px 8px;
-  font-size: 12px;
-  font-weight: 900;
-  color: #2a2a2a;
+.myp-hidden-file {
+  display: none;
 }
 
-/* safe */
 .myp-safe {
   height: 72px;
 }

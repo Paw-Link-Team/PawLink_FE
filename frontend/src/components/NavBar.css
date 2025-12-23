@@ -66,17 +66,10 @@
   color: #111111;
 }
 
-/* iOS 홈 인디케이터 */
-.pl-home-indicator {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 6px;
 
-  width: 130px;
-  height: 4px;
-  border-radius: 999px;
-  background: #000;
-  opacity: 0.12;
-  z-index: 21;
+/* ❌ iOS 홈 인디케이터 전체 제거 */
+.home-indicator,
+.wp-home-indicator,
+.ios-home-indicator {
+  display: none !important;
 }

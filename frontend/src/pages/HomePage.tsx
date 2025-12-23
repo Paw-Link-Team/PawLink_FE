@@ -1,3 +1,4 @@
+// ---HomePage.tsx---
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
@@ -62,8 +63,6 @@ export default function HomePage() {
 
   // ✅ 랭킹 클릭 시 WalkerProfile로 이동
   const goWalkerProfile = (rankId: number) => {
-    // 지금 WalkerProfile이 정적 페이지면 그냥 이동만
-    // 나중에 유저별 프로필로 확장하면 /walker-profile/:id 로 바꾸면 됨
     navigate("/walker-profile", { state: { fromRankId: rankId } });
   };
 
@@ -137,14 +136,13 @@ export default function HomePage() {
           <div className="hp-chip">🐾 산책시 리드줄은 필수예요!</div>
         </section>
 
-        {/* 랭킹 */}
+        {/* ✅ 랭킹(2번째 사진 픽셀 맞춤) */}
         <section className="hp-rank">
           <div className="hp-rank-head">우리동네 주간 산책랭크</div>
 
           <ul className="hp-rank-list">
             {RANKING_DATA.map((r) => (
               <li key={r.id} className="hp-rank-item">
-                {/* ✅ li 전체를 버튼으로 만들어 “칸 클릭”이 되게 */}
                 <button
                   type="button"
                   className="hp-rank-rowbtn"
@@ -153,6 +151,7 @@ export default function HomePage() {
                 >
                   <div className="hp-rank-left">
                     <div className="hp-rank-no">{r.id}</div>
+
                     <div className="hp-rank-info">
                       <div className="hp-rank-name">{r.name}</div>
                       <div className="hp-rank-meta">
@@ -162,11 +161,7 @@ export default function HomePage() {
                   </div>
 
                   <div className="hp-rank-paw" aria-hidden="true">
-                    <svg
-                      className="hp-rank-paw-ico"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
+                    <svg className="hp-rank-paw-ico" viewBox="0 0 24 24">
                       <circle cx="7.3" cy="8.4" r="2.0" />
                       <circle cx="12" cy="6.9" r="2.1" />
                       <circle cx="16.7" cy="8.4" r="2.0" />

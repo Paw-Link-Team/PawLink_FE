@@ -38,7 +38,21 @@ export default function Mypage() {
           onClick={() => navigate("/mypage/profile")}
         >
           <div className="mp-profile-left">
-            <div className="mp-avatar">👤</div>
+           <div className="mp-avatar">
+  <svg
+    className="mp-paw-ico"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <circle cx="7.3" cy="8.4" r="2.0" />
+    <circle cx="12" cy="6.9" r="2.1" />
+    <circle cx="16.7" cy="8.4" r="2.0" />
+    <circle cx="19.1" cy="11.6" r="1.85" />
+    <path d="M6.2 16.4c0-3.0 2.9-5.3 5.8-5.3s5.8 2.3 5.8 5.3c0 2.5-2.2 4.6-5.8 4.6s-5.8-2.1-5.8-4.6z" />
+  </svg>
+</div>
+
+
             <div className="mp-name">강형욱</div>
           </div>
           <div className="mp-chevron">›</div>

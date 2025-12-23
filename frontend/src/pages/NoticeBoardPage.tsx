@@ -14,6 +14,13 @@ const POSTS_ALL = [
 export default function NoticeBoardPage() {
   const navigate = useNavigate();
 
+  // ✅ 돋보기 클릭 → 검색 페이지 이동
+  const goSearch = () => {
+    // ⚠️ 라우트가 다르면 여기 경로만 바꾸면 됨
+    // 예: navigate("/noticeboard/search") 또는 navigate("/board/searchpage")
+    navigate("/board/search");
+  };
+
   return (
     <div className="nb-wrapper">
       <div className="nb-screen">
@@ -22,11 +29,29 @@ export default function NoticeBoardPage() {
         <header className="nb-header">
           <div className="nb-title">게시판</div>
 
-          {/* ✅ 돋보기 아이콘(SVG)로 교체 */}
-          <button className="nb-search" aria-label="search" type="button">
+          {/* ✅ 돋보기 클릭 시 검색 페이지로 */}
+          <button
+            className="nb-search"
+            aria-label="search"
+            type="button"
+            onClick={goSearch}
+          >
             <svg className="nb-search-ico" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" strokeWidth="2.6" />
-              <path d="M15.6 15.6L21 21" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
+              <circle
+                cx="10.5"
+                cy="10.5"
+                r="6.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.6"
+              />
+              <path
+                d="M15.6 15.6L21 21"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.6"
+                strokeLinecap="round"
+              />
             </svg>
           </button>
         </header>
