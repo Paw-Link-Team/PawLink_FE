@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../../api/api";
+import "./AuthProcessing.css";
 
 export default function AuthProcessing() {
     const navigate = useNavigate();
