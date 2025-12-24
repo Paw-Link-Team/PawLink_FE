@@ -66,14 +66,9 @@ export default function Chargepage() {
         <div className="cp-phone">
           {/* Top bar */}
           <header className="cp-top">
-            <button
-              className="cp-sheet-btn"
-              type="button"
-              onClick={handleCharge}
-            >
-              충전하기
+            <button className="cp-x" type="button" onClick={resetAndGoBack} aria-label="close">
+              ✕
             </button>
-
             <div className="cp-title">충전</div>
             <div className="cp-top-right" />
           </header>
