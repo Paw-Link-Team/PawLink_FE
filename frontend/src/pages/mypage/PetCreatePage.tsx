@@ -66,7 +66,7 @@ export default function PetCreatePage() {
         throw new Error("반려견 등록 실패");
       }
 
-      nav("/mypage");
+      nav("/mypage/profile");
     } catch (e) {
       alert(
         e instanceof Error

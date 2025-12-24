@@ -109,7 +109,7 @@ export default function PetEditPage() {
 
       if (!res.ok) throw new Error();
 
-      nav("/mypage");
+      nav("/mypage/profile");
     } catch {
       alert("반려견 수정에 실패했습니다.");
     }
