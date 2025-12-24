@@ -233,3 +233,69 @@
   height: 100%;
   object-fit: cover;
 }
+
+/* ===== 반려견 없음 영역 ===== */
+.myp-dog-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  padding: 28px 16px;
+  border-radius: 16px;
+  background: #fff7f2;
+  border: 1px dashed #f0c2a1;
+}
+
+/* 발바닥 일러스트 */
+.myp-dog-empty-illu {
+  font-size: 32px;
+  line-height: 1;
+}
+
+/* 안내 텍스트 */
+.myp-dog-empty-text {
+  font-size: 14px;
+  color: #7a5a44;
+  text-align: center;
+}
+
+/* ===== 추가 버튼 ===== */
+.myp-dog-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-top: 6px;
+  padding: 10px 18px;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+
+  background: linear-gradient(135deg, #ff9f6b, #ff7a45);
+  border: none;
+  border-radius: 999px;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* + 아이콘 */
+.myp-dog-add-plus {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* hover */
+.myp-dog-add-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(255, 122, 69, 0.35);
+}
+
+/* active */
+.myp-dog-add-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(255, 122, 69, 0.25);
+}
