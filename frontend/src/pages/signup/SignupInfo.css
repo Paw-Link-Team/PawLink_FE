@@ -17,6 +17,9 @@
   --space-lg: 48px;
 }
 
+/* =====================
+ * Layout
+ * ===================== */
 
 .signup-root {
   min-height: 100vh;
@@ -27,22 +30,12 @@
   padding: 48px var(--space-sm) 0;
 }
 
-.signup-brand {
-  width: 100%;
-  max-width: 420px;
-  margin-bottom: 20px;
-}
-
-.brand-logo {
-  height: 32px;
-}
-
 .signup-card {
   width: 100%;
   max-width: 420px;
   background: var(--bg-card);
   border-radius: var(--radius-md);
-  padding: 40px 28px 40px;
+  padding: 40px 28px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
@@ -54,6 +47,10 @@
   gap: var(--space-md);
 }
 
+/* =====================
+ * Step Badge
+ * ===================== */
+
 .step {
   align-self: flex-end;
   font-size: 13px;
@@ -63,6 +60,10 @@
   padding: 6px 10px;
   border-radius: var(--radius-sm);
 }
+
+/* =====================
+ * Form Group
+ * ===================== */
 
 .form-group {
   display: flex;
@@ -75,18 +76,38 @@
   margin-bottom: var(--space-xs);
 }
 
+/* ✅ input은 line-height로 정렬 (느낌 살리는 핵심) */
 .text-input {
   height: 50px;
   padding: 0 16px;
+
   font-size: 15px;
+  line-height: 50px;
+
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
+  box-sizing: border-box;
+  background: #ffffff;
 }
+
+.text-input::placeholder {
+  color: var(--color-muted);
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(107, 63, 29, 0.12);
+}
+
+/* =====================
+ * Role Select
+ * ===================== */
 
 .type-select {
   display: flex;
   gap: 20px;
-  margin-bottom: 32px; 
+  margin-bottom: 32px;
 }
 
 .type-select button {
@@ -106,10 +127,13 @@
   transform: translateY(-1px);
 }
 
-.signup-footer {
-  margin-top: 56px; 
-}
+/* =====================
+ * Footer
+ * ===================== */
 
+.signup-footer {
+  margin-top: 56px;
+}
 
 .signup-footer button {
   width: 100%;
@@ -126,13 +150,50 @@
   background: var(--color-disabled);
 }
 
-.phone-input::placeholder {
-  color: var(--color-muted);
-  letter-spacing: 0.5px;
+/* =====================
+ * Profile Image
+ * ===================== */
+
+.signup-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 28px;
 }
 
-.text-input:focus {
-  outline: none;
+.profile-image-box {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+
+  border: 2px solid var(--color-border);
+  background: #fafafa;
+  transition: all 0.2s ease;
+}
+
+.profile-image-box:hover {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(107, 63, 29, 0.12);
+  box-shadow: 0 6px 14px rgba(107, 63, 29, 0.18);
+  transform: translateY(-1px);
+}
+
+.profile-image-box:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(107, 63, 29, 0.18);
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.profile-text {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
 }
