@@ -2,17 +2,20 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
-/* =========================
- * Request Interceptor
- * - accessToken 자동 첨부
- * ========================= */
 api.interceptors.request.use(
   (config) => {
+    const url = config.url ?? "";
+
+    const isAuthApi =
+      url.includes("/auth/login") ||
+      url.includes("/auth/onboarding");
+
+    if (isAuthApi) {
+      return config;
+    }
+
     const accessToken = localStorage.getItem("accessToken");
 
     if (accessToken) {
@@ -30,11 +33,7 @@ api.interceptors.response.use(
     const status = error.response?.status;
 
     if (status === 401 || status === 403) {
-      console.warn("인증 만료 또는 권한 없음");
-
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-
+      localStorage.clear();
       window.location.href = "/login";
     }
 

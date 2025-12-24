@@ -1,235 +1,183 @@
+/* ===== Layout ===== */
 .myp-wrapper {
   min-height: 100vh;
-  background: #fff7e9;
-  display: flex;
-  justify-content: center;
+  background: #f7f7f7;
 }
 
 .myp-screen {
-  width: 100%;
-  max-width: 390px;
+  max-width: 420px;
+  margin: 0 auto;
+  background: #fff;
   min-height: 100vh;
-  background: #ffffff;
-  position: relative;
 }
 
-.myp-status {
-  height: 24px;
-}
-
-/* 상단 타이틀 */
-.myp-top {
-  padding: 10px 16px 6px;
-}
-
-.myp-top-title {
-  font-size: 18px;
-  font-weight: 900;
-  color: #1a1a1a; /* 검은색 */
-}
-
-/* 본문 */
 .myp-body {
-  padding: 18px 16px 0;
+  padding: 16px;
+  padding-bottom: 96px; /* NavBar 공간 */
 }
 
+/* ===== Section ===== */
 .myp-section {
-  margin-bottom: 18px;
+  margin-bottom: 24px;
 }
 
 .myp-section-title {
-  font-size: 13px;
-  font-weight: 900;
-  color: #2a2a2a;
-  margin-bottom: 10px;
+  font-weight: 700;
+  margin-bottom: 12px;
 }
 
-/* ===== 내 프로필 ===== */
-/* ===== 내 프로필 ===== */
+/* ===== User Profile ===== */
 .myp-profile-row {
   display: flex;
-  align-items: center;                 /* 전체 수평 기준 */
   justify-content: space-between;
-  margin-top: 6px;
+  align-items: center;
 }
 
 .myp-left {
   display: flex;
-  align-items: center;                 /* avatar + name 기준 */
+  align-items: center;
   gap: 12px;
 }
 
-/* 프로필 아바타 */
 .myp-avatar {
-  width: 44px;
-  height: 44px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   overflow: hidden;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background-color: #6b3f1d;
-  flex-shrink: 0;
 }
 
-/* 프로필 이미지 */
 .myp-avatar-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* 기본 아이콘 (이미지 없을 때) */
-.myp-avatar-fallback {
-  font-size: 22px;
-  line-height: 1;
-}
-
-/* SVG 발바닥 아이콘 */
-.myp-paw-ico {
-  width: 25px;
-  height: 25px;
-  fill: #ffffff;
-  display: block;
-}
-
-/* 닉네임 */
 .myp-name {
-  font-size: 16px;
   font-weight: 600;
-  line-height: 1;                      /* 글자 기준선 */
-  color: #2a2a2a;
-}
-
-/* 수정 버튼 */
-.myp-edit-btn {
-  width: 34px;
-  height: 34px;
-  border: none;
-  background: transparent;
-  color: #7a4a22;
   font-size: 16px;
-  cursor: pointer;
-
-  display: grid;
-  place-items: center;
-}
-
-
-/* 갈색 원 */
-.myp-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  overflow: hidden;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background-color: #6b3f1d;
-  flex-shrink: 0;        
-}
-
-/* 흰 발바닥 */
-.myp-paw-ico {
-  width: 25px;
-  height: 25px;
-  fill: #ffffff;
-  display: block;
-}
-
-.myp-name {
-  font-size: 14px;
-  font-weight: 900;
-  color: #2a2a2a;
 }
 
 .myp-edit-btn {
-  width: 34px;
-  height: 34px;
   border: none;
-  background: transparent;
-  color: #7a4a22;
-  font-size: 16px;
+  background: none;
+  font-size: 18px;
   cursor: pointer;
-  display: grid;
-  place-items: center;
 }
 
-/* ===== 반려견 카드 ===== */
-.myp-dog-card {
-  width: 260px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #f5efe9;
+/* ===== Dog Empty ===== */
+.myp-dog-empty {
+  background: #fafafa;
+  padding: 20px;
   border-radius: 16px;
-  padding: 12px 14px;
+  text-align: center;
 }
 
-.myp-dog-ava-img {
-  width: 86px;
-  height: 86px;
-  border-radius: 50%;
-  background: #7d746d;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.myp-dog-add-btn {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border-radius: 20px;
   border: none;
-  cursor: pointer;
+  background: #ff7a00;
+  color: #fff;
+  font-weight: 600;
 }
 
-.myp-dog-face {
-  font-size: 28px;
-  filter: grayscale(1);
-  opacity: 0.9;
+/* ===== Dog List ===== */
+.myp-dog-list {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+}
+
+.myp-dog-card {
+  min-width: 140px;
+  padding: 12px;
+  border-radius: 16px;
+  background: #fafafa;
+}
+
+.myp-dog-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
 }
 
 .myp-dog-info {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 12px;
-  color: #2a2a2a;
-  font-weight: 700;
+  margin-top: 8px;
 }
 
-.myp-dog-line {
+.myp-dog-name {
+  font-weight: 600;
+}
+
+.myp-dog-sub {
+  font-size: 12px;
+  color: #666;
+}
+
+.myp-dog-type {
+  font-size: 12px;
+  color: #999;
+}
+
+/* ===== Add Card ===== */
+.myp-dog-add-card {
+  min-width: 64px;
+  border-radius: 16px;
+  border: 2px dashed #ddd;
+  background: none;
+  font-size: 24px;
+  color: #aaa;
+}
+
+/* ===== Setting Section ===== */
+.myp-setting-section {
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.myp-setting-title {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.myp-setting-item {
+  width: 100%;
+  height: 48px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #f1f1f1;
+  padding: 0 4px;
+  font-size: 15px;
   display: flex;
-  gap: 6px;
+  justify-content: space-between;
   align-items: center;
 }
 
-.myp-dog-k {
-  color: #5a5a5a;
-  font-weight: 800;
+.myp-setting-item.logout {
+  color: #6b3f1d;
 }
 
-.myp-dog-v {
-  color: #2a2a2a;
-  font-weight: 900;
+.myp-setting-item.withdraw {
+  color: #d64545;
+  font-size: 14px;
+  border-bottom: none;
 }
 
-.myp-hidden-file {
-  display: none;
+.myp-setting-item:active {
+  background: #f7f7f7;
 }
 
-.myp-safe {
-  height: 72px;
+.arrow {
+  font-size: 18px;
+  color: #ccc;
 }
 
-.mp-profile-left {
-  display: flex;
-  align-items: center;   /* 🔥 핵심 */
-  gap: 12px;             /* 이미지-이름 간격 */
-}
-
-.mp-avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* ===== Loading ===== */
+.myp-loading {
+  padding: 40px;
+  text-align: center;
 }

@@ -118,3 +118,105 @@
 .pe-safe {
   height: 72px;
 }
+
+/* =====================
+ * Profile Image (Edit)
+ * ===================== */
+
+.pe-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px; /* paw-row랑 간격 */
+}
+
+.pe-profile-box {
+  width: 88px;              /* paw(44px)의 2배 → 비율 맞춤 */
+  height: 88px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+
+  background: #fff;
+  border: 2px solid #e6d6c3; /* input 테두리랑 톤 맞춤 */
+
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.pe-profile-box:hover {
+  box-shadow: 0 4px 10px rgba(122, 74, 34, 0.18);
+  transform: translateY(-1px);
+}
+
+.pe-profile-box:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(122, 74, 34, 0.18);
+}
+
+.pe-profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* ⭐ 핵심 */
+  display: block;
+}
+
+.pe-profile-text {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #7a4a22;      /* paw 색상과 통일 */
+}
+
+.pe-input-wrap + .pe-input-wrap {
+  margin-top: 12px;
+}
+
+.pe-role {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.pe-role button {
+  flex: 1;
+  height: 40px;
+  border-radius: 10px;
+  border: 1.5px solid #e6d6c3;
+  background: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  color: #7a4a22;
+  cursor: pointer;
+
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pe-role button.active {
+  background: #7a4a22;
+  color: #ffffff;
+  border-color: #7a4a22;
+  box-shadow: 0 4px 10px rgba(122, 74, 34, 0.22);
+}
+
+.pe-save {
+  width: 100%;
+  height: 44px;
+  margin-top: 18px;
+
+  border: none;
+  border-radius: 12px;
+  background: #7a4a22;
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(122, 74, 34, 0.25);
+}
+
+.pe-save:disabled {
+  background: #d6c8bb;
+  box-shadow: none;
+  cursor: not-allowed;
+}
