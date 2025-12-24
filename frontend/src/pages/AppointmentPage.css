@@ -585,3 +585,22 @@
   bottom: 0;
   background: linear-gradient(to top, #fff 20%, rgba(255, 255, 255, 0));
 }
+
+/* ✅ Place 카드 안 '장소 선택' 세로출력 방지 (grid 배치 고정) */
+.ap-place-title,
+.ap-place-sub {
+  grid-column: 1 / 2;          /* 무조건 왼쪽(넓은 칸)에 */
+}
+
+.ap-place-sub {
+  white-space: nowrap;         /* 줄바꿈 금지 */
+  word-break: keep-all;        /* 한글 글자쪼개기 방지 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ap-place-check {
+  grid-column: 2 / 3;          /* 오른쪽(18px)에 고정 */
+  grid-row: 1 / span 2;        /* title+sub 높이만큼 세로로 중앙정렬 */
+  align-self: center;
+}
