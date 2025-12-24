@@ -20,7 +20,7 @@
 
 /* 헤더 */
 .mp-header {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 800;
   padding: 14px 16px 10px;
   color: #1a1a1a;
@@ -135,7 +135,7 @@
 }
 
 .mp-section-title {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 800;
   color: #2a2a2a;
   margin-bottom: 8px;
@@ -162,4 +162,50 @@
 /* 하단 네비 안전 패딩 */
 .mp-safe-pad {
   height: 72px;
+}
+
+/* =========================
+   ✅ 산책 히스토리 섹션 커스텀
+   - 제목줄은 버튼(mp-row)
+   - 날짜줄은 div로 화살표 없음
+   ========================= */
+
+.mp-history-head {
+  padding: 12px 0;
+}
+
+.mp-history-title {
+  margin: 0;            /* mp-section-title 기본 margin-bottom 제거 */
+  font-size: 15px;
+  font-weight: 800;
+  color: #2a2a2a;
+}
+
+.mp-history-item {
+  cursor: default;      /* 클릭 안 되는 느낌 */
+}
+
+.mp-history-item:active {
+  background: transparent;
+}
+
+/* =========================
+   ✅ (중요) 버튼 기본 폰트/굵기 개입 제거
+   - "산책 히스토리"가 button 안에 있어서 더 두꺼워 보이는 현상 해결
+   ========================= */
+
+/* mp-row가 button일 때도 div처럼 동일한 폰트 렌더링 */
+button.mp-row {
+  font: inherit;            /* ✅ 폰트/굵기/사이즈 전부 부모 기준으로 */
+  letter-spacing: inherit;
+  color: inherit;
+}
+
+/* 섹션 타이틀 굵기 강제 통일 */
+.mp-section-title {
+  font-weight: 800 !important;
+}
+
+.mp-history-title {
+  font-weight: 800 !important;
 }

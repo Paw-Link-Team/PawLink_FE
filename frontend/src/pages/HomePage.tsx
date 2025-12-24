@@ -52,16 +52,32 @@ export default function HomePage() {
     []
   );
 
+  // ✅ 말풍선 문구 3개
+  const chips = useMemo(
+    () => [
+      "🐾 산책시 리드줄은 필수예요!",
+      "🐾 오늘도 안전한 산책을 응원해요!",
+      "🐾 근처 친구들과 함께 산책해봐요!",
+    ],
+    []
+  );
+
   const [idx, setIdx] = useState(0);
+  const [chipIdx, setChipIdx] = useState(0);
 
   useEffect(() => {
     const t = setInterval(() => setIdx((v) => (v + 1) % slides.length), 4500);
     return () => clearInterval(t);
   }, [slides.length]);
 
+  //_topics: 말풍선도 자동으로 바뀌게 (원하면 시간만 바꾸면 됨)
+  useEffect(() => {
+    const t = setInterval(() => setChipIdx((v) => (v + 1) % chips.length), 3500);
+    return () => clearInterval(t);
+  }, [chips.length]);
+
   const current = slides[idx];
 
-  // ✅ 랭킹 클릭 시 WalkerProfile로 이동
   const goWalkerProfile = (rankId: number) => {
     navigate("/walker-profile", { state: { fromRankId: rankId } });
   };
@@ -89,10 +105,7 @@ export default function HomePage() {
         {/* 배너 */}
         <section className="hp-banner">
           {current.kind === "photo" ? (
-            <div
-              className="hp-banner-photo"
-              style={{ backgroundImage: `url(${current.img})` }}
-            >
+            <div className="hp-banner-photo" style={{ backgroundImage: `url(${current.img})` }}>
               <div className="hp-banner-overlay">{current.overlay}</div>
               <div className="hp-banner-page">{idx + 1}/3</div>
 
@@ -131,12 +144,12 @@ export default function HomePage() {
           )}
         </section>
 
-        {/* 말풍선 */}
+        {/* ✅ 말풍선(3개 순환) */}
         <section className="hp-chip-wrap">
-          <div className="hp-chip">🐾 산책시 리드줄은 필수예요!</div>
+          <div className="hp-chip">{chips[chipIdx]}</div>
         </section>
 
-        {/* ✅ 랭킹(2번째 사진 픽셀 맞춤) */}
+        {/* 랭킹 */}
         <section className="hp-rank">
           <div className="hp-rank-head">우리동네 주간 산책랭크</div>
 

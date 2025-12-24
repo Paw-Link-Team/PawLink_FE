@@ -45,7 +45,6 @@ import ChargePage from "./pages/ChargePage";
 import WithdrawPage from "./pages/WithdrawPage";
 import ProfileEditPage from "./pages/ProfileEditPage";
 
-
 // ✅ 글쓰기 페이지
 import WritePostPage from "./pages/WritePostPage";
 
@@ -100,10 +99,15 @@ export default function App() {
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/mypage/posts" element={<MyPostsPage />} />
       <Route path="/mypage/favorites" element={<FavoritesPage />} />
+
+      {/* ✅✅ 여기만 "추가"됨 — 산책 히스토리 제목줄용 */}
+      <Route path="/mypage/history" element={<WalkHistoryDetailPage />} />
+
+      {/* 기존 개별 히스토리 */}
       <Route path="/mypage/history/:id" element={<WalkHistoryDetailPage />} />
+
       <Route path="/mypage/profile" element={<MyProfilePage />} />
       <Route path="/mypage/profile/edit" element={<ProfileEditPage />} />
-
 
       {/* 결제 */}
       <Route path="/pay/charge" element={<ChargePage />} />
