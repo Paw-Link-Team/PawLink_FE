@@ -10,7 +10,7 @@ import "./MyProfilePage.css";
 type Pet = {
   id: number;
   petName: string;
-  petAge: number;
+  petAge: string;
   petSex: "MALE" | "FEMALE";
   petType: string;
   petProfileImageUrl?: string | null;
@@ -129,7 +129,7 @@ export default function MyProfilePage() {
                 </div>
                 <button
                   className="myp-dog-add-btn"
-                  onClick={() => nav("/mypage/pet/create")}
+                  onClick={() => nav("/mypage/pets/create")}
                 >
                   + 반려견 추가하기
                 </button>
