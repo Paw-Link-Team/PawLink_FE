@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
-import "./PetCreatePage.css";
+import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
+import "./PetForm.css";
 
 type PetSex = "MALE" | "FEMALE";
 
@@ -8,31 +9,64 @@ export type PetFormValue = {
   petAge: number;
   petSex: PetSex;
   petType: string;
-  petProfileImageUrl?: string | null;
 };
 
 type Props = {
   initialValue: PetFormValue;
+  initialImageUrl?: string;
   submitText: string;
   onSubmit: (value: PetFormValue, imageFile: File | null) => Promise<void>;
+  children?: ReactNode;
 };
+
+const DEFAULT_PREVIEW =
+  "https://pawlink-profile-images.s3.ap-northeast-2.amazonaws.com/pet/profile/default.png";
 
 export default function PetForm({
   initialValue,
+  initialImageUrl,
   submitText,
   onSubmit,
+  children,
 }: Props) {
   const [form, setForm] = useState<PetFormValue>(initialValue);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(
-    initialValue.petProfileImageUrl ?? null
+  const [imagePreview, setImagePreview] = useState<string>(
+    initialImageUrl || DEFAULT_PREVIEW
   );
   const [submitting, setSubmitting] = useState(false);
 
-  const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const previewUrlRef = useRef<string | null>(null);
+
+  /* =====================
+   * initialValue 변경 반영
+   * ===================== */
+  useEffect(() => {
+    setForm(initialValue);
+  }, [initialValue]);
+
+  /* =====================
+   * initialImageUrl 변경 반영
+   * ===================== */
+  useEffect(() => {
+    setImagePreview(initialImageUrl || DEFAULT_PREVIEW);
+  }, [initialImageUrl]);
+
+  /* =====================
+   * ObjectURL 정리
+   * ===================== */
+  useEffect(() => {
+    return () => {
+      if (previewUrlRef.current) {
+        URL.revokeObjectURL(previewUrlRef.current);
+      }
+    };
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setForm((p) => ({
       ...p,
       [name]: name === "petAge" ? Number(value) : value,
@@ -45,19 +79,31 @@ export default function PetForm({
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+    }
+
+    const url = URL.createObjectURL(file);
+    previewUrlRef.current = url;
+
     setImageFile(file);
-    setImagePreview(URL.createObjectURL(file));
+    setImagePreview(url);
   };
 
-  const submit = async () => {
+  const validate = (): boolean => {
     if (!form.petName.trim()) {
       alert("반려견 이름을 입력해주세요.");
-      return;
+      return false;
     }
     if (!form.petType.trim()) {
       alert("견종을 입력해주세요.");
-      return;
+      return false;
     }
+    return true;
+  };
+
+  const submit = async () => {
+    if (!validate()) return;
 
     try {
       setSubmitting(true);
@@ -77,15 +123,11 @@ export default function PetForm({
             className="petc-image-box"
             onClick={pickImage}
           >
-            {imagePreview ? (
-              <img
-                src={imagePreview}
-                alt="pet"
-                className="petc-image-preview"
-              />
-            ) : (
-              <span className="petc-image-icon">🐶</span>
-            )}
+            <img
+              src={imagePreview}
+              alt="pet"
+              className="petc-image-preview"
+            />
           </button>
           <div className="petc-image-text">프로필 사진</div>
         </div>
@@ -160,6 +202,9 @@ export default function PetForm({
         >
           {submitting ? "처리 중..." : submitText}
         </button>
+
+        {/* 🔽 수정 완료 아래에 들어올 영역 */}
+        {children}
       </footer>
     </>
   );

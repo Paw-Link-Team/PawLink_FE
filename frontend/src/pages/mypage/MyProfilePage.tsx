@@ -1,28 +1,31 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
 import { useMyPage } from "../../hooks/useMyPage";
+import api from "../../api/api";
 import "./MyProfilePage.css";
 
 /* =====================
- * 타입 정의
+ * 타입
  * ===================== */
 type Pet = {
   id: number;
   petName: string;
-  petAge: string;
+  petAge: number;
   petSex: "MALE" | "FEMALE";
   petType: string;
-  petProfileImageUrl?: string | null;
+  petProfileImageUrl: string;
+  isRepresentative: boolean;
 };
 
 export default function MyProfilePage() {
   const nav = useNavigate();
-
   const { user, loading: userLoading } = useMyPage();
 
   const [pets, setPets] = useState<Pet[]>([]);
   const [petLoading, setPetLoading] = useState(true);
+      const DEFAULT_PROFILE_IMAGE =
+  "https://pawlink-profile-images.s3.ap-northeast-2.amazonaws.com/profile/default.png";
 
   /* =====================
    * 반려견 조회
@@ -30,14 +33,8 @@ export default function MyProfilePage() {
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const res = await fetch("/api/pets/info", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-
-        const json = await res.json();
-        setPets(json.data ?? []);
+        const res = await api.get("/api/pet/info");
+        setPets(res.data?.data ?? []);
       } catch (e) {
         console.error("반려견 조회 실패", e);
         setPets([]);
@@ -50,63 +47,35 @@ export default function MyProfilePage() {
   }, []);
 
   /* =====================
-   * 이미지 업로드 (추후 확장)
-   * ===================== */
-  const dogFileRef = useRef<HTMLInputElement | null>(null);
-  const pickDogImage = () => dogFileRef.current?.click();
-
-  /* =====================
-   * 로딩 처리
+   * 로딩
    * ===================== */
   if (userLoading || petLoading) {
-    return <div className="myp-wrapper">로딩중...</div>;
+    return <div className="myp-loading">로딩중...</div>;
   }
 
-  const hasPet = pets.length > 0;
-  const pet = pets[0]; // 대표 반려견
-
   return (
+
     <div className="myp-wrapper">
       <div className="myp-screen">
-        <div className="myp-status" />
-
-        {/* ===== 상단 ===== */}
-        <header className="myp-top">
-          <div className="myp-top-title">마이페이지</div>
-        </header>
+        <header className="mp-header">마이페이지</header>
 
         <main className="myp-body">
-          {/* ===== 내 프로필 ===== */}
+          {/* ===== 유저 프로필 ===== */}
           <section className="myp-section">
             <div className="myp-profile-row">
               <div className="myp-left">
                 <div className="myp-avatar">
-                  {user?.profileImageUrl ? (
-                    <img
-                      src={user.profileImageUrl}
-                      alt="profile"
-                      className="myp-avatar-img"
-                    />
-                  ) : (
-                    <svg
-                      className="myp-paw-ico"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <circle cx="7.3" cy="8.4" r="2.0" />
-                      <circle cx="12" cy="6.9" r="2.1" />
-                      <circle cx="16.7" cy="8.4" r="2.0" />
-                      <circle cx="19.1" cy="11.6" r="1.85" />
-                      <path d="M6.2 16.4c0-3.0 2.9-5.3 5.8-5.3s5.8 2.3 5.8 5.3c0 2.5-2.2 4.6-5.8 4.6s-5.8-2.1-5.8-4.6z" />
-                    </svg>
-                  )}
+                  <img
+                    src={user?.profileImageUrl || DEFAULT_PROFILE_IMAGE}
+                    alt="profile"
+                    className="myp-avatar-img"
+                    onError={(e) => {
+                      e.currentTarget.src = DEFAULT_PROFILE_IMAGE;
+                    }}
+                  />
                 </div>
-
-                <div className="myp-name">
-                  {user?.nickname ?? "사용자"}
-                </div>
+                <div className="myp-name">{user?.nickname ?? "사용자"}</div>
               </div>
-
 
               <button
                 className="myp-edit-btn"
@@ -117,63 +86,56 @@ export default function MyProfilePage() {
             </div>
           </section>
 
-          {/* ===== 반려견 프로필 ===== */}
+          {/* ===== 반려견 ===== */}
           <section className="myp-section">
             <div className="myp-section-title">반려견 프로필</div>
 
-            {/* === 반려견 없음 === */}
-            {!hasPet && (
+            {/* 없음 */}
+            {pets.length === 0 && (
               <div className="myp-dog-empty">
-                <div className="myp-dog-empty-text">
-                  아직 등록된 반려견이 없어요 🐾
-                </div>
+                <p>아직 등록된 반려견이 없어요 🐾</p>
                 <button
                   className="myp-dog-add-btn"
-                  onClick={() => nav("/mypage/pets/create")}
+                  onClick={() => nav("/mypage/pet/create")}
                 >
-                  + 반려견 추가하기
+                  + 반려견 추가
                 </button>
               </div>
             )}
 
-            {/* === 반려견 있음 === */}
-            {hasPet && (
-              <div className="myp-dog-card">
+            {/* 여러 마리 */}
+            {pets.length > 0 && (
+              <div className="myp-dog-list">
+                {pets.map((pet) => (
+                  <div
+                    key={pet.id}
+                    className="myp-dog-card"
+                    onClick={() => nav(`/mypage/pet/${pet.id}/edit`)}
+                  >
+                    <img
+                      src={pet.petProfileImageUrl}
+                      alt="pet"
+                      className="myp-dog-img"
+                    />
+
+                    <div className="myp-dog-info">
+                      <div className="myp-dog-name">{pet.petName}</div>
+                      <div className="myp-dog-sub">
+                        {pet.petAge}살 ·{" "}
+                        {pet.petSex === "MALE" ? "수컷" : "암컷"}
+                      </div>
+                      <div className="myp-dog-type">{pet.petType}</div>
+                    </div>
+                  </div>
+                ))}
+
+                {/* 추가 버튼 */}
                 <button
-                  type="button"
-                  className="myp-dog-ava-img"
-                  onClick={pickDogImage}
+                  className="myp-dog-add-card"
+                  onClick={() => nav("/mypage/pet/create")}
                 >
-                  <span className="myp-dog-face">🐶</span>
+                  +
                 </button>
-
-                <input
-                  ref={dogFileRef}
-                  type="file"
-                  accept="image/*"
-                  className="myp-hidden-file"
-                />
-
-                <div className="myp-dog-info">
-                  <div className="myp-dog-line">
-                    <span className="myp-dog-k">이름 :</span>
-                    <span className="myp-dog-v">{pet.petName}</span>
-                  </div>
-                  <div className="myp-dog-line">
-                    <span className="myp-dog-k">나이 :</span>
-                    <span className="myp-dog-v">{pet.petAge}살</span>
-                  </div>
-                  <div className="myp-dog-line">
-                    <span className="myp-dog-k">성별 :</span>
-                    <span className="myp-dog-v">
-                      {pet.petSex === "MALE" ? "남자" : "여자"}
-                    </span>
-                  </div>
-                  <div className="myp-dog-line">
-                    <span className="myp-dog-k">견종 :</span>
-                    <span className="myp-dog-v">{pet.petType}</span>
-                  </div>
-                </div>
               </div>
             )}
           </section>
