@@ -20,12 +20,12 @@ import ChatPage from "./pages/Chat";
 import ChatRoomPage from "./pages/ChatRoom";
 
 // ✅ 마이페이지 + 서브페이지
-import MyPage from "./pages/MyPage";
+import MyPage from "./pages/mypage/MyPage";
 import MyPostsPage from "./pages/MyPostsPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import WalkHistoryDetailPage from "./pages/WalkHistoryDetailPage";
 
-import MyProfilePage from "./pages/MyProfilePage";
+import MyProfilePage from "./pages/mypage/MyProfilePage";
 
 import LoginPage from "./pages/login/LoginPage";
 

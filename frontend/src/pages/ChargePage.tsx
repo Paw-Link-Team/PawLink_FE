@@ -1,12 +1,17 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PhoneFrame from "../components/PhoneFrame";
+import { chargeWalletPoint } from "../api/wallet";
+import { useMyPage } from "../hooks/useMyPage";
+
 import "./ChargePage.css";
 
 type Step = "input" | "confirm" | "done";
 
-export default function Chargepage() {
+export default function ChargePage() {
   const nav = useNavigate();
+
+  const { balance, refreshBalance } = useMyPage();
 
   const accountName = "내 명명은행 계좌에서";
   const accountNo = useMemo(() => "12345678987456", []);
@@ -14,13 +19,30 @@ export default function Chargepage() {
   const [step, setStep] = useState<Step>("input");
   const [digits, setDigits] = useState<string>(""); // 숫자만 저장 (콤마 X)
 
+  /* ===== 계산값 ===== */
   const amountNum = useMemo(() => Number(digits || "0"), [digits]);
+
   const amountText = useMemo(() => {
     if (!digits) return "";
     return amountNum.toLocaleString("ko-KR");
   }, [digits, amountNum]);
 
   const canSubmit = amountNum > 0;
+
+  /* ===== 핸들러 ===== */
+
+  const handleCharge = async () => {
+    try {
+      await chargeWalletPoint(amountNum);
+      await refreshBalance();
+      setStep("done");
+    } catch (e) {
+      console.error("충전 실패", e);
+      alert("충전에 실패했습니다");
+    }
+  };
+
+
 
   const addDigits = (v: string) => {
     const next = (digits + v).replace(/^0+(\d)/, "$1");
@@ -39,13 +61,20 @@ export default function Chargepage() {
     nav(-1);
   };
 
+  /* ===== 렌더 ===== */
+
   return (
     <PhoneFrame className="cp-frame">
       <div className="cp-root">
         <div className="cp-phone">
           {/* Top bar */}
           <header className="cp-top">
-            <button className="cp-x" type="button" onClick={resetAndGoBack} aria-label="close">
+            <button
+              className="cp-x"
+              type="button"
+              onClick={resetAndGoBack}
+              aria-label="close"
+            >
               ✕
             </button>
             <div className="cp-title">충전</div>
@@ -66,7 +95,9 @@ export default function Chargepage() {
             {!digits ? (
               <>
                 <div className="cp-ask">얼마를 충전 할까요?</div>
-                <div className="cp-sub">현재 잔액 0원</div>
+                <div className="cp-sub">
+                  현재 잔액 {balance.toLocaleString("ko-KR")}원
+                </div>
               </>
             ) : (
               <>
@@ -74,52 +105,32 @@ export default function Chargepage() {
                   <span className="cp-amount-num">{amountText}</span>
                   <span className="cp-amount-won">원</span>
                 </div>
-                <div className="cp-sub">현재 잔액 0원</div>
+                <div className="cp-sub">
+                  현재 잔액 {balance.toLocaleString("ko-KR")}원
+                </div>
               </>
             )}
 
             {/* Keypad */}
             <section className="cp-keypad" aria-label="keypad">
               <div className="cp-key-row">
-                <button className="cp-key" onClick={() => addDigits("1")} type="button">
-                  1
-                </button>
-                <button className="cp-key" onClick={() => addDigits("2")} type="button">
-                  2
-                </button>
-                <button className="cp-key" onClick={() => addDigits("3")} type="button">
-                  3
-                </button>
+                <button className="cp-key" onClick={() => addDigits("1")} type="button">1</button>
+                <button className="cp-key" onClick={() => addDigits("2")} type="button">2</button>
+                <button className="cp-key" onClick={() => addDigits("3")} type="button">3</button>
               </div>
               <div className="cp-key-row">
-                <button className="cp-key" onClick={() => addDigits("4")} type="button">
-                  4
-                </button>
-                <button className="cp-key" onClick={() => addDigits("5")} type="button">
-                  5
-                </button>
-                <button className="cp-key" onClick={() => addDigits("6")} type="button">
-                  6
-                </button>
+                <button className="cp-key" onClick={() => addDigits("4")} type="button">4</button>
+                <button className="cp-key" onClick={() => addDigits("5")} type="button">5</button>
+                <button className="cp-key" onClick={() => addDigits("6")} type="button">6</button>
               </div>
               <div className="cp-key-row">
-                <button className="cp-key" onClick={() => addDigits("7")} type="button">
-                  7
-                </button>
-                <button className="cp-key" onClick={() => addDigits("8")} type="button">
-                  8
-                </button>
-                <button className="cp-key" onClick={() => addDigits("9")} type="button">
-                  9
-                </button>
+                <button className="cp-key" onClick={() => addDigits("7")} type="button">7</button>
+                <button className="cp-key" onClick={() => addDigits("8")} type="button">8</button>
+                <button className="cp-key" onClick={() => addDigits("9")} type="button">9</button>
               </div>
               <div className="cp-key-row">
-                <button className="cp-key" onClick={() => addDigits("00")} type="button">
-                  00
-                </button>
-                <button className="cp-key" onClick={() => addDigits("0")} type="button">
-                  0
-                </button>
+                <button className="cp-key" onClick={() => addDigits("00")} type="button">00</button>
+                <button className="cp-key" onClick={() => addDigits("0")} type="button">0</button>
                 <button
                   className="cp-key cp-key-back"
                   onClick={backspace}
@@ -163,7 +174,11 @@ export default function Chargepage() {
                     </div>
                     <div className="cp-sheet-sub">입금 {accountNo}</div>
 
-                    <button className="cp-sheet-btn" type="button" onClick={() => setStep("done")}>
+                    <button
+                      className="cp-sheet-btn"
+                      type="button"
+                      onClick={handleCharge}
+                    >
                       충전하기
                     </button>
                   </>
