@@ -13,8 +13,10 @@
 
 .myp-body {
   padding: 16px;
+  padding-bottom: 96px; /* NavBar 공간 */
 }
 
+/* ===== Section ===== */
 .myp-section {
   margin-bottom: 24px;
 }
@@ -85,7 +87,6 @@
   display: flex;
   gap: 12px;
   overflow-x: auto;
-  padding-bottom: 4px;
 }
 
 .myp-dog-card {
@@ -93,18 +94,12 @@
   padding: 12px;
   border-radius: 16px;
   background: #fafafa;
-  cursor: pointer;
-}
-
-.myp-dog-card:active {
-  transform: scale(0.97);
 }
 
 .myp-dog-img {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  object-fit: cover;
 }
 
 .myp-dog-info {
@@ -118,7 +113,6 @@
 .myp-dog-sub {
   font-size: 12px;
   color: #666;
-  margin-top: 2px;
 }
 
 .myp-dog-type {
@@ -136,32 +130,54 @@
   color: #aaa;
 }
 
+/* ===== Setting Section ===== */
+.myp-setting-section {
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.myp-setting-title {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.myp-setting-item {
+  width: 100%;
+  height: 48px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #f1f1f1;
+  padding: 0 4px;
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.myp-setting-item.logout {
+  color: #6b3f1d;
+}
+
+.myp-setting-item.withdraw {
+  color: #d64545;
+  font-size: 14px;
+  border-bottom: none;
+}
+
+.myp-setting-item:active {
+  background: #f7f7f7;
+}
+
+.arrow {
+  font-size: 18px;
+  color: #ccc;
+}
+
 /* ===== Loading ===== */
 .myp-loading {
   padding: 40px;
   text-align: center;
-}
-
-.petc-representative-wrap {
-  padding: 0 16px 12px;
-}
-
-.petc-representative-btn {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  background: #fff7e6;
-  border: 1px solid #ffb020;
-  color: #ff8a00;
-  font-weight: 600;
-}
-
-.petc-representative-badge {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  background: #ff8a00;
-  color: #fff;
-  text-align: center;
-  font-weight: 700;
 }

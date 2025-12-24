@@ -1,26 +1,116 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../api/api";
+import { uploadProfileImage } from "../api/profileImage";
 import NavBar from "../components/NavBar";
 import "./ProfileEditPage.css";
 
-const LS_KEY = "pawlink_my_name";
+type Role = "OWNER" | "WALKER";
+
+const DEFAULT_PROFILE =
+  "https://pawlink-profile-images.s3.ap-northeast-2.amazonaws.com/profile/default.png";
 
 export default function ProfileEditPage() {
   const nav = useNavigate();
-  const [name, setName] = useState("");
 
-  // ✅ 처음 들어오면 localStorage에 저장된 이름이 있으면 불러오기
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [role, setRole] = useState<Role>("OWNER");
+  const [loading, setLoading] = useState(false);
+
+  /* ===== 프로필 이미지 ===== */
+  const [profileFile, setProfileFile] = useState<File | null>(null);
+  const [profilePreview, setProfilePreview] = useState(DEFAULT_PROFILE);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const previewUrlRef = useRef<string | null>(null);
+
+  /* =====================
+   * 내 정보 조회
+   * ===================== */
   useEffect(() => {
-    const saved = localStorage.getItem(LS_KEY);
-    if (saved && saved.trim()) setName(saved);
+    const fetchProfile = async () => {
+      try {
+        const res = await api.get("/mypage/info");
+        const data = res.data?.data;
+
+        if (data?.name) setName(data.name);
+        if (data?.phoneNumber) setPhone(data.phoneNumber);
+        if (data?.type) setRole(data.type);
+        if (data?.profileImageUrl) {
+          setProfilePreview(data.profileImageUrl);
+        }
+      } catch (e) {
+        console.error("profile fetch failed", e);
+      }
+    };
+
+    fetchProfile();
+
+    return () => {
+      if (previewUrlRef.current) {
+        URL.revokeObjectURL(previewUrlRef.current);
+      }
+    };
   }, []);
 
-  const canSave = name.trim().length > 0;
+  const canSave =
+    name.trim().length > 0 &&
+    phone.trim().length > 0 &&
+    !loading;
 
-  const handleSave = () => {
+  /* =====================
+   * 저장
+   * ===================== */
+  const handleSave = async () => {
     if (!canSave) return;
-    localStorage.setItem(LS_KEY, name.trim());
-    nav("/mypage/profile"); // ✅ 3번째 사진의 마이페이지(마이프로필)로 복귀
+
+    try {
+      setLoading(true);
+
+      // 1️⃣ 텍스트 정보 수정
+      await api.patch("/mypage/update", {
+        nickname: name.trim(),
+        phoneNumber: phone.trim(),
+        type: role,
+      });
+
+      // 2️⃣ 프로필 이미지 수정 (선택)
+      if (profileFile) {
+        await uploadProfileImage(profileFile);
+      }
+
+      nav("/mypage/profile");
+    } catch (e) {
+      console.error("profile update failed", e);
+      alert("프로필 저장에 실패했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* =====================
+   * 이미지 선택
+   * ===================== */
+  const pickImage = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+      fileInputRef.current.click();
+    }
+  };
+
+  const onChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+    }
+
+    const url = URL.createObjectURL(file);
+    previewUrlRef.current = url;
+
+    setProfileFile(file);
+    setProfilePreview(url);
   };
 
   return (
@@ -29,7 +119,11 @@ export default function ProfileEditPage() {
         <div className="pe-status" />
 
         <header className="pe-header">
-          <button type="button" className="pe-back" onClick={() => nav(-1)} aria-label="back">
+          <button
+            type="button"
+            className="pe-back"
+            onClick={() => nav(-1)}
+          >
             ←
           </button>
           <div className="pe-title">프로필 수정</div>
@@ -37,41 +131,89 @@ export default function ProfileEditPage() {
         </header>
 
         <main className="pe-body">
-          <div className="pe-row">
-            <div className="pe-paw" aria-hidden="true">
-              <svg viewBox="0 0 24 24" className="pe-paw-ico">
-                <circle cx="7.3" cy="8.4" r="2.0" />
-                <circle cx="12" cy="6.9" r="2.1" />
-                <circle cx="16.7" cy="8.4" r="2.0" />
-                <circle cx="19.1" cy="11.6" r="1.85" />
-                <path d="M6.2 16.4c0-3.0 2.9-5.3 5.8-5.3s5.8 2.3 5.8 5.3c0 2.5-2.2 4.6-5.8 4.6s-5.8-2.1-5.8-4.6z" />
-              </svg>
-            </div>
-
-            {/* ✅ input + 체크버튼(오른쪽 끝) */}
-            <div className="pe-input-wrap">
-              <input
-                className="pe-input"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="이름을 입력해주세요"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleSave();
+          {/* ===== 프로필 이미지 ===== */}
+          <div className="pe-profile">
+            <button
+              type="button"
+              className="pe-profile-box"
+              onClick={pickImage}
+              disabled={loading}
+            >
+              <img
+                src={profilePreview || DEFAULT_PROFILE}
+                alt=""
+                className="pe-profile-img"
+                onError={(e) => {
+                  e.currentTarget.onerror = null; // 무한 루프 방지
+                  e.currentTarget.src = DEFAULT_PROFILE;
                 }}
               />
+            </button>
 
-              {canSave && (
-                <button
-                  type="button"
-                  className="pe-check"
-                  aria-label="confirm"
-                  onClick={handleSave}
-                >
-                  ✓
-                </button>
-              )}
-            </div>
+            <div className="pe-profile-text">프로필 사진 변경</div>
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={onChangeImage}
+              disabled={loading}
+            />
           </div>
+
+
+          {/* ===== 이름 ===== */}
+          <div className="pe-input-wrap">
+            <input
+              className="pe-input"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="이름"
+              disabled={loading}
+            />
+          </div>
+
+          {/* ===== 전화번호 ===== */}
+          <div className="pe-input-wrap">
+            <input
+              className="pe-input"
+              value={phone}
+              onChange={(e) =>
+                setPhone(e.target.value.replace(/[^0-9]/g, ""))
+              }
+              placeholder="전화번호"
+              inputMode="numeric"
+              disabled={loading}
+            />
+          </div>
+
+          {/* ===== 역할 ===== */}
+          <div className="pe-role">
+            <button
+              type="button"
+              className={role === "OWNER" ? "active" : ""}
+              onClick={() => setRole("OWNER")}
+            >
+              OWNER
+            </button>
+            <button
+              type="button"
+              className={role === "WALKER" ? "active" : ""}
+              onClick={() => setRole("WALKER")}
+            >
+              WALKER
+            </button>
+          </div>
+
+          {/* ===== 저장 ===== */}
+          <button
+            className="pe-save"
+            onClick={handleSave}
+            disabled={!canSave}
+          >
+            저장
+          </button>
         </main>
 
         <NavBar active="mypage" />

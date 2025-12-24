@@ -18,14 +18,15 @@ type Pet = {
   isRepresentative: boolean;
 };
 
+const DEFAULT_PROFILE_IMAGE =
+  "https://pawlink-profile-images.s3.ap-northeast-2.amazonaws.com/profile/default.png";
+
 export default function MyProfilePage() {
   const nav = useNavigate();
   const { user, loading: userLoading } = useMyPage();
 
   const [pets, setPets] = useState<Pet[]>([]);
   const [petLoading, setPetLoading] = useState(true);
-      const DEFAULT_PROFILE_IMAGE =
-  "https://pawlink-profile-images.s3.ap-northeast-2.amazonaws.com/profile/default.png";
 
   /* =====================
    * 반려견 조회
@@ -47,14 +48,40 @@ export default function MyProfilePage() {
   }, []);
 
   /* =====================
-   * 로딩
+   * 로그아웃
    * ===================== */
+  const handleLogout = () => {
+    if (!confirm("로그아웃 하시겠습니까?")) return;
+    localStorage.clear();
+    nav("/login", { replace: true });
+  };
+
+  /* =====================
+   * 회원 탈퇴
+   * ===================== */
+  const handleWithdraw = async () => {
+    if (
+      !confirm(
+        "정말로 회원 탈퇴하시겠습니까?\n탈퇴 시 모든 정보는 삭제되며 복구할 수 없습니다."
+      )
+    ) {
+      return;
+    }
+
+    try {
+      await api.delete("/mypage/delete");
+      localStorage.clear();
+      nav("/login", { replace: true });
+    } catch (e) {
+      alert("회원 탈퇴에 실패했습니다. 잠시 후 다시 시도해주세요.");
+    }
+  };
+
   if (userLoading || petLoading) {
     return <div className="myp-loading">로딩중...</div>;
   }
 
   return (
-
     <div className="myp-wrapper">
       <div className="myp-screen">
         <header className="mp-header">마이페이지</header>
@@ -90,7 +117,6 @@ export default function MyProfilePage() {
           <section className="myp-section">
             <div className="myp-section-title">반려견 프로필</div>
 
-            {/* 없음 */}
             {pets.length === 0 && (
               <div className="myp-dog-empty">
                 <p>아직 등록된 반려견이 없어요 🐾</p>
@@ -103,7 +129,6 @@ export default function MyProfilePage() {
               </div>
             )}
 
-            {/* 여러 마리 */}
             {pets.length > 0 && (
               <div className="myp-dog-list">
                 {pets.map((pet) => (
@@ -116,8 +141,10 @@ export default function MyProfilePage() {
                       src={pet.petProfileImageUrl}
                       alt="pet"
                       className="myp-dog-img"
+                      onError={(e) => {
+                        e.currentTarget.src = DEFAULT_PROFILE_IMAGE;
+                      }}
                     />
-
                     <div className="myp-dog-info">
                       <div className="myp-dog-name">{pet.petName}</div>
                       <div className="myp-dog-sub">
@@ -129,7 +156,6 @@ export default function MyProfilePage() {
                   </div>
                 ))}
 
-                {/* 추가 버튼 */}
                 <button
                   className="myp-dog-add-card"
                   onClick={() => nav("/mypage/pet/create")}
@@ -138,6 +164,26 @@ export default function MyProfilePage() {
                 </button>
               </div>
             )}
+          </section>
+
+          {/* ===== 설정 ===== */}
+          <section className="myp-setting-section">
+            <div className="myp-setting-title">설정</div>
+
+            <button
+              className="myp-setting-item logout"
+              onClick={handleLogout}
+            >
+              로그아웃
+              <span className="arrow">›</span>
+            </button>
+
+            <button
+              className="myp-setting-item withdraw"
+              onClick={handleWithdraw}
+            >
+              회원 탈퇴
+            </button>
           </section>
         </main>
 
