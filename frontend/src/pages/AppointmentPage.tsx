@@ -1,8 +1,9 @@
 // frontend/src/pages/Appointment.tsx
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PhoneFrame from "../components/PhoneFrame";
+import { fetchAppointmentByRoom, upsertAppointment, type AppointmentPayload } from "../api/chat";
 import "./AppointmentPage.css";
 
 type Panel = "date" | "time" | "place" | null;
@@ -30,6 +31,18 @@ function formatTimeLabel(h24: number, min: number) {
   const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
   return `${isPM ? "오후" : "오전"} ${h12}:${pad2(min)}`;
 }
+
+const alarmOptions = [
+  { label: "없음", minutes: 0 },
+  { label: "5분 전", minutes: 5 },
+  { label: "10분 전", minutes: 10 },
+  { label: "15분 전", minutes: 15 },
+  { label: "30분 전", minutes: 30 },
+  { label: "1시간 전", minutes: 60 },
+];
+
+const minutesFromLabel = (label: string) => alarmOptions.find((opt) => opt.label === label)?.minutes ?? 15;
+const labelFromMinutes = (minutes?: number | null) => alarmOptions.find((opt) => opt.minutes === minutes)?.label ?? "15분 전";
 
 /** ✅ Wheel Column */
 function WheelColumn({
@@ -103,7 +116,11 @@ function WheelColumn({
 
 export default function AppointmentPage() {
   const nav = useNavigate();
-  const headerName = "강형욱";
+  const { roomId } = useParams();
+  const location = useLocation();
+  const partnerName = (location.state as { partnerName?: string } | undefined)?.partnerName ?? "강형욱";
+  const headerName = partnerName;
+  const numericRoomId = roomId ? Number(roomId) : NaN;
 
   const [step, setStep] = useState<Step>("form");
   const [openPanel, setOpenPanel] = useState<Panel>(null);
@@ -114,6 +131,9 @@ export default function AppointmentPage() {
   const [minute, setMinute] = useState<number>(0);
   const [place, setPlace] = useState<string>("");
   const [alarm, setAlarm] = useState<string>("15분 전");
+  const [loadingAppointment, setLoadingAppointment] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const canBook = !!date && hour !== null && place.trim().length > 0;
 
@@ -161,6 +181,71 @@ export default function AppointmentPage() {
     while (cells.length % 7 !== 0) cells.push({ day: null });
     return cells;
   }, [calYear, calMonth]);
+
+  const hydrateFromServer = (payload: AppointmentPayload) => {
+    if (payload.date) {
+      const parsed = new Date(payload.date);
+      if (!Number.isNaN(parsed.getTime())) {
+        setDate(parsed);
+        setDatePicked(true);
+      }
+    }
+
+    if (payload.time) {
+      const [hStr = "0", mStr = "0"] = payload.time.split(":");
+      const parsedH = Number(hStr);
+      const parsedM = Number(mStr);
+      if (!Number.isNaN(parsedH)) {
+        setHour(parsedH);
+        setTimePicked(true);
+      }
+      if (!Number.isNaN(parsedM)) {
+        setMinute(parsedM);
+      }
+    }
+
+    if (payload.locationAddress) {
+      setPlace(payload.locationAddress);
+      setPlacePicked(true);
+    }
+
+    if (typeof payload.reminderMinutesBefore === "number") {
+      setAlarm(labelFromMinutes(payload.reminderMinutesBefore));
+    }
+  };
+
+  useEffect(() => {
+    if (!Number.isFinite(numericRoomId)) {
+      setLoadingAppointment(false);
+      setFormError("유효하지 않은 채팅방입니다.");
+      return;
+    }
+
+    let ignore = false;
+    const load = async () => {
+      try {
+        setLoadingAppointment(true);
+        const response = await fetchAppointmentByRoom(numericRoomId);
+        if (ignore) return;
+        const data = response.data.data;
+        if (data) {
+          hydrateFromServer(data);
+        }
+        setFormError(null);
+      } catch (err) {
+        if (ignore) return;
+        console.error("약속 정보를 불러오지 못했습니다.", err);
+        setFormError("약속 정보를 불러오지 못했습니다.");
+      } finally {
+        if (!ignore) setLoadingAppointment(false);
+      }
+    };
+
+    load();
+    return () => {
+      ignore = true;
+    };
+  }, [numericRoomId]);
 
   const close = () => nav(-1);
 
@@ -235,16 +320,37 @@ export default function AppointmentPage() {
     }
   };
 
-  const onBook = () => {
-    if (!canBook) return;
-    setOpenPanel(null);
-    setStep("complete");
+  const buildPayload = (): AppointmentPayload => ({
+    date: date ? date.toISOString().slice(0, 10) : "",
+    time: `${pad2(hour ?? 0)}:${pad2(minute)}:00`,
+    locationAddress: place.trim(),
+    reminderMinutesBefore: minutesFromLabel(alarm),
+  });
+
+  const submitAppointment = async () => {
+    if (!canBook || !Number.isFinite(numericRoomId)) {
+      setFormError("약속을 저장할 수 없습니다. 입력을 다시 확인해주세요.");
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+      setFormError(null);
+      await upsertAppointment(numericRoomId, buildPayload());
+      setOpenPanel(null);
+      setStep("complete");
+    } catch (err) {
+      console.error("약속 저장 실패", err);
+      setFormError("약속 저장에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   // ✅ 하단 버튼: 패널 열림이면 “확인”, 닫힘이면 “약속 잡기”
-  const bottomLabel = openPanel ? "확인" : "약속 잡기";
-  const bottomDisabled = openPanel ? !canConfirm : !canBook;
-  const bottomOnClick = openPanel ? confirmCurrentPanel : onBook;
+  const bottomLabel = openPanel ? "확인" : isSaving ? "저장 중..." : "약속 잡기";
+  const bottomDisabled = openPanel ? !canConfirm : !canBook || isSaving || !Number.isFinite(numericRoomId);
+  const bottomOnClick = openPanel ? confirmCurrentPanel : submitAppointment;
 
   return (
     <>
@@ -263,6 +369,19 @@ export default function AppointmentPage() {
         {step === "form" && (
           <div className="ap-scroll">
             <main className="ap-body">
+              {(formError || loadingAppointment) && (
+                <div style={{ marginBottom: 12 }}>
+                  {formError && (
+                    <p style={{ color: "#b3261e", fontSize: 12, margin: 0 }}>{formError}</p>
+                  )}
+                  {loadingAppointment && (
+                    <p style={{ color: "#7a4a22", fontSize: 12, margin: formError ? "4px 0 0" : 0 }}>
+                      약속 정보를 불러오는 중입니다...
+                    </p>
+                  )}
+                </div>
+              )}
+
               {/* 날짜 */}
               <div
                 className={`ap-row ${openPanel === "date" ? "open" : ""}`}
@@ -419,12 +538,11 @@ export default function AppointmentPage() {
               <div className="ap-row ap-row-select">
                 <div className="ap-label">약속 전 나에게 알림</div>
                 <select className="ap-select" value={alarm} onChange={(e) => setAlarm(e.target.value)}>
-                  <option>없음</option>
-                  <option>5분 전</option>
-                  <option>10분 전</option>
-                  <option>15분 전</option>
-                  <option>30분 전</option>
-                  <option>1시간 전</option>
+                  {alarmOptions.map((option) => (
+                    <option key={option.minutes} value={option.label}>
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
                 <div className="ap-right">▾</div>
               </div>

@@ -99,6 +99,13 @@
   flex: 0 0 auto;
 }
 
+.chat-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 /* ✅ 발바닥 로고: 살짝 크게 */
 .chat-avatar-paw {
   width: 30px;   /* ⬅ 기존 22px → 26px */
@@ -153,4 +160,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.chat-empty {
+  padding: 32px 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #7a4a22;
+}
+
+.chat-empty.error {
+  color: #b3261e;
 }

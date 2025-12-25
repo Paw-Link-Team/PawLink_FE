@@ -42,6 +42,11 @@
   justify-content: center;
 }
 
+.cr-ico-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .cr-name {
   font-size: 16px;
   font-weight: 800;
@@ -198,6 +203,17 @@
   margin-bottom: 1px;
 }
 
+.cr-chat-empty {
+  padding: 32px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--c-sand);
+}
+
+.cr-chat-empty.error {
+  color: #b3261e;
+}
+
 /* ✅ 하단 입력 바: absolute -> fixed (키보드 튐 방지) */
 .cr-bottom {
   position: fixed;
@@ -267,6 +283,11 @@
   padding: 0 4px;
 }
 
+.cr-send:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
 /* 플러스 패널 */
 .cr-plus-panel {
   background: var(--bg-soft);
@@ -286,6 +307,15 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
+}
+
+.cr-plus-item:disabled {
+  cursor: not-allowed;
+}
+
+.cr-plus-item:disabled .cr-plus-icon,
+.cr-plus-item:disabled .cr-plus-label {
+  opacity: 0.4;
 }
 
 .cr-plus-icon {

@@ -1,56 +1,120 @@
 // frontend/src/pages/ChatRoom.tsx
-import { useEffect, useMemo, useRef, useState } from "react";
+import { type ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { io, Socket } from "socket.io-client";
 import PhoneFrame from "../components/PhoneFrame";
+import api from "../api/api";
+import { fetchChatRoomDetail } from "../api/chat";
+import type { AppointmentPayload, ChatMessageDto, ChatRoomDetail } from "../api/chat";
+import { getMyInfo } from "../api/mypage";
 import "./ChatRoom.css";
 
-type Msg = {
-  id: number;
-  side: "left" | "right";
-  text: string;
-  time?: string;
-  showAvatar?: boolean;
+type MessageSide = "left" | "right";
+
+const formatMessageTime = (value?: string | null) => {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat("ko-KR", {
+    hour: "numeric",
+    minute: "numeric",
+  }).format(date);
 };
+
+const formatDateHeader = (value?: string | null) => {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+};
+
+const formatAppointmentSummary = (appointment: AppointmentPayload | null | undefined) => {
+  if (!appointment) return "";
+  const parts: string[] = [];
+  if (appointment.date) {
+    const dateObj = new Date(appointment.date);
+    if (!Number.isNaN(dateObj.getTime())) {
+      parts.push(`${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`);
+    }
+  }
+  if (appointment.time) {
+    parts.push(appointment.time.slice(0, 5));
+  }
+  if (appointment.locationAddress) {
+    parts.push(appointment.locationAddress);
+  }
+  return parts.join(" | ");
+};
+
+const deriveSocketOrigin = () => {
+  const envUrl = (import.meta.env.VITE_SOCKET_URL as string | undefined) ?? "";
+  if (envUrl) return envUrl;
+  const base = api.defaults.baseURL;
+  if (!base) return "";
+  try {
+    const parsed = new URL(base);
+    return parsed.origin;
+  } catch {
+    return base.replace(/\/api$/, "");
+  }
+};
+
+const SOCKET_ORIGIN = deriveSocketOrigin();
 
 export default function ChatRoomPage() {
   const navigate = useNavigate();
   const { roomId } = useParams();
+  const numericRoomId = roomId ? Number(roomId) : NaN;
 
   const [input, setInput] = useState("");
   const [isPlusOpen, setIsPlusOpen] = useState(false);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-
-  // ✅ 전화 모달 상태
   const [isCallOpen, setIsCallOpen] = useState(false);
-
-  // ✅ iOS/모바일 키보드 높이 보정용
   const [kbOffset, setKbOffset] = useState(0);
+  const [detail, setDetail] = useState<ChatRoomDetail | null>(null);
+  const [messages, setMessages] = useState<ChatMessageDto[]>([]);
+  const [me, setMe] = useState<{ userId: number; nickname: string; phoneNumber?: string } | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const listRef = useRef<HTMLDivElement | null>(null);
-
   const albumInputRef = useRef<HTMLInputElement | null>(null);
   const cameraInputRef = useRef<HTMLInputElement | null>(null);
+  const socketRef = useRef<Socket | null>(null);
 
-  const headerName = "강형욱";
+  const appointmentSummary = useMemo(() => formatAppointmentSummary(detail?.appointment), [detail]);
+  const headerName = detail?.profileName ?? "채팅 상대";
+  const postTitle = detail?.post?.title ?? "산책 게시글";
+  const postSub = appointmentSummary || detail?.post?.information || "약속 정보를 확인해보세요";
+  const phoneNumber = detail?.profilePhone ?? me?.phoneNumber ?? "";
+  const canCall = phoneNumber.trim().length > 0;
 
-  const messages: Msg[] = useMemo(
-    () => [
-      { id: 1, side: "left", text: "산책 해주실 분 찾습니다", time: "오전 9:37", showAvatar: true },
-      { id: 2, side: "left", text: "오후 3시 | 항동 푸른수목원", time: "오전 9:38" },
-
-      { id: 3, side: "right", text: "산책도움 지원합니다!", time: "오전 9:39" },
-      { id: 4, side: "right", text: "저는 00동에 살고 산책경험이 있습니다!", time: "오전 9:40" },
-
-      { id: 5, side: "left", text: "어디서 만날까요?", time: "오전 9:41", showAvatar: true },
-      { id: 6, side: "left", text: "내일 오후 3시 항동목록원 어떠신가요?", time: "오전 9:41" },
-
-      { id: 7, side: "right", text: "좋습니다!", time: "오전 9:42" },
-    ],
-    []
+  const isMine = useCallback(
+    (message: ChatMessageDto) => {
+      if (!me) return false;
+      if (typeof message.senderUserId === "number") {
+        return message.senderUserId === me.userId;
+      }
+      if (message.senderNickname && me.nickname) {
+        return message.senderNickname === me.nickname;
+      }
+      return false;
+    },
+    [me]
   );
 
-  // ✅ 키보드(iOS Safari)에서 화면이 튀는 문제 해결:
-  // visualViewport 기반으로 "키보드 높이" 만큼만 입력바를 올림
+  const getSide = useCallback((message: ChatMessageDto): MessageSide => (isMine(message) ? "right" : "left"), [isMine]);
+
+  const shouldShowAvatar = useCallback(
+    (index: number, side: MessageSide) => {
+      if (side !== "left") return false;
+      const prev = messages[index - 1];
+      if (!prev) return true;
+      return getSide(prev) === "right";
+    },
+    [getSide, messages]
+  );
+
   useEffect(() => {
     const vv = window.visualViewport;
     if (!vv) return;
@@ -61,8 +125,7 @@ export default function ChatRoomPage() {
     };
 
     vv.addEventListener("resize", onResize);
-    vv.addEventListener("scroll", onResize); // iOS는 scroll로도 값이 바뀜
-
+    vv.addEventListener("scroll", onResize);
     onResize();
 
     return () => {
@@ -71,17 +134,14 @@ export default function ChatRoomPage() {
     };
   }, []);
 
-  // ✅ 새 패널/키보드 열릴 때 스크롤 맨 아래 유지
   useEffect(() => {
     requestAnimationFrame(() => {
       listRef.current?.scrollTo({ top: listRef.current.scrollHeight });
     });
-  }, [roomId, isPlusOpen, isKeyboardOpen, isCallOpen]);
+  }, [roomId, isPlusOpen, isKeyboardOpen, isCallOpen, messages]);
 
-  // ✅ 모달 열리면 뒤에 UI(플러스/키보드) 닫아주기 + 스크롤 잠금
   useEffect(() => {
     if (!isCallOpen) return;
-
     setIsPlusOpen(false);
     setIsKeyboardOpen(false);
 
@@ -91,6 +151,67 @@ export default function ChatRoomPage() {
       document.body.style.overflow = prev;
     };
   }, [isCallOpen]);
+
+  useEffect(() => {
+    if (!Number.isFinite(numericRoomId)) {
+      setLoading(false);
+      setError("유효하지 않은 채팅방입니다.");
+      return;
+    }
+
+    let ignore = false;
+    const load = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const [roomRes, meRes] = await Promise.all([fetchChatRoomDetail(numericRoomId), getMyInfo()]);
+        if (ignore) return;
+
+        const detailData = roomRes.data.data ?? null;
+        setDetail(detailData);
+        setMessages(detailData?.messages ?? []);
+
+        const myData = meRes.data.data;
+        if (myData) {
+          setMe({ userId: myData.userId, nickname: myData.nickname, phoneNumber: myData.phoneNumber });
+        }
+      } catch (err) {
+        if (ignore) return;
+        console.error("채팅방 정보를 불러오지 못했습니다.", err);
+        setError("채팅방 정보를 불러오지 못했습니다.");
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    };
+
+    load();
+    return () => {
+      ignore = true;
+    };
+  }, [numericRoomId]);
+
+  useEffect(() => {
+    if (!Number.isFinite(numericRoomId) || !SOCKET_ORIGIN) {
+      return;
+    }
+
+    const socket = io(SOCKET_ORIGIN, {
+      transports: ["websocket"],
+      withCredentials: true,
+    });
+
+    socketRef.current = socket;
+    socket.emit("joinRoom", numericRoomId);
+    socket.on("newMessage", (incoming: ChatMessageDto) => {
+      setMessages((prev) => [...prev, incoming]);
+    });
+
+    return () => {
+      socket.emit("leaveRoom", numericRoomId);
+      socket.disconnect();
+      socketRef.current = null;
+    };
+  }, [numericRoomId]);
 
   const togglePlus = () => {
     setIsPlusOpen((v) => !v);
@@ -109,18 +230,74 @@ export default function ChatRoomPage() {
   const openAlbum = () => albumInputRef.current?.click();
   const openCamera = () => cameraInputRef.current?.click();
 
-  const onPickFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onPickFiles = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
     e.target.value = "";
   };
 
-  const openCallModal = () => setIsCallOpen(true);
+  const openCallModal = () => {
+    if (!canCall) return;
+    setIsCallOpen(true);
+  };
   const closeCallModal = () => setIsCallOpen(false);
 
   const onCallConfirm = () => {
-    window.location.href = "tel:01000000000";
+    if (!canCall) {
+      setIsCallOpen(false);
+      return;
+    }
+    window.location.href = `tel:${phoneNumber.replace(/[^0-9+]/g, "")}`;
     setIsCallOpen(false);
+  };
+
+  const handleSend = () => {
+    const text = input.trim();
+    if (!text || !socketRef.current || !Number.isFinite(numericRoomId) || !me) return;
+
+    const payload: ChatMessageDto = {
+      chatRoomId: numericRoomId,
+      senderUserId: me.userId,
+      senderNickname: me.nickname,
+      message: text,
+    };
+
+    socketRef.current.emit("sendMessage", payload);
+    setInput("");
+  };
+
+  const openAppointmentPage = () => {
+    if (!roomId) return;
+    navigate(`/chat/${roomId}/appointment`, { state: { partnerName: headerName } });
+  };
+
+  const canSend = input.trim().length > 0 && Number.isFinite(numericRoomId) && !!me;
+  const currentDateLabel = useMemo(() => formatDateHeader(messages[0]?.sentAt), [messages]);
+
+  const renderMessages = () => {
+    if (loading) return <div className="cr-chat-empty">메시지를 불러오는 중입니다...</div>;
+    if (error) return <div className="cr-chat-empty error">{error}</div>;
+    if (messages.length === 0) return <div className="cr-chat-empty">아직 메시지가 없어요. 첫 메시지를 보내보세요!</div>;
+
+    return (
+      <>
+        {currentDateLabel && <div className="cr-date">{currentDateLabel}</div>}
+        {messages.map((message, index) => {
+          const side = getSide(message);
+          const key = message.sentAt ? `${message.chatRoomId}-${message.sentAt}-${index}` : `${message.chatRoomId}-${index}`;
+          return (
+            <div key={key} className={`cr-row ${side}`}>
+              {side === "left" && <div className={`cr-mini-ava ${shouldShowAvatar(index, side) ? "" : "ghost"}`} aria-hidden="true" />}
+
+              <div className={`cr-msgline ${side}`}>
+                <div className={`cr-bubble ${side}`}>{message.message}</div>
+                <div className="cr-time">{formatMessageTime(message.sentAt)}</div>
+              </div>
+            </div>
+          );
+        })}
+      </>
+    );
   };
 
   return (
@@ -136,8 +313,7 @@ export default function ChatRoomPage() {
           <div className="cr-name">{headerName}</div>
         </div>
 
-        {/* ✅ 전화 버튼 */}
-        <button className="cr-ico-btn" aria-label="call" onClick={openCallModal} type="button">
+        <button className="cr-ico-btn" aria-label="call" onClick={openCallModal} type="button" disabled={!canCall}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path
               d="M22 16.92v3a2 2 0 0 1-2.18 2
@@ -163,38 +339,19 @@ export default function ChatRoomPage() {
       <section className="cr-post">
         <div className="cr-post-thumb" aria-hidden="true" />
         <div className="cr-post-texts">
-          <div className="cr-post-title">산책 해주실 분 찾습니다</div>
-          <div className="cr-post-sub">오후 3시 | 항동 푸른수목원</div>
+          <div className="cr-post-title">{postTitle}</div>
+          <div className="cr-post-sub">{postSub}</div>
         </div>
       </section>
 
       <div className="cr-chat" ref={listRef}>
-        <div className="cr-date">2025년 11월 30일</div>
-
-        {messages.map((m) => {
-          const showAva = m.side === "left" && m.showAvatar === true;
-
-          return (
-            <div key={m.id} className={`cr-row ${m.side}`}>
-              {m.side === "left" && <div className={`cr-mini-ava ${showAva ? "" : "ghost"}`} aria-hidden="true" />}
-
-              <div className={`cr-msgline ${m.side}`}>
-                <div className={`cr-bubble ${m.side}`}>{m.text}</div>
-                {m.time && <div className="cr-time">{m.time}</div>}
-              </div>
-            </div>
-          );
-        })}
+        {renderMessages()}
       </div>
 
       <input ref={albumInputRef} className="cr-hidden-file" type="file" accept="image/*" multiple onChange={onPickFiles} />
       <input ref={cameraInputRef} className="cr-hidden-file" type="file" accept="image/*" capture="environment" onChange={onPickFiles} />
 
-      {/* ✅ 키보드 오프셋은 JS에서 transform으로만 조절 (bottom 260 같은 하드코딩 제거) */}
-      <div
-        className={`cr-bottom ${isPlusOpen ? "plus-open" : ""} ${isKeyboardOpen ? "keyboard-open" : ""}`}
-        style={{ transform: `translate(-50%, -${kbOffset}px)` }}
-      >
+      <div className={`cr-bottom ${isPlusOpen ? "plus-open" : ""} ${isKeyboardOpen ? "keyboard-open" : ""}`} style={{ transform: `translate(-50%, -${kbOffset}px)` }}>
         <div className="cr-inputbar">
           <button className="cr-plus" onClick={togglePlus} aria-label="plus" type="button">
             +
@@ -209,11 +366,17 @@ export default function ChatRoomPage() {
               onChange={(e) => setInput(e.target.value)}
               onFocus={onFocusInput}
               onBlur={onBlurInput}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
               placeholder="산책시 리드줄은 필수예요!"
             />
           </div>
 
-          <button className="cr-send" aria-label="send" type="button">
+          <button className="cr-send" aria-label="send" type="button" onClick={handleSend} disabled={!canSend}>
             ▷
           </button>
         </div>
@@ -234,7 +397,7 @@ export default function ChatRoomPage() {
               <div className="cr-plus-label">카메라</div>
             </button>
 
-            <button className="cr-plus-item" type="button" aria-label="appointment" onClick={() => navigate(`/chat/${roomId}/appointment`)}>
+            <button className="cr-plus-item" type="button" aria-label="appointment" onClick={openAppointmentPage} disabled={!roomId}>
               <div className="cr-plus-icon" aria-hidden="true">
                 ⏰
               </div>
@@ -246,9 +409,6 @@ export default function ChatRoomPage() {
         <div className="cr-keyboard-pad" />
       </div>
 
-      {/* =========================
-          ✅ CALL MODAL
-         ========================= */}
       {isCallOpen && (
         <div className="cr-modal-dim" role="dialog" aria-modal="true" aria-label="전화 걸기" onClick={closeCallModal}>
           <div className="cr-modal-card" onClick={(e) => e.stopPropagation()}>
@@ -280,7 +440,7 @@ export default function ChatRoomPage() {
               <button className="cr-modal-btn ghost" type="button" onClick={closeCallModal}>
                 취소
               </button>
-              <button className="cr-modal-btn primary" type="button" onClick={onCallConfirm}>
+              <button className="cr-modal-btn primary" type="button" onClick={onCallConfirm} disabled={!canCall}>
                 전화하기
               </button>
             </div>
