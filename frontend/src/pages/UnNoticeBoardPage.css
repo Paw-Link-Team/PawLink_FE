@@ -135,3 +135,22 @@
 .unb-safe {
   height: 72px;
 }
+
+.unb-empty {
+  padding: 48px 20px;
+  text-align: left;
+  color: #3b2a1a;
+}
+
+.unb-empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4a3a2a;
+  margin-bottom: 8px;
+}
+
+.unb-empty-desc {
+  font-size: 13px;
+  color: #9a8a7a;
+  line-height: 1.6;
+}

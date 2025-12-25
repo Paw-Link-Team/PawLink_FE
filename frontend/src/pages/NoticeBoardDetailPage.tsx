@@ -1,222 +1,256 @@
-// frontend/src/pages/NoticeBoardDetailPage.tsx
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import api from "../api/api";
 import "./NoticeBoardDetailPage.css";
 
-type PostDetail = {
+/* =====================
+ * 타입 정의
+ * ===================== */
+type WalkTimeType = "FIXED" | "FLEXIBLE" | "UNDECIDED";
+type BoardStatus = "OPEN" | "COMPLETED";
+
+type PetProfile = {
   id: number;
-  authorName: string;
-  authorMeta: string;
+  name: string;
+  type: string;
+  age: string;
+  profileImageUrl: string | null;
+};
+
+type BoardDetail = {
+  id: number;
   title: string;
-  metaLine: string;
-  detailLines: string[];
-  statsLine: string;
+  description: string;
+  location: string;
+
+  walkTime: string | null;
+  walkTimeType: WalkTimeType;
+
+  viewCount: number;
+
+  userId: number;
+  userNickname: string;
+  userProfileImageUrl: string | null;
+
+  interested: boolean;
+  interestCount: number;
+
+  status: BoardStatus;
+  myBoard: boolean;
+  petProfileDto: PetProfile | null;
 };
 
 export default function NoticeBoardDetailPage() {
   const nav = useNavigate();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
-  const [liked, setLiked] = useState(true);
+  const [data, setData] = useState<BoardDetail | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const data: PostDetail = useMemo(() => {
-    return {
-      id: Number(id ?? 1),
-      authorName: "강형욱",
-      authorMeta: "오류동 0.8km",
-      title: "산책 해주실 분 찾습니다",
-      metaLine: "산책시간 30분 · 산책장소 오류동 황동수목원",
-      detailLines: [
-        "상세 내용",
-        "강아지 견종",
-        "강아지 성격 등 강아지에 관한 정보를 자유롭게 기재가능한 칸",
-      ],
-      statsLine: "채팅 2 · 관심 9 · 조회 101",
+  /* =====================
+   * 상세 조회
+   * ===================== */
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchDetail = async () => {
+      try {
+        const res = await api.get(`/boards/${id}`);
+        setData(res.data.data);
+      } catch (e) {
+        console.error("게시글 조회 실패", e);
+      } finally {
+        setLoading(false);
+      }
     };
+
+    fetchDetail();
   }, [id]);
 
-  const handleShare = async () => {
-    const url = window.location.href;
+  /* =====================
+   * 관심 토글
+   * ===================== */
+  const toggleInterest = async () => {
+    if (!data) return;
+
     try {
-      if (navigator.share) {
-        await navigator.share({ title: "PawLink", url });
-        return;
+      if (data.interested) {
+        await api.delete(`/boards/${data.id}/interest`);
+        setData({
+          ...data,
+          interested: false,
+          interestCount: data.interestCount - 1,
+        });
+      } else {
+        await api.post(`/boards/${data.id}/interest`);
+        setData({
+          ...data,
+          interested: true,
+          interestCount: data.interestCount + 1,
+        });
       }
-      await navigator.clipboard.writeText(url);
-      alert("링크를 복사했어요!");
-    } catch {
-      // 조용히 무시
+    } catch (e) {
+      console.error("관심 처리 실패", e);
     }
   };
+
+  /* =====================
+   * 모집 완료 처리 (작성자만)
+   * ===================== */
+  const handleComplete = async () => {
+    if (!data) return;
+
+    if (!confirm("모집을 완료하시겠어요?")) return;
+
+    try {
+      await api.post(`/boards/${data.id}/complete`);
+      setData({ ...data, status: "COMPLETED" });
+    } catch (e) {
+      alert("완료 처리에 실패했어요.");
+    }
+  };
+
+  /* =====================
+   * 파생 데이터
+   * ===================== */
+  const metaLine = useMemo(() => {
+    if (!data) return "";
+
+    const timeText =
+      data.walkTimeType === "FIXED"
+        ? "고정"
+        : data.walkTimeType === "FLEXIBLE"
+        ? "협의 가능"
+        : "미정";
+
+    return `산책시간 ${timeText} · 산책장소 ${data.location}`;
+  }, [data]);
+
+  if (loading || !data) {
+    return <div className="nbd-loading">로딩중...</div>;
+  }
+
+  const pet = data.petProfileDto;
+  const isCompleted = data.status === "COMPLETED";
 
   return (
     <div className="nbd-wrapper">
       <div className="nbd-screen">
-        {/* ✅ 상단 흰 줄 방지: 상태바도 베이지로 */}
         <div className="nbd-status" />
 
-        {/* ✅ 상단 아이콘 라인(베이지 배경) */}
+        {/* 상단 헤더 */}
         <header className="nbd-top">
-          <button
-            className="nbd-icon-btn"
-            onClick={() => nav(-1)}
-            aria-label="back"
-            type="button"
-          >
-            <svg className="nbd-icon" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M15 18l-6-6 6-6"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-
-          <button
-            className="nbd-icon-btn"
-            aria-label="share"
-            type="button"
-            onClick={handleShare}
-          >
-            <svg className="nbd-icon" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M12 16V3"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-              />
-              <path
-                d="M8 7l4-4 4 4"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M6 11v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-              />
-            </svg>
+          <button className="nbd-icon-btn" onClick={() => nav(-1)}>
+            ←
           </button>
         </header>
 
-        {/* ✅ 히어로(연베이지 + 강아지 일러스트 느낌) */}
-        <section className="nbd-hero" aria-hidden="true">
-          <svg className="nbd-dog" viewBox="0 0 260 200">
-            {/* 몸통 */}
-            <ellipse cx="120" cy="105" rx="70" ry="42" fill="#F2B15C" />
-            {/* 머리 */}
-            <circle cx="70" cy="95" r="38" fill="#F2B15C" />
-            {/* 귀 */}
-            <path
-              d="M58 72c-10 8-16 18-10 28 10 4 22-2 26-12 4-10-2-18-16-16z"
-              fill="#E09A42"
-            />
-            {/* 꼬리 */}
-            <path
-              d="M175 86c28 2 44 18 42 36-2 18-26 26-46 10"
-              fill="none"
-              stroke="#F2B15C"
-              strokeWidth="16"
-              strokeLinecap="round"
-            />
-            {/* 다리 */}
-            <rect x="95" y="130" width="22" height="55" rx="10" fill="#C9863A" />
-            <rect x="135" y="130" width="22" height="55" rx="10" fill="#C9863A" />
-            {/* 얼굴 */}
-            <circle cx="58" cy="92" r="6" fill="#2B1F17" />
-            <path
-              d="M76 110c-6 6-14 8-22 6"
-              fill="none"
-              stroke="#C9863A"
-              strokeWidth="10"
-              strokeLinecap="round"
-            />
-            {/* 혀 */}
-            <path
-              d="M60 120c6 0 10 4 10 10s-4 12-10 12-10-6-10-12 4-10 10-10z"
-              fill="#E85D5D"
-              opacity="0.95"
-            />
-          </svg>
+        {/* =====================
+         * 반려견 히어로
+         * ===================== */}
+        <section className="nbd-hero">
+          {pet && (
+            <div className="nbd-pet-profile">
+              <div className="nbd-pet-image-wrap">
+                <img
+                  className="nbd-pet-avatar"
+                  src={pet.profileImageUrl || "/default-dog.png"}
+                  alt="pet"
+                />
+              </div>
 
-          {/* 점 표시(사진처럼 작게) */}
-          <div className="nbd-hero-dots">
-            <span className="dot on" />
-            <span className="dot" />
-            <span className="dot" />
-          </div>
+              <div className="nbd-pet-info">
+                <div className="nbd-pet-label">반려견 이름</div>
+                <div className="nbd-pet-name">{pet.name}</div>
+
+                <div className="nbd-pet-meta">
+                  <span>견종 {pet.type}</span>
+                  <span className="dot">·</span>
+                  <span>나이 {pet.age}</span>
+                </div>
+              </div>
+            </div>
+          )}
         </section>
 
-        {/* 작성자 카드 */}
+        {/* =====================
+         * 작성자 + 상태
+         * ===================== */}
         <section className="nbd-author">
-          <div className="nbd-avatar" aria-hidden="true" />
+          <img
+            className="nbd-avatar"
+            src={data.userProfileImageUrl || "/default-profile.png"}
+            alt="profile"
+          />
+
           <div className="nbd-author-text">
-            <div className="nbd-author-name">{data.authorName}</div>
-            <div className="nbd-author-meta">{data.authorMeta}</div>
+            <div className="nbd-author-top">
+              <span className="nbd-author-name">
+                {data.userNickname}
+              </span>
+
+              <span
+                className={`nbd-board-status ${
+                  isCompleted ? "completed" : "open"
+                }`}
+              >
+                {isCompleted ? "완료" : "모집 중"}
+              </span>
+            </div>
+
+            <div className="nbd-author-meta">
+              {data.location}
+            </div>
           </div>
+
+          {data.myBoard && !isCompleted && (
+            <button
+              className="nbd-complete-btn"
+              onClick={handleComplete}
+            >
+              모집 완료
+            </button>
+          )}
         </section>
 
-        {/* 본문 */}
+        {/* =====================
+         * 본문
+         * ===================== */}
         <main className="nbd-content">
           <div className="nbd-title">{data.title}</div>
-          <div className="nbd-meta">{data.metaLine}</div>
+          <div className="nbd-meta">{metaLine}</div>
 
           <div className="nbd-body">
-            {data.detailLines.map((line, idx2) => (
-              <div
-                key={idx2}
-                className={idx2 === 0 ? "nbd-body-head" : "nbd-body-line"}
-              >
-                {line}
-              </div>
-            ))}
+            <div className="nbd-body-head">상세 내용</div>
+            <div className="nbd-body-line">{data.description}</div>
           </div>
 
-          <div className="nbd-stats">{data.statsLine}</div>
+          <div className="nbd-stats">
+            관심 {data.interestCount} · 조회 {data.viewCount}
+          </div>
 
-          {/* ✅ 하단 버튼이 내용 가리니까 안전 여백 */}
           <div className="nbd-safe" />
         </main>
 
-        {/* 하단 액션바 (사진처럼: 왼쪽 하트 + 긴 채팅하기) */}
+        {/* =====================
+         * 하단 액션
+         * ===================== */}
         <footer className="nbd-bottom">
           <button
-            className={`nbd-heart ${liked ? "on" : ""}`}
-            onClick={() => setLiked((v) => !v)}
-            aria-label="like"
-            type="button"
+            className={`nbd-heart ${data.interested ? "on" : ""}`}
+            onClick={toggleInterest}
           >
-            {liked ? (
-              /* ✅ 눌렀을 때: 꽉 찬 빨간 하트 (정석 하트) */
-              <svg className="nbd-heart-ico fill" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-              </svg>
-            ) : (
-              /* ✅ 기본 상태: 브라운 아웃라인 하트 (정석 하트) */
-              <svg className="nbd-heart-ico stroke" viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-                  fill="none"
-                />
-              </svg>
-            )}
+            {data.interested ? "♥" : "♡"}
           </button>
 
           <button
             className="nbd-chat"
-            type="button"
-            onClick={() => nav(`/chat/${data.id}`)}
+            disabled={isCompleted}
+            onClick={() => nav(`/chat/board/${data.id}`)}
           >
-            채팅하기
+            {isCompleted ? "완료된 게시글" : "채팅하기"}
           </button>
         </footer>
-
-        <div className="nbd-home-indicator" />
       </div>
     </div>
   );

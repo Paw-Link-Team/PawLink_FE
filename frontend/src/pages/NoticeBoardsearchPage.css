@@ -1,12 +1,4 @@
 /* frontend/src/pages/Noticeboardsearchpage.css */
-
-:root {
-  /* ✅ PawLink 브라운 톤 */
-  --brown-main: #75401f;
-  --brown-soft: #8c7f74;
-  --brown-light: #bab0a6;
-}
-
 .nbs-wrapper {
   min-height: 100vh;
   background: #fff7e9;

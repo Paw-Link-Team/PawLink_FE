@@ -1,22 +1,13 @@
-/* frontend/src/pages/NoticeBoardDetailPage.css */
 
-:root {
-  --brand-brown: #75401f;
-  --beige: #f2e8dd;
-  --ivory: #fef7e9;
-  --text-1: #3f3028;
-  --text-2: #8c7f74;
-  --line: rgba(63, 48, 40, 0.12);
-}
-
-/* ✅ 다른 페이지랑 규격 통일: 바깥 회색 + 가운데 390 */
+/* =====================
+ * Layout
+ * ===================== */
 .nbd-wrapper {
   min-height: 100vh;
   width: 100%;
   background: #3a3a3a;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
 }
 
 .nbd-screen {
@@ -28,20 +19,24 @@
   overflow: hidden;
 }
 
-/* ✅ 상단 흰줄 방지용: status/top/hero 모두 같은 베이지 계열로 */
+/* =====================
+ * Status / Top
+ * ===================== */
 .nbd-status {
   height: 24px;
   background: var(--beige);
 }
 
 .nbd-top {
+  position: absolute;
+  top: 24px;
+  left: 0;
+  right: 0;
   height: 44px;
-  padding: 0 12px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background: var(--beige);
-  color: var(--brand-brown);
+  z-index: 10;
 }
 
 .nbd-icon-btn {
@@ -50,59 +45,104 @@
   border: none;
   background: transparent;
   color: var(--brand-brown);
+  font-size: 20px;
   cursor: pointer;
   display: grid;
   place-items: center;
-  padding: 0;
 }
 
-.nbd-icon {
-  width: 22px;
-  height: 22px;
-  display: block;
-}
-
-/* 히어로 */
+/* =====================
+ * Hero (Pet)
+ * ===================== */
 .nbd-hero {
-  height: 260px;
+  height: 280px;
   background: var(--beige);
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
 }
 
-.nbd-dog {
-  width: 230px;
-  height: auto;
-  display: block;
-}
-
-/* 점(아주 작게) */
-.nbd-hero-dots {
-  position: absolute;
-  bottom: 12px;
-  left: 0;
-  right: 0;
+.nbd-pet-profile {
   display: flex;
-  justify-content: center;
-  gap: 6px;
-}
-.nbd-hero-dots .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.22);
-}
-.nbd-hero-dots .dot.on {
-  background: rgba(0, 0, 0, 0.55);
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-/* 작성자 */
+/* 이미지 */
+.nbd-pet-image-wrap {
+  width: 160px;
+  height: 160px;
+  background: var(--ivory);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nbd-pet-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 정보 */
+.nbd-pet-info {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nbd-pet-label {
+  font-size: 11px;
+  color: var(--text-2);
+  margin-bottom: 2px;
+}
+
+.nbd-pet-name {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--text-1);
+}
+
+.nbd-pet-meta {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--text-2);
+  display: flex;
+  gap: 8px;
+}
+
+/* =====================
+ * Board Status Badge
+ * ===================== */
+.nbd-board-status {
+  margin-top: 12px;
+  padding: 6px 18px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.nbd-board-status.open {
+  background: rgba(117, 64, 31, 0.12);
+  color: var(--brand-brown);
+}
+
+.nbd-board-status.completed {
+  background: rgba(0, 0, 0, 0.08);
+  color: #555;
+}
+
+/* =====================
+ * Author
+ * ===================== */
 .nbd-author {
   height: 74px;
   background: #ffffff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid var(--line);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -113,7 +153,13 @@
   width: 30px;
   height: 30px;
   border-radius: 999px;
-  background: var(--brand-brown);
+  object-fit: cover;
+  background: #ddd;
+}
+
+.nbd-author-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .nbd-author-name {
@@ -128,7 +174,9 @@
   margin-top: 2px;
 }
 
-/* 본문 */
+/* =====================
+ * Content
+ * ===================== */
 .nbd-content {
   padding: 16px 16px 0;
 }
@@ -157,6 +205,7 @@
   font-size: 12px;
   color: var(--text-1);
   line-height: 1.55;
+  white-space: pre-wrap;
 }
 
 .nbd-stats {
@@ -165,12 +214,14 @@
   color: var(--text-2);
 }
 
-/* ✅ 하단 버튼 고정이라 안전 여백 */
+/* 하단 버튼 공간 확보 */
 .nbd-safe {
   height: 120px;
 }
 
-/* 하단 액션바 */
+/* =====================
+ * Bottom Action
+ * ===================== */
 .nbd-bottom {
   position: absolute;
   left: 0;
@@ -190,45 +241,36 @@
   border: none;
   background: transparent;
   cursor: pointer;
-  padding: 0;
   display: grid;
   place-items: center;
+  font-size: 22px;
+  color: var(--brand-brown);
 }
 
-.nbd-heart-ico {
-  width: 30px;
-  height: 30px;
-  display: block;
+.nbd-heart.on {
+  color: #ff2d2d;
 }
 
-/* ✅ 기본(안눌림): 브라운 아웃라인 */
-.nbd-heart-ico.stroke path {
-  stroke: #75401f;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* ✅ 눌림: 빨간 꽉찬 하트 */
-.nbd-heart-ico.fill {
-  fill: #ff2d2d;
-}
-
-
-/* 채팅하기 버튼(긴 알약) */
 .nbd-chat {
   flex: 1;
   height: 52px;
   border-radius: 999px;
   border: none;
   background: var(--brand-brown);
-  color: #fff;
+  color: #ffffff;
   font-size: 14px;
   font-weight: 900;
   cursor: pointer;
 }
 
-/* 홈 인디케이터 */
+.nbd-chat:disabled {
+  background: #c8beb5;
+  cursor: not-allowed;
+}
+
+/* =====================
+ * Home Indicator
+ * ===================== */
 .nbd-home-indicator {
   position: absolute;
   left: 50%;
@@ -239,4 +281,91 @@
   border-radius: 999px;
   background: #000;
   opacity: 0.15;
+}
+
+/* =====================
+ * Loading
+ * ===================== */
+.nbd-loading {
+  min-height: 100vh;
+  max-width: 420px;
+  margin: 0 auto;
+  background: #f7efe6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b3f1d;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.nbd-loading::after {
+  content: "…";
+  animation: nbd-dots 1.4s infinite steps(4, end);
+}
+
+@keyframes nbd-dots {
+  0% { content: ""; }
+  25% { content: "."; }
+  50% { content: ".."; }
+  75% { content: "..."; }
+  100% { content: ""; }
+}
+
+.nbd-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.nbd-author-text {
+  flex: 1;
+}
+
+.nbd-author-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nbd-author-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-1);
+}
+
+.nbd-author-meta {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-top: 2px;
+}
+
+/* 상태 뱃지 */
+.nbd-board-status {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.nbd-board-status.open {
+  background: rgba(117, 64, 31, 0.12);
+  color: var(--brand-brown);
+}
+
+.nbd-board-status.completed {
+  background: rgba(0, 0, 0, 0.1);
+  color: #555;
+}
+
+/* 완료 버튼 */
+.nbd-complete-btn {
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--brand-brown);
+  cursor: pointer;
 }
