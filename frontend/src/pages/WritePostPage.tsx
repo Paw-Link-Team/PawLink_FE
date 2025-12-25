@@ -141,18 +141,20 @@ export default function WritePostPage() {
                   불러오는 중...
                 </div>
               ) : pets.length === 0 ? (
-                <div className="wp-helper">
-                  반려견이 없습니다.
+
+                <div className="wp-empty-pet">
+                  <span className="wp-empty-text">
+                    아직 등록된 반려견이 없어요
+                  </span>
                   <button
                     type="button"
-                    className="wp-link"
-                    onClick={() =>
-                      navigate("/mypage/pet/create")
-                    }
+                    className="wp-empty-btn"
+                    onClick={() => navigate("/mypage/pet/create")}
                   >
-                    반려견 등록하기
+                    + 반려견 등록
                   </button>
                 </div>
+
               ) : (
                 <select
                   className="wp-input"
@@ -271,9 +273,8 @@ export default function WritePostPage() {
           <footer className="wp-footer">
             <button
               type="button"
-              className={`wp-btn ${
-                isComplete ? "active" : "disabled"
-              }`}
+              className={`wp-btn ${isComplete ? "active" : "disabled"
+                }`}
               disabled={!isComplete || loading}
               onClick={submit}
             >

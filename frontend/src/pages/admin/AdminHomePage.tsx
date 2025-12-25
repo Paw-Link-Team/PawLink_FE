@@ -64,11 +64,11 @@ export default function AdminHomePage() {
     if (!checked) return;
 
     api
-      .get<WalkerRankItem[]>("/api/admin/rank/walkers?size=5")
+      .get<WalkerRankItem[]>("/api/rank/walkers?size=5")
       .then((res) => setWalkerRanks(res.data));
 
     api
-      .get<OwnerRankItem[]>("/api/admin/rank/owners?size=5")
+      .get<OwnerRankItem[]>("/api/rank/owners?size=5")
       .then((res) => setOwnerRanks(res.data));
   }, [checked]);
 
