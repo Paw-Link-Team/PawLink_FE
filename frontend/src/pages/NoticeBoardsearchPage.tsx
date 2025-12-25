@@ -1,5 +1,5 @@
 // frontend/src/pages/NoticeboardSearchPage.tsx
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
 import "./NoticeBoardsearchPage.css";
