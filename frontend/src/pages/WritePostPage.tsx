@@ -11,7 +11,7 @@ type Pet = {
 };
 
 export default function WritePostPage() {
-  const nav = useNavigate();
+  const navigate = useNavigate();
 
   /* =====================
    * 게시글 상태
@@ -101,7 +101,7 @@ export default function WritePostPage() {
         petId: Number(selectedPetId),
       });
 
-      nav("/board", { replace: true });
+      navigate("/board", { replace: true });
     } catch (e) {
       console.error("게시글 작성 실패", e);
       alert("게시글 작성에 실패했습니다.");
@@ -110,168 +110,179 @@ export default function WritePostPage() {
     }
   };
 
+  /* =====================
+   * 렌더링
+   * ===================== */
   return (
-    <div className="wp-wrapper">
-      <div className="wp-screen">
-        {/* =====================
-         * Header
-         * ===================== */}
-        <header className="wp-header">
-          <button
-            type="button"
-            className="wp-close"
-            onClick={() => nav(-1)}
-          >
-            ×
-          </button>
-          <div className="wp-title">글쓰기</div>
-          <div className="wp-right" />
-        </header>
+    <div className="write-root">
+      <div className="wp-wrapper">
+        <div className="wp-screen">
+          {/* Header */}
+          <header className="wp-header">
+            <button
+              type="button"
+              className="wp-close"
+              onClick={() => navigate(-1)}
+            >
+              ×
+            </button>
+            <div className="wp-title">글쓰기</div>
+            <div className="wp-right" />
+          </header>
 
-        <main className="wp-body">
-          {/* =====================
-           * 반려견 선택 (번호 + 이름)
-           * ===================== */}
-          <div className="wp-field">
-            <div className="wp-label">반려견 선택</div>
+          {/* Body */}
+          <main className="wp-body">
+            {/* 반려견 선택 */}
+            <div className="wp-field">
+              <div className="wp-label">반려견 선택</div>
 
-            {petLoading ? (
-              <div className="wp-helper">불러오는 중...</div>
-            ) : pets.length === 0 ? (
-              <div className="wp-helper">
-                반려견이 없습니다.
-                <button
-                  type="button"
-                  className="wp-link"
-                  onClick={() =>
-                    nav("/mypage/pet/create")
+              {petLoading ? (
+                <div className="wp-helper">
+                  불러오는 중...
+                </div>
+              ) : pets.length === 0 ? (
+                <div className="wp-helper">
+                  반려견이 없습니다.
+                  <button
+                    type="button"
+                    className="wp-link"
+                    onClick={() =>
+                      navigate("/mypage/pet/create")
+                    }
+                  >
+                    반려견 등록하기
+                  </button>
+                </div>
+              ) : (
+                <select
+                  className="wp-input"
+                  value={selectedPetId}
+                  onChange={(e) =>
+                    setSelectedPetId(
+                      e.target.value
+                        ? Number(e.target.value)
+                        : ""
+                    )
                   }
                 >
-                  반려견 등록하기
-                </button>
+                  <option value="" disabled>
+                    반려견을 선택해주세요.
+                  </option>
+
+                  {pets.map((pet) => (
+                    <option
+                      key={pet.id}
+                      value={pet.id}
+                    >
+                      [{pet.id}] {pet.petName}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+
+            {/* 제목 */}
+            <div className="wp-field">
+              <div className="wp-label">제목</div>
+              <input
+                className="wp-input"
+                value={title}
+                onChange={(e) =>
+                  setTitle(e.target.value)
+                }
+                placeholder="제목을 입력해주세요."
+              />
+            </div>
+
+            {/* 내용 */}
+            <div className="wp-field">
+              <div className="wp-label">
+                산책 글 작성
               </div>
-            ) : (
+              <textarea
+                className="wp-textarea"
+                value={description}
+                onChange={(e) =>
+                  setDescription(e.target.value)
+                }
+                placeholder="산책 내용을 작성해주세요."
+              />
+            </div>
+
+            {/* 시간 유형 */}
+            <div className="wp-field">
+              <div className="wp-label">
+                희망 산책 시간 유형
+              </div>
               <select
                 className="wp-input"
-                value={selectedPetId}
+                value={walkTimeType}
                 onChange={(e) =>
-                  setSelectedPetId(
-                    e.target.value
-                      ? Number(e.target.value)
-                      : ""
+                  setWalkTimeType(
+                    e.target.value as WalkTimeType
                   )
                 }
               >
-                {/* 안내용 placeholder */}
-                <option value="" disabled>
-                  반려견을 선택해주세요.
+                <option value="FIXED">
+                  시간 지정
                 </option>
-
-                {/* 🔥 번호 + 이름 표시 */}
-                {pets.map((pet) => (
-                  <option key={pet.id} value={pet.id}>
-                    [{pet.id}] {pet.petName}
-                  </option>
-                ))}
+                <option value="FLEXIBLE">
+                  조율 가능
+                </option>
+                <option value="UNDECIDED">
+                  미정
+                </option>
               </select>
-            )}
-          </div>
-
-          {/* 제목 */}
-          <div className="wp-field">
-            <div className="wp-label">제목</div>
-            <input
-              className="wp-input"
-              value={title}
-              onChange={(e) =>
-                setTitle(e.target.value)
-              }
-              placeholder="제목을 입력해주세요."
-            />
-          </div>
-
-          {/* 내용 */}
-          <div className="wp-field">
-            <div className="wp-label">산책 글 작성</div>
-            <textarea
-              className="wp-textarea"
-              value={description}
-              onChange={(e) =>
-                setDescription(e.target.value)
-              }
-              placeholder="산책 내용을 작성해주세요."
-            />
-          </div>
-
-          {/* 시간 유형 */}
-          <div className="wp-field">
-            <div className="wp-label">
-              희망 산책 시간 유형
             </div>
-            <select
-              className="wp-input"
-              value={walkTimeType}
-              onChange={(e) =>
-                setWalkTimeType(
-                  e.target.value as WalkTimeType
-                )
-              }
-            >
-              <option value="FIXED">시간 지정</option>
-              <option value="FLEXIBLE">조율 가능</option>
-              <option value="UNDECIDED">미정</option>
-            </select>
-          </div>
 
-          {walkTimeType !== "UNDECIDED" && (
+            {walkTimeType !== "UNDECIDED" && (
+              <div className="wp-field">
+                <div className="wp-label">
+                  희망 산책 시간
+                </div>
+                <input
+                  type="datetime-local"
+                  className="wp-input"
+                  value={walkTime}
+                  onChange={(e) =>
+                    setWalkTime(e.target.value)
+                  }
+                />
+              </div>
+            )}
+
+            {/* 장소 */}
             <div className="wp-field">
               <div className="wp-label">
-                희망 산책 시간
+                희망 산책 장소
               </div>
               <input
-                type="datetime-local"
                 className="wp-input"
-                value={walkTime}
+                value={location}
                 onChange={(e) =>
-                  setWalkTime(e.target.value)
+                  setLocation(e.target.value)
                 }
+                placeholder="예: 강남구 대치동"
               />
             </div>
-          )}
+          </main>
 
-          {/* 장소 */}
-          <div className="wp-field">
-            <div className="wp-label">
-              희망 산책 장소
-            </div>
-            <input
-              className="wp-input"
-              value={location}
-              onChange={(e) =>
-                setLocation(e.target.value)
-              }
-              placeholder="예: 강남구 대치동"
-            />
-          </div>
-
-          <div className="wp-safe" />
-        </main>
-
-        {/* =====================
-         * Footer
-         * ===================== */}
-        <footer className="wp-footer">
-          <button
-            type="button"
-            className={`wp-btn ${
-              isComplete ? "active" : "disabled"
-            }`}
-            disabled={!isComplete || loading}
-            onClick={submit}
-          >
-            {loading ? "작성 중..." : "작성 완료"}
-          </button>
-        </footer>
+          {/* Footer */}
+          <footer className="wp-footer">
+            <button
+              type="button"
+              className={`wp-btn ${
+                isComplete ? "active" : "disabled"
+              }`}
+              disabled={!isComplete || loading}
+              onClick={submit}
+            >
+              {loading
+                ? "작성 중..."
+                : "작성 완료"}
+            </button>
+          </footer>
+        </div>
       </div>
     </div>
   );

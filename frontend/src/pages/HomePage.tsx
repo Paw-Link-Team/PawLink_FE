@@ -1,36 +1,49 @@
-// ---HomePage.tsx---
+// HomePage.tsx
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
+import api from "../api/api";
 import "./HomePage.css";
 
-// ✅ 실제 존재하는 이미지 파일명 그대로 사용
-const banner1 = new URL("../assets/pawlink-logo.png", import.meta.url).href;
-const banner3 = new URL("../assets/pawlink-logo3.png", import.meta.url).href;
+/* =====================
+ * 타입 정의
+ * ===================== */
 
 type RankItem = {
-  id: number;
-  name: string;
-  distance: string;
-  dogs: string;
+  rank: number;
+  userId: number;
+  nickname: string;
+  totalDistanceKm: number;
+  walkCount: number;
 };
 
 type Slide =
   | { kind: "photo"; img: string; overlay: string }
   | { kind: "logo"; topLine: string };
 
+/* =====================
+ * 정적 리소스
+ * ===================== */
+
+const banner1 = new URL("../assets/pawlink-logo.png", import.meta.url).href;
+const banner3 = new URL("../assets/pawlink-logo3.png", import.meta.url).href;
+
+/* =====================
+ * 컴포넌트
+ * ===================== */
+
 export default function HomePage() {
   const navigate = useNavigate();
 
-  const RANKING_DATA: RankItem[] = useMemo(
-    () => [
-      { id: 1, name: "예림팀장님", distance: "산책거리 15km", dogs: "함께 걸은 강아지 25마리" },
-      { id: 2, name: "마요최고", distance: "산책거리 12km", dogs: "함께 걸은 강아지 21마리" },
-      { id: 3, name: "모르는마요산책", distance: "산책거리 9km", dogs: "함께 걸은 강아지 18마리" },
-      { id: 4, name: "보리보리쌀", distance: "산책거리 7km", dogs: "함께 걸은 강아지 15마리" },
-    ],
-    []
-  );
+  /* ===== 상태 ===== */
+  const [ranking, setRanking] = useState<RankItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [slideIdx, setSlideIdx] = useState(0);
+  const [chipIdx, setChipIdx] = useState(0);
+
+  /* =====================
+   * UI 상수
+   * ===================== */
 
   const slides: Slide[] = useMemo(
     () => [
@@ -52,7 +65,6 @@ export default function HomePage() {
     []
   );
 
-  // ✅ 말풍선 문구 3개
   const chips = useMemo(
     () => [
       "🐾 산책시 리드줄은 필수예요!",
@@ -62,25 +74,62 @@ export default function HomePage() {
     []
   );
 
-  const [idx, setIdx] = useState(0);
-  const [chipIdx, setChipIdx] = useState(0);
+  /* =====================
+   * 랭킹 로드
+   * ===================== */
 
   useEffect(() => {
-    const t = setInterval(() => setIdx((v) => (v + 1) % slides.length), 4500);
+    const loadRanking = async () => {
+      try {
+        const res = await api.get<RankItem[]>(
+          "/api/walkers/rank?size=10"
+        );
+        console.log("🔴 전체 응답:", res);
+        console.log("🟢 랭킹 배열:", res.data);
+        setRanking(res.data); // ✅ 핵심
+      } catch (e) {
+        console.error("❌ 랭킹 로드 실패", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadRanking();
+  }, []);
+
+  /* =====================
+   * 배너 / 칩 자동 전환
+   * ===================== */
+
+  useEffect(() => {
+    const t = setInterval(
+      () => setSlideIdx((v) => (v + 1) % slides.length),
+      4500
+    );
     return () => clearInterval(t);
   }, [slides.length]);
 
-  //_topics: 말풍선도 자동으로 바뀌게 (원하면 시간만 바꾸면 됨)
   useEffect(() => {
-    const t = setInterval(() => setChipIdx((v) => (v + 1) % chips.length), 3500);
+    const t = setInterval(
+      () => setChipIdx((v) => (v + 1) % chips.length),
+      3500
+    );
     return () => clearInterval(t);
   }, [chips.length]);
 
-  const current = slides[idx];
+  /* =====================
+   * 로딩 처리
+   * ===================== */
 
-  const goWalkerProfile = (rankId: number) => {
-    navigate("/walker-profile", { state: { fromRankId: rankId } });
-  };
+  if (loading) {
+    return <div className="hp-loading">로딩 중...</div>;
+  }
+
+  const current = slides[slideIdx];
+
+  /* =====================
+   * 렌더
+   * ===================== */
 
   return (
     <div className="hp-wrapper">
@@ -90,102 +139,72 @@ export default function HomePage() {
         {/* 헤더 */}
         <header className="hp-header">
           <div className="hp-logo">PawLink</div>
-
-          <button className="hp-loc" type="button" aria-label="map">
-            <svg className="hp-loc-pin" viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M12 2C7.86 2 4.5 5.36 4.5 9.5c0 5.25 7.5 12.5 7.5 12.5s7.5-7.25 7.5-12.5C19.5 5.36 16.14 2 12 2z"
-                fill="currentColor"
-              />
-              <circle cx="12" cy="9.5" r="2.6" fill="#ffffff" />
-            </svg>
-          </button>
         </header>
 
         {/* 배너 */}
         <section className="hp-banner">
           {current.kind === "photo" ? (
-            <div className="hp-banner-photo" style={{ backgroundImage: `url(${current.img})` }}>
-              <div className="hp-banner-overlay">{current.overlay}</div>
-              <div className="hp-banner-page">{idx + 1}/3</div>
-
-              <div className="hp-dots">
-                {slides.map((_, i) => (
-                  <button
-                    key={i}
-                    className={`hp-dot ${i === idx ? "on" : ""}`}
-                    onClick={() => setIdx(i)}
-                    type="button"
-                  />
-                ))}
+            <div
+              className="hp-banner-photo"
+              style={{ backgroundImage: `url(${current.img})` }}
+            >
+              <div className="hp-banner-overlay">
+                {current.overlay}
+              </div>
+              <div className="hp-banner-page">
+                {slideIdx + 1}/{slides.length}
               </div>
             </div>
           ) : (
             <div className="hp-banner-logo">
-              <div className="hp-banner-topline">{current.topLine}</div>
-
-              <div className="hp-brand">
-                <div className="hp-brand-paw">🐾</div>
-                <div className="hp-brand-text">PawLink</div>
-              </div>
-
-              <div className="hp-banner-page">{idx + 1}/3</div>
-              <div className="hp-dots">
-                {slides.map((_, i) => (
-                  <button
-                    key={i}
-                    className={`hp-dot ${i === idx ? "on" : ""}`}
-                    onClick={() => setIdx(i)}
-                    type="button"
-                  />
-                ))}
+              <div className="hp-banner-topline">
+                {current.topLine}
               </div>
             </div>
           )}
         </section>
 
-        {/* ✅ 말풍선(3개 순환) */}
+        {/* 말풍선 */}
         <section className="hp-chip-wrap">
           <div className="hp-chip">{chips[chipIdx]}</div>
         </section>
 
         {/* 랭킹 */}
         <section className="hp-rank">
-          <div className="hp-rank-head">우리동네 주간 산책랭크</div>
+          <div className="hp-rank-head">
+            우리동네 주간 산책랭크
+          </div>
 
-          <ul className="hp-rank-list">
-            {RANKING_DATA.map((r) => (
-              <li key={r.id} className="hp-rank-item">
-                <button
-                  type="button"
-                  className="hp-rank-rowbtn"
-                  onClick={() => goWalkerProfile(r.id)}
-                  aria-label={`${r.name} 산책자 프로필 보기`}
-                >
-                  <div className="hp-rank-left">
-                    <div className="hp-rank-no">{r.id}</div>
-
-                    <div className="hp-rank-info">
-                      <div className="hp-rank-name">{r.name}</div>
-                      <div className="hp-rank-meta">
-                        {r.distance} / {r.dogs}
+          {ranking.length === 0 ? (
+            <div style={{ padding: 16 }}>랭킹 데이터가 없습니다.</div>
+          ) : (
+            <ul className="hp-rank-list">
+              {ranking.map((r) => (
+                <li key={r.userId} className="hp-rank-item">
+                  <button
+                    type="button"
+                    className="hp-rank-rowbtn"
+                    onClick={() =>
+                      navigate(`/walkers/${r.userId}`)
+                    }
+                  >
+                    <div className="hp-rank-left">
+                      <div className="hp-rank-no">{r.rank}</div>
+                      <div className="hp-rank-info">
+                        <div className="hp-rank-name">
+                          {r.nickname}
+                        </div>
+                        <div className="hp-rank-meta">
+                          산책거리 {r.totalDistanceKm}km ·
+                          함께 걸은 강아지 {r.walkCount}마리
+                        </div>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="hp-rank-paw" aria-hidden="true">
-                    <svg className="hp-rank-paw-ico" viewBox="0 0 24 24">
-                      <circle cx="7.3" cy="8.4" r="2.0" />
-                      <circle cx="12" cy="6.9" r="2.1" />
-                      <circle cx="16.7" cy="8.4" r="2.0" />
-                      <circle cx="19.1" cy="11.6" r="1.85" />
-                      <path d="M6.2 16.4c0-3.0 2.9-5.3 5.8-5.3s5.8 2.3 5.8 5.3c0 2.5-2.2 4.6-5.8 4.6s-5.8-2.1-5.8-4.6z" />
-                    </svg>
-                  </div>
-                </button>
-              </li>
-            ))}
-          </ul>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
 
         <NavBar active="home" />

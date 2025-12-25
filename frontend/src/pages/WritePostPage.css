@@ -1,188 +1,127 @@
 /* =========================
- * Header override (page only)
+ * WritePostPage Root
  * ========================= */
-.wp-screen header.wp-header {
-  background: #ffffff !important;
-}
-
-/* =========================
- * Wrapper / Screen
- * ========================= */
-.wp-wrapper {
+.write-root {
+  width: 100%;
   min-height: 100vh;
   background: #ffffff;
   display: flex;
   justify-content: center;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto,
+    "Noto Sans KR", sans-serif;
 }
 
-.wp-screen {
+/* =========================
+ * Wrapper
+ * ========================= */
+.write-root .wp-wrapper {
   width: 100%;
-  max-width: 390px;
-  min-height: 100vh;
+  max-width: 420px;
   background: #ffffff;
-  position: relative;
-  overflow: hidden;
 }
 
 /* =========================
  * Header
  * ========================= */
-.wp-header {
-  display: grid;
-  grid-template-columns: 36px 1fr 36px;
-  align-items: center;
-  height: 44px;
+.write-root .wp-header {
+  height: 56px;
   padding: 0 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   background: #ffffff;
+  border-bottom: 1px solid #eaeaea;
 }
 
-.wp-close {
-  width: 36px;
-  height: 36px;
-  border: none;
-  background: transparent;
+.write-root .wp-close {
   font-size: 22px;
-  color: #7a4a22;
+  background: none;
+  border: none;
   cursor: pointer;
 }
 
-.wp-title {
-  text-align: center;
-  font-size: 15px;
-  font-weight: 800;
-  color: #1a1a1a;
-  line-height: 1;
+.write-root .wp-title {
+  font-size: 16px;
+  font-weight: 600;
 }
 
-.wp-right {
-  width: 36px;
-  height: 36px;
+.write-root .wp-right {
+  width: 24px;
 }
 
 /* =========================
- * Body / Fields
+ * Body
  * ========================= */
-.wp-body {
-  padding: 4px 16px 0;
+.write-root .wp-body {
+  padding: 16px;
 }
 
-.wp-field {
-  margin-bottom: 14px;
+/* =========================
+ * Field
+ * ========================= */
+.write-root .wp-field {
+  margin-bottom: 20px;
 }
 
-.wp-label {
-  font-size: 12px;
-  color: #7a7a7a;
+.write-root .wp-label {
+  font-size: 14px;
+  font-weight: 500;
   margin-bottom: 6px;
 }
 
 /* =========================
- * INPUT / TEXTAREA
+ * Input
  * ========================= */
-.wp-body input.wp-input,
-.wp-body textarea.wp-textarea {
+.write-root .wp-input {
   width: 100%;
-  box-sizing: border-box;
-  border: 1.5px solid #e6d6c3;
+  height: 44px;
+  padding: 0 12px;
+
+  border: 1px solid #dcdcdc;
   border-radius: 8px;
-  background: #ffffff;
-  color: #1a1a1a;
   font-size: 14px;
-  padding: 12px;
-  outline: none;
 }
 
-.wp-textarea {
-  min-height: 100px;
+.write-root .wp-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  font-size: 14px;
   resize: none;
-  line-height: 1.4;
 }
 
 /* =========================
- * SELECT (🔥 핵심 수정 영역)
+ * Footer (문서 하단)
  * ========================= */
-.wp-body select.wp-input {
-  width: 100%;
-  box-sizing: border-box;
-  border: 1.5px solid #e6d6c3;
-  border-radius: 8px;
-
-  background-color: #ffffff;
-  color: #1a1a1a;
-  font-size: 14px;
-  padding: 12px;
-
-  outline: none;
-
-  /* Safari / iOS 대응 */
-  -webkit-text-fill-color: #1a1a1a;
+.write-root .wp-footer {
+  padding: 12px 16px;
+  background: #ffffff;
+  border-top: 1px solid #eaeaea;
 }
 
-/* dropdown options */
-.wp-body select.wp-input option {
-  color: #1a1a1a;
-  background-color: #ffffff;
-}
-
-/* =========================
- * Footer / Button
- * ========================= */
-.wp-safe {
-  height: 88px;
-}
-
-.wp-footer {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 12px;
-  padding: 0 16px;
-}
-
-.wp-btn {
+.write-root .wp-btn {
   width: 100%;
   height: 48px;
-  border-radius: 24px;
+
+  border-radius: 10px;
   border: none;
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
-.wp-btn.disabled {
-  background: #c8beb5;
+/* 활성 */
+.write-root .wp-btn.active {
+  background: #75401f;
   color: #ffffff;
 }
 
-.wp-btn.active {
-  background: #7a4a22;
-  color: #ffffff;
-}
-
-/* =========================
- * Helper / Link
- * ========================= */
-.wp-helper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: #8c7f74;
-  padding: 10px 4px;
-}
-
-.wp-link {
-  border: none;
-  background: none;
-  padding: 0;
-  margin-left: 4px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #75401f;
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.wp-link:hover {
-  opacity: 0.85;
+/* 비활성 */
+.write-root .wp-btn.disabled {
+  background: #e0e0e0;
+  color: #999;
 }

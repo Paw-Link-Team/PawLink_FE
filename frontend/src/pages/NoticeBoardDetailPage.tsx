@@ -4,10 +4,10 @@ import api from "../api/api";
 import "./NoticeBoardDetailPage.css";
 
 /* =====================
- * 타입 정의 (백엔드 DTO 기준)
+ * 타입 정의
  * ===================== */
-
 type WalkTimeType = "FIXED" | "FLEXIBLE" | "UNDECIDED";
+type BoardStatus = "OPEN" | "COMPLETED";
 
 type PetProfile = {
   id: number;
@@ -35,6 +35,8 @@ type BoardDetail = {
   interested: boolean;
   interestCount: number;
 
+  status: BoardStatus;
+  myBoard: boolean;
   petProfileDto: PetProfile | null;
 };
 
@@ -93,6 +95,22 @@ export default function NoticeBoardDetailPage() {
   };
 
   /* =====================
+   * 모집 완료 처리 (작성자만)
+   * ===================== */
+  const handleComplete = async () => {
+    if (!data) return;
+
+    if (!confirm("모집을 완료하시겠어요?")) return;
+
+    try {
+      await api.post(`/boards/${data.id}/complete`);
+      setData({ ...data, status: "COMPLETED" });
+    } catch (e) {
+      alert("완료 처리에 실패했어요.");
+    }
+  };
+
+  /* =====================
    * 파생 데이터
    * ===================== */
   const metaLine = useMemo(() => {
@@ -102,8 +120,8 @@ export default function NoticeBoardDetailPage() {
       data.walkTimeType === "FIXED"
         ? "고정"
         : data.walkTimeType === "FLEXIBLE"
-          ? "협의 가능"
-          : "미정";
+        ? "협의 가능"
+        : "미정";
 
     return `산책시간 ${timeText} · 산책장소 ${data.location}`;
   }, [data]);
@@ -113,28 +131,22 @@ export default function NoticeBoardDetailPage() {
   }
 
   const pet = data.petProfileDto;
+  const isCompleted = data.status === "COMPLETED";
 
   return (
     <div className="nbd-wrapper">
       <div className="nbd-screen">
         <div className="nbd-status" />
 
-        {/* =====================
-         * 상단 헤더
-         * ===================== */}
+        {/* 상단 헤더 */}
         <header className="nbd-top">
-          <button
-            className="nbd-icon-btn"
-            onClick={() => nav(-1)}
-            aria-label="back"
-          >
+          <button className="nbd-icon-btn" onClick={() => nav(-1)}>
             ←
           </button>
-          <button className="nbd-icon-btn" />
         </header>
 
         {/* =====================
-         * 강아지 히어로
+         * 반려견 히어로
          * ===================== */}
         <section className="nbd-hero">
           {pet && (
@@ -148,34 +160,21 @@ export default function NoticeBoardDetailPage() {
               </div>
 
               <div className="nbd-pet-info">
-                {/* 이름 */}
-                <div className="nbd-pet-name-group">
-                  <span className="nbd-pet-name-label">반려견 이름: </span>
-                  <span className="nbd-pet-name">{pet.name}</span>
-                </div>
+                <div className="nbd-pet-label">반려견 이름</div>
+                <div className="nbd-pet-name">{pet.name}</div>
 
-                {/* 기본 정보 */}
                 <div className="nbd-pet-meta">
-                  <div className="nbd-pet-meta-item">
-                    <span className="nbd-pet-meta-label">견종: </span>
-                    <span className="nbd-pet-meta-value">{pet.type}</span>
-                  </div>
-
-                  <div className="nbd-pet-meta-divider" />
-
-                  <div className="nbd-pet-meta-item">
-                    <span className="nbd-pet-meta-label">나이: </span>
-                    <span className="nbd-pet-meta-value">{pet.age}</span>
-                  </div>
+                  <span>견종 {pet.type}</span>
+                  <span className="dot">·</span>
+                  <span>나이 {pet.age}</span>
                 </div>
               </div>
-
             </div>
           )}
         </section>
 
         {/* =====================
-         * 작성자
+         * 작성자 + 상태
          * ===================== */}
         <section className="nbd-author">
           <img
@@ -183,10 +182,35 @@ export default function NoticeBoardDetailPage() {
             src={data.userProfileImageUrl || "/default-profile.png"}
             alt="profile"
           />
+
           <div className="nbd-author-text">
-            <div className="nbd-author-name">{data.userNickname}</div>
-            <div className="nbd-author-meta">{data.location}</div>
+            <div className="nbd-author-top">
+              <span className="nbd-author-name">
+                {data.userNickname}
+              </span>
+
+              <span
+                className={`nbd-board-status ${
+                  isCompleted ? "completed" : "open"
+                }`}
+              >
+                {isCompleted ? "완료" : "모집 중"}
+              </span>
+            </div>
+
+            <div className="nbd-author-meta">
+              {data.location}
+            </div>
           </div>
+
+          {data.myBoard && !isCompleted && (
+            <button
+              className="nbd-complete-btn"
+              onClick={handleComplete}
+            >
+              모집 완료
+            </button>
+          )}
         </section>
 
         {/* =====================
@@ -215,17 +239,16 @@ export default function NoticeBoardDetailPage() {
           <button
             className={`nbd-heart ${data.interested ? "on" : ""}`}
             onClick={toggleInterest}
-            aria-label="like"
-            type="button"
           >
             {data.interested ? "♥" : "♡"}
           </button>
 
           <button
             className="nbd-chat"
+            disabled={isCompleted}
             onClick={() => nav(`/chat/board/${data.id}`)}
           >
-            채팅하기
+            {isCompleted ? "완료된 게시글" : "채팅하기"}
           </button>
         </footer>
       </div>
