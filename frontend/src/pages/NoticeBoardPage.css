@@ -172,3 +172,21 @@
 .nb-safe {
   height: 72px;
 }
+
+.nb-empty {
+  padding: 48px 20px;
+  text-align: left;
+  color: #3b2a1a;
+}
+
+.nb-empty-title {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.nb-empty-desc {
+  font-size: 14px;
+  color: #8a7a6a;
+  line-height: 1.5;
+}

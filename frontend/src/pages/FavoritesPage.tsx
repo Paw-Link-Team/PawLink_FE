@@ -1,14 +1,37 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
+import api from "../api/api";
 import "./FavoritesPage.css";
 
-const DUMMY_FAVORITES = [
-  { id: 11, title: "게시글 제목", desc: "(관심) 산책구..." },
-  { id: 12, title: "게시글 제목", desc: "(관심) 산책..." },
-];
+type FavoriteItem = {
+  boardId: number;
+  title: string;
+  description: string;
+  location: string;
+  viewCount: number;
+};
 
 export default function FavoritesPage() {
   const navigate = useNavigate();
+  const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const res = await api.get("/boards/interests");
+        setFavorites(res.data.data ?? []);
+      } catch (e) {
+        console.error("관심 목록 조회 실패", e);
+        setFavorites([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFavorites();
+  }, []);
 
   return (
     <div className="sub-wrapper">
@@ -19,25 +42,37 @@ export default function FavoritesPage() {
           <button className="sub-back" onClick={() => navigate(-1)}>
             ‹
           </button>
-          {/* ✅ 제목은 헤더에서 제거 (두번째 사진처럼) */}
           <div className="sub-right" />
         </header>
 
-        {/* ✅ 제목을 리스트 위로 이동 */}
         <div className="sub-section-title">관심 목록</div>
 
         <ul className="sub-list">
-          {DUMMY_FAVORITES.map((p) => (
+          {loading && <li className="sub-empty">로딩중...</li>}
+
+          {!loading && favorites.length === 0 && (
+            <li className="sub-empty">관심 등록한 게시글이 없습니다.</li>
+          )}
+
+          {favorites.map((p) => (
             <li
-              key={p.id}
+              key={p.boardId}
               className="sub-item"
-              onClick={() => navigate(`/board/${p.id}`)}
+              onClick={() => navigate(`/board/${p.boardId}`)}
             >
-              <div className="sub-thumb" />
+              <div className="sub-thumb">
+                <span className="sub-thumb-ico">♥</span>
+              </div>
+
               <div className="sub-text">
                 <div className="sub-item-title">{p.title}</div>
-                <div className="sub-item-desc">{p.desc}</div>
+                <div className="sub-item-desc">
+                  {p.description.length > 40
+                    ? p.description.slice(0, 40) + "..."
+                    : p.description}
+                </div>
               </div>
+
               <div className="sub-chevron">›</div>
             </li>
           ))}

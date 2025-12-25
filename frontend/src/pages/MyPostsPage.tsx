@@ -1,22 +1,47 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
+import api from "../api/api";
 import "./MyPostsPage.css";
 
-const DUMMY_POSTS = [
-  { id: 1, title: "게시글 제목", desc: "(마감) 산책구..." },
-  { id: 2, title: "게시글 제목", desc: "(진행중) 산책..." },
-  { id: 3, title: "게시글 제목", desc: "(완료) 산책..." },
-];
+type MyPostItem = {
+  boardId: number;
+  title: string;
+  description: string;
+  status: "OPEN" | "COMPLETED";
+};
 
 export default function MyPostsPage() {
   const navigate = useNavigate();
+  const [posts, setPosts] = useState<MyPostItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMyPosts = async () => {
+      try {
+        const res = await api.get("/boards/me");
+        setPosts(res.data.data ?? []);
+      } catch (e) {
+        console.error("내 게시글 조회 실패", e);
+        setPosts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMyPosts();
+  }, []);
+
+  const renderStatusText = (status: MyPostItem["status"]) => {
+    if (status === "COMPLETED") return "(완료)";
+    return "(진행중)";
+  };
 
   return (
     <div className="sub-wrapper">
       <div className="sub-screen">
         <div className="sub-status" />
 
-        {/* ✅ 헤더: 뒤로가기만 */}
         <header className="sub-top">
           <button className="sub-back" onClick={() => navigate(-1)}>
             ‹
@@ -24,20 +49,30 @@ export default function MyPostsPage() {
           <div className="sub-right" />
         </header>
 
-        {/* ✅ 제목을 리스트 위로 이동 */}
         <div className="sub-section-title">내가 올린 게시글</div>
 
         <ul className="sub-list">
-          {DUMMY_POSTS.map((p) => (
+          {loading && <li className="sub-empty">로딩중...</li>}
+
+          {!loading && posts.length === 0 && (
+            <li className="sub-empty">작성한 게시글이 없습니다.</li>
+          )}
+
+          {posts.map((p) => (
             <li
-              key={p.id}
+              key={p.boardId}
               className="sub-item"
-              onClick={() => navigate(`/board/${p.id}`)}
+              onClick={() => navigate(`/board/${p.boardId}`)}
             >
               <div className="sub-thumb" />
               <div className="sub-text">
                 <div className="sub-item-title">{p.title}</div>
-                <div className="sub-item-desc">{p.desc}</div>
+                <div className="sub-item-desc">
+                  {renderStatusText(p.status)}{" "}
+                  {p.description.length > 30
+                    ? p.description.slice(0, 30) + "..."
+                    : p.description}
+                </div>
               </div>
               <div className="sub-chevron">›</div>
             </li>

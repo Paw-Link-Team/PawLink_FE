@@ -1,13 +1,16 @@
-/* ✅ 전역 header 스타일(merge로 생긴 배경색)을 이 페이지에서만 무조건 무시 */
+/* =========================
+ * Header override (page only)
+ * ========================= */
 .wp-screen header.wp-header {
   background: #ffffff !important;
 }
 
-
-/* wrapper / screen 유지 */
+/* =========================
+ * Wrapper / Screen
+ * ========================= */
 .wp-wrapper {
   min-height: 100vh;
-  background: #ffffff; /* ✅ 상단 '글쓰기' 영역 배경까지 흰색으로 */
+  background: #ffffff;
   display: flex;
   justify-content: center;
 }
@@ -21,18 +24,15 @@
   overflow: hidden;
 }
 
-/* ✅ 상태바: 사실상 제거 */
-.wp-status {
-  height: 8px; /* 🔥 거의 잘라냄 */
-}
-
-/* ✅ 헤더: 버튼 높이에 딱 맞춤 */
+/* =========================
+ * Header
+ * ========================= */
 .wp-header {
   display: grid;
   grid-template-columns: 36px 1fr 36px;
   align-items: center;
-  height: 44px;          /* 🔥 고정 */
-  padding: 0 16px;       /* 🔥 상하 패딩 제거 */
+  height: 44px;
+  padding: 0 16px;
   background: #ffffff;
 }
 
@@ -51,7 +51,7 @@
   font-size: 15px;
   font-weight: 800;
   color: #1a1a1a;
-  line-height: 1;        /* 🔥 글자 위아래 여백 제거 */
+  line-height: 1;
 }
 
 .wp-right {
@@ -59,9 +59,11 @@
   height: 36px;
 }
 
-/* ✅ 폼 시작을 거의 헤더 바로 아래로 */
+/* =========================
+ * Body / Fields
+ * ========================= */
 .wp-body {
-  padding: 4px 16px 0;   /* 🔥 핵심: 위 여백 거의 0 */
+  padding: 4px 16px 0;
 }
 
 .wp-field {
@@ -74,15 +76,17 @@
   margin-bottom: 6px;
 }
 
-/* 입력 필드 */
-.wp-body .wp-input,
-.wp-body .wp-textarea {
+/* =========================
+ * INPUT / TEXTAREA
+ * ========================= */
+.wp-body input.wp-input,
+.wp-body textarea.wp-textarea {
   width: 100%;
   box-sizing: border-box;
   border: 1.5px solid #e6d6c3;
   border-radius: 8px;
-  background: #ffffff !important;
-  color: #1a1a1a !important;
+  background: #ffffff;
+  color: #1a1a1a;
   font-size: 14px;
   padding: 12px;
   outline: none;
@@ -94,12 +98,39 @@
   line-height: 1.4;
 }
 
-/* 하단 안전 여백 */
+/* =========================
+ * SELECT (🔥 핵심 수정 영역)
+ * ========================= */
+.wp-body select.wp-input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1.5px solid #e6d6c3;
+  border-radius: 8px;
+
+  background-color: #ffffff;
+  color: #1a1a1a;
+  font-size: 14px;
+  padding: 12px;
+
+  outline: none;
+
+  /* Safari / iOS 대응 */
+  -webkit-text-fill-color: #1a1a1a;
+}
+
+/* dropdown options */
+.wp-body select.wp-input option {
+  color: #1a1a1a;
+  background-color: #ffffff;
+}
+
+/* =========================
+ * Footer / Button
+ * ========================= */
 .wp-safe {
   height: 88px;
 }
 
-/* 하단 버튼 */
 .wp-footer {
   position: absolute;
   left: 0;
@@ -127,14 +158,31 @@
   color: #ffffff;
 }
 
-/* 홈 인디케이터 */
-.wp-home-indicator {
-  position: absolute;
-  bottom: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 132px;
-  height: 5px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.12);
+/* =========================
+ * Helper / Link
+ * ========================= */
+.wp-helper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #8c7f74;
+  padding: 10px 4px;
+}
+
+.wp-link {
+  border: none;
+  background: none;
+  padding: 0;
+  margin-left: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #75401f;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.wp-link:hover {
+  opacity: 0.85;
 }
