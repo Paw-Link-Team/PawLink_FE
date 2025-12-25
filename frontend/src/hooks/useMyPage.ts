@@ -7,9 +7,11 @@ import {
 } from "../api/mypage";
 
 export type UserResponse = {
+    userId: number;
     email: string;
     nickname: string;
     profileImageUrl: string;
+    phoneNumber?: string;
 };
 
 export type WalkHistoryItem = {
