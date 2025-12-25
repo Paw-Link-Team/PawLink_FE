@@ -54,6 +54,10 @@ import NetworkErrorPage from "./pages/error/NetworkErrorPage";
 import ChargePage from "./pages/ChargePage";
 import WithdrawPage from "./pages/WithdrawPage";
 
+import WalkStartPage from "./pages/walk/WalkStartPage";
+import WalkInProgressPage from "./pages/walk/WalkInProgressPage.tsx";
+import WalkResultPage from "./pages/walk/WalkResultPage";
+
 export default function App() {
   return (
     <Routes>
@@ -125,6 +129,11 @@ export default function App() {
       {/* ===== 반려견 ===== */}
       <Route path="/mypage/pet/create" element={<PetCreatePage />} />
       <Route path="/mypage/pet/:petId/edit" element={<PetEditPage />} />
+
+      {/* ===== 산책 ===== */}
+      <Route path="/walk/start" element={<WalkStartPage />} />
+      <Route path="/walk/in-progress" element={<WalkInProgressPage />} />
+      <Route path="/walk/result" element={<WalkResultPage />} />
 
       {/* ===== 없는 주소 ===== */}
       {/* <Route path="*" element={<Navigate to="/splash" replace />} /> */}
