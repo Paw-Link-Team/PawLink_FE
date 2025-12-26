@@ -108,7 +108,13 @@ export default function App() {
 
       {/* ===== 채팅 ===== */}
       <Route path="/chat" element={<ChatPage />} />
-      <Route path="/chat/board/:roomId" element={<ChatRoomPage />} />
+      
+      {/* 1. 채팅방 ID로 직접 접근 (목록에서 클릭 시) */}
+      <Route path="/chat/:roomId" element={<ChatRoomPage />} />
+      
+      {/* 2. 게시글 ID로 접근 (게시글에서 '채팅하기' 클릭 시) */}
+      <Route path="/chat/board/:boardId" element={<ChatRoomPage />} />
+      
       <Route
         path="/chat/:roomId/appointment"
         element={<AppointmentPage />}
