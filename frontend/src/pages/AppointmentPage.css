@@ -1,38 +1,25 @@
 /* =========================
-   Variables
+   Root Colors
    ========================= */
 :root {
-  --bg-ivory: #fef7e9;
   --c-brand: #75401f;
   --c-deep: #3f3028;
-  --c-sand: #8c7f74;
+  --c-muted: #b8b0a8;
+  --c-line: rgba(186, 176, 166, 0.45);
   --c-disabled: #bab0a6;
-  --line-soft: rgba(186, 176, 166, 0.45);
 }
 
 /* =========================
-   Screen / Layout
+   Screen
    ========================= */
 .ap-screen {
   width: 100%;
   max-width: 390px;
   height: 100vh;
   background: #fff;
-  position: relative;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-}
-
-.ap-status {
-  height: 24px;
-}
-
-.ap-scroll {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 120px;
+  position: relative;
 }
 
 /* =========================
@@ -42,23 +29,19 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 16px;
+  padding: 12px 16px;
 }
 
 .ap-x {
-  width: 36px;
-  height: 36px;
   border: none;
   background: transparent;
   font-size: 22px;
   color: var(--c-brand);
   cursor: pointer;
-  display: grid;
-  place-items: center;
 }
 
 .ap-title {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
   color: var(--c-deep);
 }
@@ -67,7 +50,7 @@
    Body
    ========================= */
 .ap-body {
-  padding: 8px 16px 0;
+  padding: 0 16px;
   display: flex;
   flex-direction: column;
 }
@@ -77,231 +60,80 @@
    ========================= */
 .ap-row {
   display: grid;
-  grid-template-columns: 110px 1fr 36px;
+  grid-template-columns: 90px 1fr;
   align-items: center;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line-soft);
+  padding: 16px 0;
+  border-bottom: 1px solid var(--c-line);
   cursor: pointer;
-}
-
-.ap-row:active {
-  background: rgba(0, 0, 0, 0.02);
 }
 
 .ap-label {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--c-deep);
 }
 
+/* 값 (기본) */
 .ap-value {
-  font-size: 12px;
-  font-weight: 500;
-  color: #b8b0a8;
+  text-align: right;
+  font-size: 13px;
+  color: var(--c-muted);
 }
 
+/* 값 (선택됨 → 갈색) */
 .ap-value.filled {
-  color: var(--c-deep);
+  color: var(--c-brand);
   font-weight: 700;
 }
 
-.ap-right {
-  text-align: right;
-  font-size: 14px;
-  color: var(--c-disabled);
-}
-
 /* =========================
-   Panel
-   ========================= */
-.ap-panel {
-  padding: 10px 0 14px;
-  border-bottom: 1px solid var(--line-soft);
-}
-
-/* =========================
-   Map / Place
+   Map Panel
    ========================= */
 .ap-panel-map {
-  padding: 10px 0 14px;
+  padding: 12px 0 16px;
 }
 
-.ap-map {
-  width: 100%;
-  height: 220px;
-  background: #f2f2f2;
-  border-radius: 12px;
-  position: relative;
-  overflow: hidden;
-}
-
-.ap-map-pin {
-  width: 18px;
-  height: 18px;
-  background: var(--c-brand);
-  border-radius: 50%;
-  position: absolute;
-  left: 50%;
-  top: 52%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
-}
-
-.ap-map-label {
-  position: absolute;
-  left: 50%;
-  top: calc(52% + 18px);
-  transform: translateX(-50%);
+.ap-map-place {
+  margin-top: 8px;
   font-size: 12px;
-  font-weight: 700;
   color: var(--c-deep);
-  background: rgba(255, 255, 255, 0.9);
-  padding: 6px 10px;
-  border-radius: 999px;
+  font-weight: 600;
 }
 
 /* =========================
-   Place Card
+   Hidden Native Pickers
    ========================= */
-.ap-place-card {
-  border: 1px solid var(--line-soft);
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 12px;
-  display: grid;
-  grid-template-columns: 1fr 18px;
-  gap: 6px;
-  cursor: pointer;
-  background: #fff;
-}
-
-.ap-place-title {
-  font-size: 12px;
-  font-weight: 800;
-  color: var(--c-deep);
-}
-
-.ap-place-sub {
-  font-size: 11px;
-  color: var(--c-sand);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ap-place-check {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 2px solid var(--line-soft);
-  align-self: center;
-}
-
-.ap-place-card.selected {
-  border-color: var(--c-brand);
-  background: rgba(242, 232, 221, 0.6);
-}
-
-.ap-place-card.selected .ap-place-check {
-  background: var(--c-brand);
-  border-color: var(--c-brand);
+.ap-hidden-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* =========================
-   Footer (Portal)
+   Footer (Fixed Button)
    ========================= */
 .ap-footer-portal {
   position: fixed;
   left: 50%;
-  bottom: 18px;
   transform: translateX(-50%);
+  bottom: 18px;
   width: min(390px, calc(100% - 32px));
   padding: 0 16px;
-  z-index: 2147483647;
 }
 
 .ap-btn {
   width: 100%;
-  height: 46px;
+  height: 48px;
   border-radius: 24px;
   border: none;
   background: var(--c-brand);
   color: #fff;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 800;
+  cursor: pointer;
 }
 
 .ap-btn:disabled {
   background: var(--c-disabled);
   cursor: not-allowed;
-}
-
-/* =========================
-   Complete
-   ========================= */
-.ap-complete {
-  padding: 24px 18px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.ap-complete-icon {
-  width: 70px;
-  height: 70px;
-  margin-top: 64px;
-  margin-bottom: 14px;
-  border-radius: 50%;
-  background: var(--c-brand);
-  color: #fff;
-  display: grid;
-  place-items: center;
-  font-size: 26px;
-}
-
-.ap-complete-title {
-  text-align: center;
-  font-size: 16px;
-  font-weight: 900;
-  color: var(--c-deep);
-  line-height: 1.35;
-  margin-bottom: 26px;
-}
-
-.ap-summary {
-  width: 100%;
-}
-
-.ap-srow {
-  display: grid;
-  grid-template-columns: 140px 1fr;
-  gap: 10px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--line-soft);
-}
-
-.ap-slabel {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--c-deep);
-}
-
-.ap-svalue {
-  font-size: 12px;
-  color: var(--c-deep);
-  text-align: right;
-}
-
-/* =========================
-   Home Indicator
-   ========================= */
-.ap-home-indicator {
-  position: absolute;
-  bottom: 6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 130px;
-  height: 5px;
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 999px;
 }
