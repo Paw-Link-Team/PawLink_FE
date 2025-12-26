@@ -26,11 +26,6 @@ type OwnerRankItem = {
   reviewCount: number;
 };
 
-type MeResponse = {
-  userId: number;
-  role: "USER" | "ADMIN" | "SUPER_ADMIN";
-};
-
 export default function AdminHomePage() {
   const navigate = useNavigate();
 
