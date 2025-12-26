@@ -45,10 +45,10 @@ export default function AdminHomePage() {
    * 관리자 권한 체크
    * ===================== */
   useEffect(() => {
-    api
-      .get<MeResponse>("/mypage/info")
+    api.get("/mypage/info")
       .then((res) => {
-        if (res.data.role === "USER") {
+        const me = res.data.data;
+        if (me.role === "USER") {
           navigate("/home", { replace: true });
         } else {
           setChecked(true);
@@ -56,6 +56,19 @@ export default function AdminHomePage() {
       })
       .catch(() => navigate("/login/screen", { replace: true }));
   }, [navigate]);
+
+  useEffect(() => {
+    if (!checked) return;
+
+    api
+      .get("/api/rank/walkers?size=5")
+      .then((res) => setWalkerRanks(res.data.data));
+
+    api
+      .get("/api/rank/owners?size=5")
+      .then((res) => setOwnerRanks(res.data.data));
+  }, [checked]);
+
 
   /* =====================
    * 랭킹 로드

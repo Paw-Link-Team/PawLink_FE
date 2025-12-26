@@ -256,7 +256,7 @@
   height: 52px;
   border-radius: 999px;
   border: none;
-  background: var(--brand-brown);
+  background: #75401f;
   color: #ffffff;
   font-size: 14px;
   font-weight: 900;
@@ -368,4 +368,21 @@
   font-weight: 700;
   color: var(--brand-brown);
   cursor: pointer;
+}
+
+.nbd-complete-btn {
+  padding: 8px 14px;
+  border-radius: 14px;
+  border: none;
+  font-size: 13px;
+  font-weight: 800;
+  background: #7a4a22;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* 모집 중으로 변경 버튼 */
+.nbd-complete-btn.reopen {
+  background: #e5e0db;
+  color: #4a3a2a;
 }
