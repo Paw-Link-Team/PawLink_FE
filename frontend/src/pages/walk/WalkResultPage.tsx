@@ -1,122 +1,97 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { formatTime } from "../../features/walk/utills/time";
+import "./WalkResultPage.css";
 
-type ResultState = {
+type WalkHistory = {
+  startedAt: string;
+  endedAt: string;
+  durationSec: number;
   distanceKm: number;
-  elapsedSec: number;
+  avgSpeed: number;
+  memo?: string;
+  poop: "O" | "X";
 };
 
 export default function WalkResultPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const state = location.state as ResultState | null;
 
-  // 새로고침 / 직접 접근 방지
-  if (!state) {
-    navigate("/home", { replace: true });
-    return null;
+  // ✅ state 우선, 없으면 sessionStorage에서 복구
+  const data: WalkHistory | null =
+    (location.state as WalkHistory | null) ??
+    JSON.parse(
+      sessionStorage.getItem("lastWalkResult") || "null"
+    );
+
+  if (!data) {
+    return (
+      <div className="walk-result empty">
+        <p>잘못된 접근입니다.</p>
+        <button onClick={() => navigate("/mypage")}>
+          마이페이지로
+        </button>
+      </div>
+    );
   }
 
-  const { distanceKm, elapsedSec } = state;
-
   return (
-    <div style={styles.container}>
-      <h2 style={styles.title}>산책 완료 🎉</h2>
-
-      <div style={styles.card}>
-        <div>
-          <strong>이동 거리</strong>
-          <div>{distanceKm.toFixed(2)} km</div>
-        </div>
-
-        <div>
-          <strong>산책 시간</strong>
-          <div>{formatTime(elapsedSec)}</div>
-        </div>
+    <div className="walk-result">
+      <div className="result-header">
+        <div className="icon">🐾</div>
+        <h2>산책이 완료되었습니다</h2>
       </div>
 
-      <p style={styles.desc}>
-        오늘도 건강한 산책을 완료했어요!
-      </p>
-
-      <div style={styles.actions}>
-        <button
-          style={styles.primaryBtn}
-          onClick={() => navigate("/home")}
-        >
-          홈으로
-        </button>
-
-        <button
-          style={styles.secondaryBtn}
-          onClick={() => navigate("/mypage")}
-        >
-          산책 기록 보기
-        </button>
+      <div className="result-card">
+        <ResultRow
+          label="산책 시간"
+          value={formatTime(data.durationSec)}
+        />
+        <ResultRow
+          label="이동 거리"
+          value={`${data.distanceKm.toFixed(2)} km`}
+        />
+        <ResultRow
+          label="평균 속도"
+          value={`${data.avgSpeed.toFixed(1)} km/h`}
+        />
+        <ResultRow
+          label="배변 여부"
+          value={data.poop === "O" ? "있음" : "없음"}
+        />
       </div>
+
+      {data.memo && (
+        <div className="memo-card">
+          <div className="memo-title">산책 메모</div>
+          <div className="memo-content">{data.memo}</div>
+        </div>
+      )}
+
+      <button
+        className="result-btn"
+        onClick={() => {
+          // ✅ 완료 시 정리
+          sessionStorage.removeItem("lastWalkResult");
+          navigate("/mypage");
+        }}
+      >
+        완료
+      </button>
     </div>
   );
 }
 
-/* =========================
- * utils
- * ========================= */
-function formatTime(sec: number) {
-  const h = Math.floor(sec / 3600);
-  const m = Math.floor((sec % 3600) / 60);
-  const s = sec % 60;
-
-  if (h > 0) return `${h}:${pad(m)}:${pad(s)}`;
-  return `${m}:${pad(s)}`;
+function ResultRow({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="result-row">
+      <span className="label">{label}</span>
+      <span className="value">{value}</span>
+    </div>
+  );
 }
-
-const pad = (n: number) => String(n).padStart(2, "0");
-
-/* =========================
- * styles (임시)
- * ========================= */
-const styles = {
-  container: {
-    padding: "24px 16px",
-    display: "flex",
-    flexDirection: "column" as const,
-    gap: 24,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: 700,
-  },
-  card: {
-    display: "flex",
-    justifyContent: "space-between",
-    padding: 20,
-    borderRadius: 12,
-    background: "#f5f5f5",
-  },
-  desc: {
-    fontSize: 14,
-    color: "#555",
-  },
-  actions: {
-    display: "flex",
-    gap: 12,
-  },
-  primaryBtn: {
-    flex: 1,
-    height: 48,
-    borderRadius: 12,
-    border: "none",
-    backgroundColor: "#222",
-    color: "#fff",
-    fontWeight: 600,
-    cursor: "pointer",
-  },
-  secondaryBtn: {
-    flex: 1,
-    height: 48,
-    borderRadius: 12,
-    border: "1px solid #ddd",
-    backgroundColor: "#fff",
-    fontWeight: 600,
-    cursor: "pointer",
-  },
-};
