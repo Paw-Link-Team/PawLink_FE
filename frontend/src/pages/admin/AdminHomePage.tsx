@@ -34,13 +34,14 @@ export default function AdminHomePage() {
   const [userId, setUserId] = useState("");
 
   const [walkerRanks, setWalkerRanks] = useState<WalkerRankItem[]>([]);
-  const [ownerRanks, setOwnerRanks] = useState<OwnerRankItem[]>([]);
+  const [ownerRanks] = useState<OwnerRankItem[]>([]); // 아직 API 없음
 
   /* =====================
    * 관리자 권한 체크
    * ===================== */
   useEffect(() => {
-    api.get("/mypage/info")
+    api
+      .get("/mypage/info")
       .then((res) => {
         const me = res.data.data;
         if (me.role === "USER") {
@@ -52,50 +53,49 @@ export default function AdminHomePage() {
       .catch(() => navigate("/login/screen", { replace: true }));
   }, [navigate]);
 
-  useEffect(() => {
-    if (!checked) return;
-
-    api
-      .get("/api/rank/walkers?size=5")
-      .then((res) => setWalkerRanks(res.data.data));
-
-    api
-      .get("/api/rank/owners?size=5")
-      .then((res) => setOwnerRanks(res.data.data));
-  }, [checked]);
-
-
   /* =====================
-   * 랭킹 로드
+   * 산책가 랭킹 로드
    * ===================== */
   useEffect(() => {
     if (!checked) return;
 
     api
-      .get<WalkerRankItem[]>("/api/rank/walkers?size=5")
-      .then((res) => setWalkerRanks(res.data));
-
-    api
-      .get<OwnerRankItem[]>("/api/rank/owners?size=5")
-      .then((res) => setOwnerRanks(res.data));
+      .get<WalkerRankItem[]>("/api/walkers/rank", {
+        params: { size: 5 },
+      })
+      .then((res) => setWalkerRanks(res.data))
+      .catch((err) => {
+        console.error("산책가 랭킹 조회 실패", err);
+      });
   }, [checked]);
 
-  if (!checked) return null;
+  /* =====================
+   * 유저 존재 확인 후 이동
+   * ===================== */
+  const goProfile = async (mode: ViewMode, id: number) => {
+    if (!id || Number.isNaN(id)) {
+      alert("유효한 유저 ID를 입력해주세요.");
+      return;
+    }
 
-  const goProfile = (mode: ViewMode, id: number) => {
-    if (!id) return;
-
-    if (mode === "OWNER") {
-      navigate(`/owners/${id}`);
-    } else {
-      navigate(`/walkers/${id}`);
+    try {
+      if (mode === "OWNER") {
+        await api.get(`/api/owners/${id}`);
+        navigate(`/owners/${id}`);
+      } else {
+        await api.get(`/api/walkers/${id}`);
+        navigate(`/walkers/${id}`);
+      }
+    } catch (err) {
+      alert("해당 유저가 존재하지 않습니다.");
     }
   };
+
+  if (!checked) return null;
 
   /* =====================
    * 렌더
    * ===================== */
-
   return (
     <div className="ah-wrapper">
       <div className="ah-screen">
@@ -145,7 +145,11 @@ export default function AdminHomePage() {
 
           {/* 산책가 랭킹 */}
           <section className="ah-section">
-            <h3 className="ah-section-title">🏃 산책가 주간 랭킹</h3>
+            <h3 className="ah-section-title">🏃 산책가 랭킹</h3>
+
+            {walkerRanks.length === 0 && (
+              <p className="ah-empty">랭킹 데이터가 없습니다.</p>
+            )}
 
             {walkerRanks.map((r) => (
               <div
@@ -157,30 +161,19 @@ export default function AdminHomePage() {
                   {r.rank}. {r.nickname}
                 </strong>
                 <span>
-                  {r.totalDistanceKm}km · {r.walkCount}마리
+                  {r.totalDistanceKm}km · {r.walkCount}회
                 </span>
               </div>
             ))}
           </section>
 
-          {/* 보호자 랭킹 */}
+          {/* 보호자 랭킹 (백엔드 미구현) */}
           <section className="ah-section">
-            <h3 className="ah-section-title">🐶 보호자 주간 랭킹</h3>
+            <h3 className="ah-section-title">🐶 보호자 랭킹</h3>
 
-            {ownerRanks.map((r) => (
-              <div
-                key={r.userId}
-                className="ah-rank-row"
-                onClick={() => goProfile("OWNER", r.userId)}
-              >
-                <strong>
-                  {r.rank}. {r.nickname}
-                </strong>
-                <span>
-                  반려견 {r.petCount} · 리뷰 {r.reviewCount}
-                </span>
-              </div>
-            ))}
+            {ownerRanks.length === 0 && (
+              <p className="ah-empty">보호자 랭킹 API 미구현</p>
+            )}
           </section>
         </main>
 

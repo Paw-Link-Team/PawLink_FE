@@ -1,281 +1,315 @@
-/* =================================================
-   ChatRoomPage (CRP FINAL)
-   기준: PhoneFrame 내부 전용
-   ================================================= */
-
 /* =========================
-   Screen
-   ========================= */
-
+ * Layout
+ * ========================= */
 .crp-screen {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: #fbf6ee;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  height: 100%;
+  background-color: #f4efe9; /* 전체 아이보리 톤 */
+}
+
+.crp-full {
+  height: 100%;
 }
 
 /* =========================
-   Top Bar
-   ========================= */
-
+ * Top Bar
+ * ========================= */
 .crp-topbar {
-  height: 48px;
-  display: grid;
-  grid-template-columns: 48px 1fr 48px;
+  height: 52px;
+  display: flex;
   align-items: center;
-  background: #fbf6ee;
-  border-bottom: 1px solid #e6e0d6;
+  padding: 0 14px;
+  background: #f4efe9;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .crp-topbar-btn {
   border: none;
-  background: none;
-  font-size: 20px;
-  color: #4a3f33;
+  background: transparent;
+  font-size: 22px;
+  color: #3f3028;
   cursor: pointer;
 }
 
 .crp-topbar-title {
+  flex: 1;
   text-align: center;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
-  color: #4a3f33;
+  color: #3f3028;
 }
 
 /* =========================
-   Post Summary
-   ========================= */
-
+ * Post Summary
+ * ========================= */
 .crp-post {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-bottom: 1px solid #e6e0d6;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #fff;
+  border-bottom: 8px solid #f4efe9;
+  cursor: pointer;
 }
 
 .crp-post-thumb {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: #8c6239;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #75401f;
   display: grid;
   place-items: center;
   color: #fff;
+  font-size: 18px;
 }
 
 .crp-post-title {
   font-size: 14px;
   font-weight: 700;
-  color: #4a3f33;
+  color: #3f3028;
+  margin-bottom: 2px;
 }
 
 .crp-post-sub {
   font-size: 12px;
-  color: #8d8478;
-  margin-top: 2px;
+  color: #8c7f74;
 }
 
 /* =========================
-   Chat Area
-   ========================= */
-
+ * Chat Area
+ * ========================= */
 .crp-chat {
   flex: 1;
   overflow-y: auto;
-  padding: 14px 14px 96px; /* 하단 입력바 공간 확보 */
+  padding: 16px 14px;
 }
 
 .crp-empty {
-  margin-top: 120px;
   text-align: center;
-  font-size: 14px;
-  color: #b3261e;
+  margin-top: 40px;
+  font-size: 13px;
+  color: #a49a90;
+}
+
+/* 날짜 */
+.crp-date-header {
+  text-align: center;
+  font-size: 11px;
+  color: #a49a90;
+  margin: 14px 0;
 }
 
 /* =========================
-   Date Divider
-   ========================= */
-
-.crp-date {
-  margin: 14px auto;
-  padding: 4px 12px;
-  font-size: 12px;
-  color: #8d8478;
-  background: #efe7db;
-  border-radius: 12px;
-  width: fit-content;
-}
-
-/* =========================
-   Message Row
-   ========================= */
-
-.crp-row {
-  display: flex;
-  align-items: flex-end;
-  margin: 6px 0;
-}
-
-.crp-row.left {
-  justify-content: flex-start;
-}
-
-.crp-row.right {
-  justify-content: flex-end;
-}
-
-/* avatar */
-
-.crp-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #75401f;
-  margin-right: 6px;
-  flex-shrink: 0;
-}
-
-.crp-avatar.ghost {
-  visibility: hidden;
-}
-
-/* =========================
-   Message Bubble
-   ========================= */
-
+ * Message Bubble
+ * ========================= */
 .crp-msg {
-  max-width: 72%;
   display: flex;
   flex-direction: column;
+  max-width: 72%;
+  margin-bottom: 12px;
 }
 
-.crp-bubble {
-  padding: 8px 12px;
-  font-size: 13px;
-  line-height: 1.4;
-  border-radius: 14px;
-  word-break: break-word;
+.crp-msg-left {
+  align-items: flex-start;
 }
 
-.crp-bubble.left {
+.crp-msg-right {
+  align-items: flex-end;
+  margin-left: auto;
+}
+
+/* 공통 말풍선 */
+.crp-msg-bubble {
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.45;
+  word-break: keep-all;
+}
+
+/* 상대방 말풍선 */
+.crp-msg-left .crp-msg-bubble {
   background: #ffffff;
-  color: #4a3f33;
+  color: #3f3028;
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-top-left-radius: 6px;
 }
 
-.crp-bubble.right {
-  background: #8c6239;
+/* 내 말풍선 (브라운) */
+.crp-msg-right .crp-msg-bubble {
+  background: #75401f;
   color: #ffffff;
   border-top-right-radius: 6px;
 }
 
-.crp-time {
-  margin-top: 2px;
-  font-size: 11px;
-  color: #8d8478;
-  align-self: flex-end;
+/* 시간 */
+.crp-msg-time {
+  margin-top: 4px;
+  font-size: 10px;
+  color: #a49a90;
 }
 
 /* =========================
-   Bottom Input (PhoneFrame 기준)
-   ========================= */
-
-.crp-bottom {
-  position: absolute; /* ❗ fixed 제거 */
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background: #fbf6ee;
-  border-top: 1px solid #e6e0d6;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-/* input bar */
-
+ * Input Bar
+ * ========================= */
 .crp-inputbar {
-  height: 64px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 0 12px;
+  padding: 10px 12px;
+  background: #f4efe9;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.crp-plus,
-.crp-send {
+.crp-inputbar input {
+  flex: 1;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 20px;
   border: none;
-  background: none;
-  font-size: 20px;
-  color: #4a3f33;
+  background: #ffffff;
+  font-size: 14px;
+  outline: none;
+  color: #3f3028;
+}
+
+.crp-inputbar input::placeholder {
+  color: #a49a90;
+}
+
+.crp-inputbar button {
+  width: 38px;
+  height: 38px;
+  margin-left: 8px;
+  border-radius: 50%;
+  border: none;
+  background: #75401f;
+  color: #ffffff;
+  font-size: 16px;
   cursor: pointer;
 }
 
-.crp-send:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.crp-inputbar button:active {
+  opacity: 0.85;
 }
 
-.crp-inputbox {
-  flex: 1;
+/* =========================
+ * Bottom Input Wrapper
+ * ========================= */
+.crp-bottom {
+  background: #f4efe9;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* =========================
+ * Input Bar
+ * ========================= */
+.crp-inputbar {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: #ffffff;
-  border-radius: 18px;
+  gap: 10px;
   padding: 10px 14px;
-  border: 1px solid #e0d8cc;
+  background: #f4efe9;
+}
+
+/* + 버튼 */
+.crp-plus {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: #75401f;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.crp-plus:active {
+  opacity: 0.85;
+}
+
+/* 입력 박스 */
+.crp-inputbox {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 0 14px;
+  height: 42px;
+  display: flex;
+  align-items: center;
 }
 
 .crp-inputbox input {
   width: 100%;
   border: none;
   outline: none;
-  background: transparent;
   font-size: 14px;
-  color: #4a3f33;
+  color: #3f3028;
+  background: transparent;
 }
 
 .crp-inputbox input::placeholder {
-  color: #9c9588;
+  color: #b8b0a8;
 }
 
-/* =========================
-   Plus Panel
-   ========================= */
-
-.crp-plus-panel {
-  padding: 16px 20px;
-  background: #fbf6ee;
-  border-top: 1px solid #e6e0d6;
-  display: flex;
-  justify-content: space-around;
-}
-
-.crp-plus-item {
+/* 전송 버튼 */
+.crp-send {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
   border: none;
-  background: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  background: #75401f;
+  color: #fff;
+  font-size: 18px;
+  display: grid;
+  place-items: center;
   cursor: pointer;
 }
 
-.crp-plus-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  background: #ffffff;
-  border: 1px solid #e0d8cc;
-  display: grid;
-  place-items: center;
+.crp-send:active {
+  opacity: 0.85;
 }
 
+/* =========================
+ * Plus Panel
+ * ========================= */
+.crp-plus-panel {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #f4efe9;
+}
+
+/* 개별 아이템 */
+.crp-plus-item {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  padding: 8px 0 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.crp-plus-item:active {
+  background: #f2e8dd;
+}
+
+/* 아이콘 */
+.crp-plus-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+/* 라벨 */
 .crp-plus-label {
   font-size: 12px;
-  font-weight: 600;
-  color: #4a3f33;
+  font-weight: 700;
+  color: #3f3028;
 }

@@ -10,15 +10,16 @@ export type ChatMessageDto = {
   senderUserId?: number;
   senderNickname?: string;
   message: string;
-  sentAt?: string; // LocalDateTime → ISO string
+  sentAt?: string; // ISO string (LocalDateTime)
   read?: boolean;
 };
 
-/** 약속 정보 */
+/** 약속 정보 (백엔드 LocalDate / LocalTime 기준) */
 export type AppointmentPayload = {
-  date?: string;            // YYYY-MM-DD
-  time?: string;            // HH:mm:ss
+  date?: string;                 // YYYY-MM-DD
+  time?: string;                 // HH:mm:ss
   locationAddress?: string;
+  reminderMinutesBefore?: number;
 };
 
 /** 채팅방 상세 */
@@ -34,7 +35,7 @@ export type ChatRoomDetail = {
     information?: string;
   };
 
-  appointment?: AppointmentPayload;
+  appointment?: AppointmentPayload | null;
   messages: ChatMessageDto[];
 };
 
@@ -44,19 +45,19 @@ export type ChatRoomDetail = {
 
 /**
  * 프론트 조회용 상태
- * (백엔드 ChatRoomStatus와 구분)
+ * (백엔드 ChatRoomStatus와 동일)
  */
 export type ChatRoomStatus = "ALL" | "UNREAD" | "COMPLETED";
 
 /**
- * 백엔드 ChatRoomListDto와 1:1 매칭
+ * 채팅방 목록 DTO
  */
 export interface ChatRoomSummary {
   chatRoomId: number;
   profileImgUrl: string | null;
   title: string | null;
   lastMessage: string | null;
-  lastSentAt: string | null; // LocalDateTime → string
+  lastSentAt: string | null; // ISO string
   unreadCount: number;
   status: ChatRoomStatus;
 }
@@ -65,7 +66,7 @@ export interface ChatRoomSummary {
  * 채팅방 API
  * ====================== */
 
-/** 게시글 ID로 채팅방 생성/조회 */
+/** 게시글 ID로 채팅방 생성 또는 조회 */
 export const createChatRoomByBoardId = (boardId: number) => {
   return api.post<{
     success: boolean;
@@ -87,7 +88,7 @@ export const fetchChatRooms = (status: ChatRoomStatus) => {
     success: boolean;
     data: ChatRoomSummary[];
   }>("/api/chat/rooms", {
-    params: { status },
+    params: { filter: status },
   });
 };
 
@@ -96,7 +97,7 @@ export const fetchUnreadMessages = (chatRoomId: number) => {
   return api.get<{
     success: boolean;
     data: ChatMessageDto[];
-  }>(`/api/chat/rooms/${chatRoomId}/messages/unread`);
+  }>(`/api/chat/rooms/${chatRoomId}/unread`);
 };
 
 /* ======================
@@ -111,7 +112,7 @@ export const fetchAppointmentByRoom = (chatRoomId: number) => {
   }>(`/api/chat/rooms/${chatRoomId}/appointment`);
 };
 
-/** 채팅방 기준 약속 생성/수정 */
+/** 채팅방 기준 약속 생성 / 수정 */
 export const upsertAppointmentByRoom = (
   chatRoomId: number,
   payload: AppointmentPayload
@@ -122,10 +123,7 @@ export const upsertAppointmentByRoom = (
 };
 
 /* ======================
- * 🔥 호환용 alias
+ * 🔥 기존 코드 호환 alias
  * ====================== */
 
-/**
- * 기존 코드 호환용
- */
 export const upsertAppointment = upsertAppointmentByRoom;

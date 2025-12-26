@@ -13,6 +13,7 @@ export function useChatSocket(
     if (!Number.isFinite(roomId) || !socketOrigin) return;
 
     const socket = io(socketOrigin, {
+      path: "/socket.io",
       transports: ["websocket"],
       withCredentials: true,
     });
