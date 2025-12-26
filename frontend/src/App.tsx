@@ -23,7 +23,7 @@ import WalkLivePage from "./pages/WalkLivePage";
 
 /* ===== 채팅 ===== */
 import ChatPage from "./pages/Chat";
-import ChatRoomPage from "./pages/ChatRoom";
+import ChatRoomPage from "./pages/ChatRoomPage";
 import AppointmentPage from "./pages/AppointmentPage";
 
 /* ===== 마이페이지 ===== */

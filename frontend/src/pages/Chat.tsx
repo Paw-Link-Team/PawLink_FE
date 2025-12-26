@@ -1,4 +1,4 @@
-// frontend/src/pages/Chat.tsx (또는 ChatPage.tsx)
+// frontend/src/pages/ChatPage.tsx
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
@@ -14,25 +14,41 @@ const TAB_TO_FILTER: Record<TabKey, ChatRoomStatus> = {
   done: "COMPLETED",
 };
 
+/* ======================
+ * utils
+ * ====================== */
 const formatListTime = (value?: string | null) => {
   if (!value) return "";
-  const parsed = new Date(value);
-  if (Number.isNaN(parsed.getTime())) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "";
   return new Intl.DateTimeFormat("ko-KR", {
     month: "numeric",
     day: "numeric",
     hour: "numeric",
     minute: "numeric",
-  }).format(parsed);
+  }).format(d);
 };
 
-const Avatar = ({ profileUrl, title }: { profileUrl?: string | null; title?: string | null }) => {
+/* ======================
+ * Avatar
+ * ====================== */
+const Avatar = ({
+  profileUrl,
+  title,
+}: {
+  profileUrl?: string | null;
+  title?: string | null;
+}) => {
   if (profileUrl) {
     return <img src={profileUrl} alt={title ?? "채팅 상대"} />;
   }
 
   return (
-    <svg className="chat-avatar-paw" viewBox="0 0 24 24" aria-hidden="true">
+    <svg
+      className="chat-avatar-paw"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
       <circle cx="7.3" cy="8.4" r="2" />
       <circle cx="12" cy="6.9" r="2.1" />
       <circle cx="16.7" cy="8.4" r="2" />
@@ -42,82 +58,128 @@ const Avatar = ({ profileUrl, title }: { profileUrl?: string | null; title?: str
   );
 };
 
+/* ======================
+ * Component
+ * ====================== */
 export default function ChatPage() {
-  const nav = useNavigate();
+  const navigate = useNavigate();
+
   const [tab, setTab] = useState<TabKey>("all");
   const [rooms, setRooms] = useState<ChatRoomSummary[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  /* ======================
+   * fetch rooms
+   * ====================== */
   useEffect(() => {
-    let ignore = false;
-    const fetchRooms = async () => {
+    let cancelled = false;
+
+    const load = async () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await fetchChatRooms(TAB_TO_FILTER[tab]);
-        if (ignore) return;
-        setRooms(response.data.data ?? []);
-      } catch (err) {
-        if (ignore) return;
-        console.error("채팅방 조회 실패", err);
+
+        const res = await fetchChatRooms(TAB_TO_FILTER[tab]);
+        if (cancelled) return;
+
+        setRooms(res.data.data ?? []);
+      } catch (e) {
+        if (cancelled) return;
+        console.error(e);
         setRooms([]);
         setError("채팅 목록을 불러오지 못했어요.");
       } finally {
-        if (!ignore) setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
 
-    fetchRooms();
+    load();
     return () => {
-      ignore = true;
+      cancelled = true;
     };
   }, [tab]);
 
-  const listClass = useMemo(() => (tab === "unread" ? "chat-list unread-bg" : "chat-list"), [tab]);
+  /* ======================
+   * derived
+   * ====================== */
+  const listClassName = useMemo(
+    () => `chat-list ${tab === "unread" ? "unread-bg" : ""}`,
+    [tab]
+  );
 
   const goRoom = (roomId: number) => {
-    nav(`/chat/${roomId}`);
+    navigate(`/chat/${roomId}`);
   };
 
+  /* ======================
+   * render body
+   * ====================== */
   const renderBody = () => {
     if (loading) {
-      return <div className="chat-empty">채팅방을 불러오는 중입니다...</div>;
+      return (
+        <div className="chat-empty">
+          채팅방을 불러오는 중입니다...
+        </div>
+      );
     }
 
     if (error) {
-      return <div className="chat-empty error">{error}</div>;
+      return (
+        <div className="chat-empty error">
+          {error}
+        </div>
+      );
     }
 
     if (rooms.length === 0) {
-      return <div className="chat-empty">표시할 채팅방이 없어요.</div>;
+      return (
+        <div className="chat-empty">
+          표시할 채팅방이 없어요.
+        </div>
+      );
     }
 
     return (
-      <ul className={listClass}>
-        {rooms.map((chat) => (
+      <ul className={listClassName}>
+        {rooms.map((room) => (
           <li
-            key={chat.chatRoomId}
+            key={room.chatRoomId}
             className="chat-item"
             role="button"
             tabIndex={0}
-            onClick={() => goRoom(chat.chatRoomId)}
+            onClick={() => goRoom(room.chatRoomId)}
             onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") goRoom(chat.chatRoomId);
+              if (e.key === "Enter" || e.key === " ") {
+                goRoom(room.chatRoomId);
+              }
             }}
           >
             <div className="chat-avatar">
-              <Avatar profileUrl={chat.profileImgUrl} title={chat.title} />
+              <Avatar
+                profileUrl={room.profileImgUrl}
+                title={room.title}
+              />
             </div>
 
             <div className="chat-content">
-              <div className="chat-name">{chat.title ?? "산책 파트너"}</div>
-              <div className="chat-message">{chat.lastMessage ?? "아직 메시지가 없습니다."}</div>
+              <div className="chat-name">
+                {room.title ?? "산책 파트너"}
+              </div>
+              <div className="chat-message">
+                {room.lastMessage ?? "아직 메시지가 없습니다."}
+              </div>
             </div>
 
             <div className="chat-meta">
-              <span className="chat-time">{formatListTime(chat.lastSentAt)}</span>
-              {chat.unreadCount > 0 && <span className="chat-badge">{chat.unreadCount}</span>}
+              <span className="chat-time">
+                {formatListTime(room.lastSentAt)}
+              </span>
+              {room.unreadCount > 0 && (
+                <span className="chat-badge">
+                  {room.unreadCount}
+                </span>
+              )}
             </div>
           </li>
         ))}
@@ -125,23 +187,40 @@ export default function ChatPage() {
     );
   };
 
+  /* ======================
+   * render
+   * ====================== */
   return (
     <div className="chat-wrapper">
       <div className="chat-screen">
         <div className="chat-status-bar" />
 
         <header className="chat-header">
-          <span className="chat-header-title">채팅</span>
+          <span className="chat-header-title">
+            채팅
+          </span>
         </header>
 
         <div className="chat-tabs">
-          <button type="button" className={`chat-tab ${tab === "all" ? "active" : ""}`} onClick={() => setTab("all")}>
+          <button
+            type="button"
+            className={`chat-tab ${tab === "all" ? "active" : ""}`}
+            onClick={() => setTab("all")}
+          >
             전체
           </button>
-          <button type="button" className={`chat-tab ${tab === "unread" ? "active" : ""}`} onClick={() => setTab("unread")}>
+          <button
+            type="button"
+            className={`chat-tab ${tab === "unread" ? "active" : ""}`}
+            onClick={() => setTab("unread")}
+          >
             안 읽은 채팅방
           </button>
-          <button type="button" className={`chat-tab ${tab === "done" ? "active" : ""}`} onClick={() => setTab("done")}>
+          <button
+            type="button"
+            className={`chat-tab ${tab === "done" ? "active" : ""}`}
+            onClick={() => setTab("done")}
+          >
             완료된 산책
           </button>
         </div>
