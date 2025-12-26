@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getWalkSession } from "../api/walk";
+import { getWalkSessionApi } from "../api/walk";
 
 export function useWalkSession() {
   const [loading, setLoading] = useState(true);
@@ -7,7 +7,7 @@ export function useWalkSession() {
   const [startedAt, setStartedAt] = useState<string | null>(null);
 
   useEffect(() => {
-    getWalkSession()
+    getWalkSessionApi()
       .then(res => {
         const data = res.data.data;
         setWalking(data.walking);

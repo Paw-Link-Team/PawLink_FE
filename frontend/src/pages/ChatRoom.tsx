@@ -266,6 +266,48 @@ export default function ChatRoomPage() {
     setInput("");
   };
 
+  const handleWalkClick = async () => {
+    try {
+      // 1️⃣ 현재 산책 중인지 서버에 확인
+      const res = await api.get("/api/walk/session");
+      const walking = res.data.data?.walking === true;
+
+      if (!walking) {
+        // ▶ 산책 시작
+        await api.post("/api/walk/start", {
+          chatRoomId: numericRoomId,
+        });
+
+        socketRef.current?.emit("sendMessage", {
+          chatRoomId: numericRoomId,
+          message: "🐾 산책을 시작했어요!",
+        });
+      } else {
+        // ⏹ 산책 종료
+        const endRes = await api.post("/api/walk/end", {
+          distanceKm: 2.3, // TODO: 실제 거리
+        });
+
+        socketRef.current?.emit("sendMessage", {
+          chatRoomId: numericRoomId,
+          message: "🎉 산책이 종료되었어요! 리뷰를 남겨주세요 🐾",
+        });
+
+        navigate("/walk/result", {
+          state: {
+            chatRoomId: numericRoomId,
+            history: endRes.data.data,
+          },
+        });
+      }
+
+      setIsPlusOpen(false);
+    } catch (e) {
+      alert("산책 처리 중 오류가 발생했어요.");
+    }
+  };
+
+
   const openAppointmentPage = () => {
     if (!roomId) return;
     navigate(`/chat/${roomId}/appointment`, { state: { partnerName: headerName } });
@@ -402,6 +444,14 @@ export default function ChatRoomPage() {
                 ⏰
               </div>
               <div className="cr-plus-label">약속</div>
+            </button>
+            <button
+              className="cr-plus-item cr-walk"
+              onClick={handleWalkClick}
+              disabled={!roomId}
+            >
+              <div className="cr-plus-icon">🐾</div>
+              <div className="cr-plus-label">산책</div>
             </button>
           </div>
         )}

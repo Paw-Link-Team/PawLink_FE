@@ -1,0 +1,78 @@
+.walk-stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 16px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #999;
+}
+
+.stat-value {
+  font-weight: 600;
+}
+
+.walk-actions {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+}
+
+.btn {
+  flex: 1;
+  height: 44px;
+  border-radius: 12px;
+  border: none;
+}
+
+.btn.primary {
+  background: #8b5a2b;
+  color: #fff;
+}
+
+.btn.disabled {
+  background: #eee;
+  color: #aaa;
+}
+
+.walk-memo {
+  padding: 16px;
+}
+
+.memo-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.memo-btn {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+
+.memo-btn.active {
+  background: #8b5a2b;
+  color: #fff;
+}
+
+.walk-memo textarea {
+  width: 100%;
+  border-radius: 10px;
+  padding: 8px;
+  resize: none;
+}
+
+.save-wrapper {
+  padding: 16px;
+}
+
+.btn.save {
+  width: 100%;
+  height: 48px;
+  background: #6b3f1d;
+  color: white;
+  border-radius: 16px;
+}

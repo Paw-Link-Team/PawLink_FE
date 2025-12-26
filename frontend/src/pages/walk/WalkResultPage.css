@@ -1,0 +1,98 @@
+/* frontend/src/pages/walk/WalkResultPage.css */
+
+.walk-result {
+  min-height: 100vh;
+  padding: 24px 16px;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+}
+
+.walk-result.empty {
+  align-items: center;
+  justify-content: center;
+}
+
+.result-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.result-header .icon {
+  font-size: 40px;
+  margin-bottom: 8px;
+}
+
+.result-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* =====================
+ * 결과 카드
+ * ===================== */
+.result-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.result-row + .result-row {
+  border-top: 1px solid #f0f0f0;
+}
+
+.result-row .label {
+  font-size: 14px;
+  color: #888;
+}
+
+.result-row .value {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* =====================
+ * 메모 카드
+ * ===================== */
+.memo-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.memo-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.memo-content {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* =====================
+ * 완료 버튼
+ * ===================== */
+.result-btn {
+  margin-top: auto;
+  height: 48px;
+  border-radius: 16px;
+  border: none;
+  background: #6b3f1d;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
