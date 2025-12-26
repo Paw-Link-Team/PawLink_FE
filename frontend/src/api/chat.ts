@@ -68,3 +68,6 @@ export const fetchAppointmentByRoom = (chatRoomId: number) =>
 
 export const upsertAppointment = (chatRoomId: number, payload: AppointmentPayload) =>
   api.post(`/api/chat/appointments/${chatRoomId}`, payload);
+
+export const createChatRoomByBoardId = (boardId: number) =>
+  api.post<ApiEnvelope<number>>(`/api/chat/board/${boardId}`);

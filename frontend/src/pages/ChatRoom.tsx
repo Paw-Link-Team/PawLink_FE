@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import PhoneFrame from "../components/PhoneFrame";
 import api from "../api/api";
-import { fetchChatRoomDetail } from "../api/chat";
+import { fetchChatRoomDetail, createChatRoomByBoardId } from "../api/chat";
 import type { AppointmentPayload, ChatMessageDto, ChatRoomDetail } from "../api/chat";
 import { getMyInfo } from "../api/mypage";
 import "./ChatRoom.css";
@@ -63,8 +63,8 @@ const SOCKET_ORIGIN = deriveSocketOrigin();
 
 export default function ChatRoomPage() {
   const navigate = useNavigate();
-  const { roomId } = useParams();
-  const numericRoomId = roomId ? Number(roomId) : NaN;
+  const { roomId, boardId } = useParams();
+  const [numericRoomId, setNumericRoomId] = useState<number>(roomId ? Number(roomId) : NaN);
 
   const [input, setInput] = useState("");
   const [isPlusOpen, setIsPlusOpen] = useState(false);
@@ -138,7 +138,7 @@ export default function ChatRoomPage() {
     requestAnimationFrame(() => {
       listRef.current?.scrollTo({ top: listRef.current.scrollHeight });
     });
-  }, [roomId, isPlusOpen, isKeyboardOpen, isCallOpen, messages]);
+  }, [numericRoomId, isPlusOpen, isKeyboardOpen, isCallOpen, messages]);
 
   useEffect(() => {
     if (!isCallOpen) return;
@@ -153,18 +153,35 @@ export default function ChatRoomPage() {
   }, [isCallOpen]);
 
   useEffect(() => {
-    if (!Number.isFinite(numericRoomId)) {
-      setLoading(false);
-      setError("유효하지 않은 채팅방입니다.");
-      return;
-    }
-
     let ignore = false;
-    const load = async () => {
+
+    const init = async () => {
       try {
         setLoading(true);
         setError(null);
-        const [roomRes, meRes] = await Promise.all([fetchChatRoomDetail(numericRoomId), getMyInfo()]);
+
+        let currentRoomId = numericRoomId;
+
+        // boardId가 있고 roomId가 없는 경우 채팅방 생성/조회
+        if (!Number.isFinite(currentRoomId) && boardId) {
+          const createRes = await createChatRoomByBoardId(Number(boardId));
+          if (createRes.data.success) {
+            currentRoomId = createRes.data.data;
+            setNumericRoomId(currentRoomId);
+            // URL 업데이트 (선택사항)
+            // navigate(`/chat/${currentRoomId}`, { replace: true });
+          } else {
+            throw new Error(createRes.data.message || "채팅방 생성 실패");
+          }
+        }
+
+        if (!Number.isFinite(currentRoomId)) {
+          setLoading(false);
+          setError("유효하지 않은 채팅방입니다.");
+          return;
+        }
+
+        const [roomRes, meRes] = await Promise.all([fetchChatRoomDetail(currentRoomId), getMyInfo()]);
         if (ignore) return;
 
         const detailData = roomRes.data.data ?? null;
@@ -184,11 +201,11 @@ export default function ChatRoomPage() {
       }
     };
 
-    load();
+    init();
     return () => {
       ignore = true;
     };
-  }, [numericRoomId]);
+  }, [roomId, boardId]); // numericRoomId는 내부 state이므로 의존성에서 제외하고 로직 내에서 처리
 
   useEffect(() => {
     if (!Number.isFinite(numericRoomId) || !SOCKET_ORIGIN) {
@@ -267,8 +284,8 @@ export default function ChatRoomPage() {
   };
 
   const openAppointmentPage = () => {
-    if (!roomId) return;
-    navigate(`/chat/${roomId}/appointment`, { state: { partnerName: headerName } });
+    if (!numericRoomId) return;
+    navigate(`/chat/${numericRoomId}/appointment`, { state: { partnerName: headerName } });
   };
 
   const canSend = input.trim().length > 0 && Number.isFinite(numericRoomId) && !!me;
@@ -397,7 +414,7 @@ export default function ChatRoomPage() {
               <div className="cr-plus-label">카메라</div>
             </button>
 
-            <button className="cr-plus-item" type="button" aria-label="appointment" onClick={openAppointmentPage} disabled={!roomId}>
+            <button className="cr-plus-item" type="button" aria-label="appointment" onClick={openAppointmentPage} disabled={!numericRoomId}>
               <div className="cr-plus-icon" aria-hidden="true">
                 ⏰
               </div>
