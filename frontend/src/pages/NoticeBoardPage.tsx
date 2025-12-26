@@ -1,9 +1,13 @@
-// frontend/src/pages/NoticeBoardPage.tsx
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import api from "../api/api";
+import { getMyUserId } from "../utils/auth";
 import "./NoticeBoardPage.css";
+
+/* =====================
+ * 타입
+ * ===================== */
 
 type BoardItem = {
   id: number;
@@ -22,14 +26,22 @@ type BoardItem = {
 export default function NoticeBoardPage() {
   const navigate = useNavigate();
 
+  /* =====================
+   * 상태
+   * ===================== */
   const [posts, setPosts] = useState<BoardItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [openMenuId, setOpenMenuId] = useState<number | null>(null);
 
-  useEffect(() => {
-    fetchBoards();
-  }, []);
+  /* =====================
+   * 로그인 유저 ID (JWT)
+   * ===================== */
+  const myUserId = useMemo(() => getMyUserId(), []);
 
-  const fetchBoards = async () => {
+  /* =====================
+   * 게시글 조회
+   * ===================== */
+  const fetchBoards = useCallback(async () => {
     try {
       const res = await api.get("/boards");
       setPosts(res.data?.data ?? []);
@@ -39,96 +51,161 @@ export default function NoticeBoardPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const goSearch = () => {
+  useEffect(() => {
+    fetchBoards();
+  }, [fetchBoards]);
+
+  /* =====================
+   * 액션
+   * ===================== */
+  const goSearch = useCallback(() => {
     navigate("/board/search");
+  }, [navigate]);
+
+  const toggleMenu = useCallback((id: number) => {
+    setOpenMenuId((prev) => (prev === id ? null : id));
+  }, []);
+
+  const deletePost = useCallback(
+    async (id: number) => {
+      if (!confirm("정말 삭제하시겠습니까?")) return;
+
+      try {
+        await api.delete(`/boards/${id}`);
+        setPosts((prev) => prev.filter((p) => p.id !== id));
+        setOpenMenuId(null);
+      } catch (e) {
+        alert("삭제에 실패했습니다.");
+      }
+    },
+    []
+  );
+
+  /* =====================
+   * 렌더 헬퍼
+   * ===================== */
+  const renderPostItem = (post: BoardItem) => {
+    const isMine =
+      myUserId !== null && myUserId === post.userId;
+
+    return (
+      <li
+        key={post.id}
+        className="nb-item"
+        onClick={() => navigate(`/board/${post.id}`)}
+      >
+        <div className="nb-thumb">🐕</div>
+
+        <div className="nb-body">
+          <div className="nb-item-head">
+            <div className="nb-item-title">
+              {post.title}
+            </div>
+
+            {isMine && (
+              <button
+                className="nb-more"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleMenu(post.id);
+                }}
+              >
+                ⋮
+              </button>
+            )}
+          </div>
+
+          <div className="nb-item-desc">
+            {post.description.length > 40
+              ? `${post.description.slice(0, 40)}...`
+              : post.description}
+          </div>
+
+          <div className="nb-item-meta">
+            {post.location} · 조회 {post.viewCount}
+          </div>
+
+          {openMenuId === post.id && (
+            <div
+              className="nb-menu"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() =>
+                  navigate(`/board/edit/${post.id}`)
+                }
+              >
+                수정
+              </button>
+              <button
+                className="danger"
+                onClick={() => deletePost(post.id)}
+              >
+                삭제
+              </button>
+            </div>
+          )}
+        </div>
+      </li>
+    );
   };
 
+  /* =====================
+   * 렌더
+   * ===================== */
   return (
     <div className="nb-wrapper">
       <div className="nb-screen">
         <div className="nb-status" />
 
-        {/* ===== Header ===== */}
+        {/* Header */}
         <header className="nb-header">
           <div className="nb-title">게시판</div>
-
           <button
             className="nb-search"
-            type="button"
-            aria-label="search"
             onClick={goSearch}
+            aria-label="search"
           >
-            <svg className="nb-search-ico" viewBox="0 0 24 24">
-              <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" strokeWidth="2.6" />
-              <path d="M15.6 15.6L21 21" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
-            </svg>
+            🔍
           </button>
         </header>
 
-        {/* ===== Tabs ===== */}
+        {/* Tabs */}
         <div className="nb-tabs">
-          <button className="nb-tab active" type="button">
-            전체
-          </button>
+          <button className="nb-tab active">전체</button>
           <button
             className="nb-tab"
-            type="button"
             onClick={() => navigate("/board/done")}
           >
             완료된 산책
           </button>
         </div>
 
-        {/* ===== List ===== */}
+        {/* List */}
         <ul className="nb-list">
-          {loading && <li className="nb-empty">로딩중...</li>}
+          {loading && (
+            <li className="nb-empty">로딩중...</li>
+          )}
 
           {!loading && posts.length === 0 && (
-            <div className="nb-empty">
+            <li className="nb-empty">
               <div className="nb-empty-title">
-                아직 등록된 산책 글이 없어요 🐾
+                아직 등록된 산책 글이 없어요
               </div>
               <div className="nb-empty-desc">
                 첫 산책 글을 작성해보세요!
               </div>
-            </div>
+            </li>
           )}
 
-          {!loading &&
-            posts.map((p) => (
-              <li
-                key={p.id}
-                className="nb-item"
-                onClick={() => navigate(`/board/${p.id}`)}
-              >
-                <div className="nb-thumb">
-                  <span className="nb-thumb-ico">🐕</span>
-                </div>
-
-                <div className="nb-body">
-                  <div className="nb-item-title">{p.title}</div>
-
-                  <div className="nb-item-desc">
-                    {p.description.length > 40
-                      ? `${p.description.slice(0, 40)}...`
-                      : p.description}
-                  </div>
-
-                  <div className="nb-item-meta">
-                    {p.location} · 조회 {p.viewCount}
-                  </div>
-                </div>
-              </li>
-            ))}
+          {!loading && posts.map(renderPostItem)}
         </ul>
 
-        {/* ===== Floating Button ===== */}
+        {/* FAB */}
         <button
-          type="button"
           className="nb-fab"
-          aria-label="create"
           onClick={() => navigate("/board/write")}
         >
           +

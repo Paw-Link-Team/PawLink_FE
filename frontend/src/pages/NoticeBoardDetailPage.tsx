@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../api/api";
 import "./NoticeBoardDetailPage.css";
 
 /* =====================
- * 타입 정의
+ * 타입
  * ===================== */
 type WalkTimeType = "FIXED" | "FLEXIBLE" | "UNDECIDED";
 type BoardStatus = "OPEN" | "COMPLETED";
@@ -22,134 +22,152 @@ type BoardDetail = {
   title: string;
   description: string;
   location: string;
-
   walkTime: string | null;
   walkTimeType: WalkTimeType;
-
   viewCount: number;
-
   userId: number;
   userNickname: string;
   userProfileImageUrl: string | null;
-
   interested: boolean;
   interestCount: number;
-
   status: BoardStatus;
   myBoard: boolean;
   petProfileDto: PetProfile | null;
 };
 
 export default function NoticeBoardDetailPage() {
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
-  const [data, setData] = useState<BoardDetail | null>(null);
+  const [board, setBoard] = useState<BoardDetail | null>(null);
   const [loading, setLoading] = useState(true);
 
   /* =====================
-   * 상세 조회
+   * 데이터 조회
    * ===================== */
   useEffect(() => {
     if (!id) return;
 
-    const fetchDetail = async () => {
+    (async () => {
       try {
         const res = await api.get(`/boards/${id}`);
-        setData(res.data.data);
+        setBoard(res.data.data);
       } catch (e) {
         console.error("게시글 조회 실패", e);
       } finally {
         setLoading(false);
       }
-    };
-
-    fetchDetail();
+    })();
   }, [id]);
 
   /* =====================
-   * 관심 토글
+   * 파생 상태
    * ===================== */
-  const toggleInterest = async () => {
-    if (!data) return;
+  const isCompleted = board?.status === "COMPLETED";
+  const isMine = board?.myBoard === true;
+  const pet = board?.petProfileDto;
+
+  const metaLine = useMemo(() => {
+    if (!board) return "";
+
+    const timeText =
+      board.walkTimeType === "FIXED"
+        ? "고정"
+        : board.walkTimeType === "FLEXIBLE"
+        ? "협의 가능"
+        : "미정";
+
+    return `산책시간 ${timeText} · 산책장소 ${board.location}`;
+  }, [board]);
+
+  /* =====================
+   * 액션
+   * ===================== */
+
+  const handleToggleInterest = useCallback(async () => {
+    if (!board) return;
 
     try {
-      if (data.interested) {
-        await api.delete(`/boards/${data.id}/interest`);
-        setData({
-          ...data,
-          interested: false,
-          interestCount: data.interestCount - 1,
-        });
+      if (board.interested) {
+        await api.delete(`/boards/${board.id}/interest`);
+        setBoard(prev =>
+          prev
+            ? {
+                ...prev,
+                interested: false,
+                interestCount: prev.interestCount - 1,
+              }
+            : prev
+        );
       } else {
-        await api.post(`/boards/${data.id}/interest`);
-        setData({
-          ...data,
-          interested: true,
-          interestCount: data.interestCount + 1,
-        });
+        await api.post(`/boards/${board.id}/interest`);
+        setBoard(prev =>
+          prev
+            ? {
+                ...prev,
+                interested: true,
+                interestCount: prev.interestCount + 1,
+              }
+            : prev
+        );
       }
     } catch (e) {
       console.error("관심 처리 실패", e);
     }
-  };
+  }, [board]);
 
-  /* =====================
-   * 모집 완료 처리 (작성자만)
-   * ===================== */
-  const handleComplete = async () => {
-    if (!data) return;
+  /** 모집 상태 토글 */
+  const handleToggleStatus = useCallback(async () => {
+    if (!board) return;
 
-    if (!confirm("모집을 완료하시겠어요?")) return;
+    const nextStatus =
+      board.status === "OPEN" ? "COMPLETED" : "OPEN";
+
+    const confirmText =
+      nextStatus === "COMPLETED"
+        ? "모집을 완료하시겠어요?"
+        : "모집을 다시 시작할까요?";
+
+    if (!confirm(confirmText)) return;
 
     try {
-      await api.post(`/boards/${data.id}/complete`);
-      setData({ ...data, status: "COMPLETED" });
+      await api.post(
+        `/boards/${board.id}/${nextStatus === "COMPLETED" ? "complete" : "reopen"}`
+      );
+
+      setBoard(prev =>
+        prev ? { ...prev, status: nextStatus } : prev
+      );
     } catch (e) {
-      alert("완료 처리에 실패했어요.");
+      alert("상태 변경에 실패했어요.");
     }
-  };
+  }, [board]);
 
   /* =====================
-   * 파생 데이터
+   * 로딩
    * ===================== */
-  const metaLine = useMemo(() => {
-    if (!data) return "";
-
-    const timeText =
-      data.walkTimeType === "FIXED"
-        ? "고정"
-        : data.walkTimeType === "FLEXIBLE"
-        ? "협의 가능"
-        : "미정";
-
-    return `산책시간 ${timeText} · 산책장소 ${data.location}`;
-  }, [data]);
-
-  if (loading || !data) {
+  if (loading || !board) {
     return <div className="nbd-loading">로딩중...</div>;
   }
 
-  const pet = data.petProfileDto;
-  const isCompleted = data.status === "COMPLETED";
-
+  /* =====================
+   * 렌더
+   * ===================== */
   return (
     <div className="nbd-wrapper">
       <div className="nbd-screen">
         <div className="nbd-status" />
 
-        {/* 상단 헤더 */}
+        {/* 헤더 */}
         <header className="nbd-top">
-          <button className="nbd-icon-btn" onClick={() => nav(-1)}>
+          <button className="nbd-icon-btn" onClick={() => navigate(-1)}>
             ←
           </button>
         </header>
 
-        {/* =====================
-         * 반려견 히어로
-         * ===================== */}
-        <section className="nbd-hero">
-          {pet && (
+        {/* 반려견 히어로 */}
+        {pet && (
+          <section className="nbd-hero">
             <div className="nbd-pet-profile">
               <div className="nbd-pet-image-wrap">
                 <img
@@ -170,83 +188,70 @@ export default function NoticeBoardDetailPage() {
                 </div>
               </div>
             </div>
-          )}
-        </section>
+          </section>
+        )}
 
-        {/* =====================
-         * 작성자 + 상태
-         * ===================== */}
+        {/* 작성자 */}
         <section className="nbd-author">
           <img
             className="nbd-avatar"
-            src={data.userProfileImageUrl || "/default-profile.png"}
+            src={board.userProfileImageUrl || "/default-profile.png"}
             alt="profile"
           />
 
           <div className="nbd-author-text">
             <div className="nbd-author-top">
-              <span className="nbd-author-name">
-                {data.userNickname}
-              </span>
-
+              <span className="nbd-author-name">{board.userNickname}</span>
               <span
-                className={`nbd-board-status ${
-                  isCompleted ? "completed" : "open"
-                }`}
+                className={`nbd-board-status ${isCompleted ? "completed" : "open"}`}
               >
                 {isCompleted ? "완료" : "모집 중"}
               </span>
             </div>
 
-            <div className="nbd-author-meta">
-              {data.location}
-            </div>
+            <div className="nbd-author-meta">{board.location}</div>
           </div>
 
-          {data.myBoard && !isCompleted && (
+          {isMine && (
             <button
-              className="nbd-complete-btn"
-              onClick={handleComplete}
+              className={`nbd-complete-btn ${isCompleted ? "reopen" : ""}`}
+              onClick={handleToggleStatus}
             >
-              모집 완료
+              {isCompleted ? "모집 중" : "모집 완료"}
             </button>
           )}
         </section>
 
-        {/* =====================
-         * 본문
-         * ===================== */}
+        {/* 본문 */}
         <main className="nbd-content">
-          <div className="nbd-title">{data.title}</div>
+          <div className="nbd-title">{board.title}</div>
           <div className="nbd-meta">{metaLine}</div>
 
           <div className="nbd-body">
             <div className="nbd-body-head">상세 내용</div>
-            <div className="nbd-body-line">{data.description}</div>
+            <div className="nbd-body-line">{board.description}</div>
           </div>
 
           <div className="nbd-stats">
-            관심 {data.interestCount} · 조회 {data.viewCount}
+            관심 {board.interestCount} · 조회 {board.viewCount}
           </div>
 
           <div className="nbd-safe" />
         </main>
 
-        {/* =====================
-         * 하단 액션
-         * ===================== */}
+        {/* 하단 액션 */}
         <footer className="nbd-bottom">
           <button
-            className={`nbd-heart ${data.interested ? "on" : ""}`}
-            onClick={toggleInterest}
+            className={`nbd-heart ${board.interested ? "on" : ""}`}
+            onClick={handleToggleInterest}
           >
-            {data.interested ? "♥" : "♡"}
+            {board.interested ? "♥" : "♡"}
           </button>
 
           <button
             className="nbd-chat"
             disabled={isCompleted}
-            onClick={() => nav(`/chat/board/${data.id}`)}
+            onClick={() => navigate(`/chat/board/${board.id}`)}
           >
             {isCompleted ? "완료된 게시글" : "채팅하기"}
           </button>

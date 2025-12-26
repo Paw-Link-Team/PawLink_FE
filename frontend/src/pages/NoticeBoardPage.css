@@ -85,11 +85,11 @@
 
 .nb-item {
   display: flex;
-  align-items: center;
   gap: 12px;
-  padding: 14px 0;
+  padding: 14px 16px;
   border-bottom: 1px solid #f0f0f0;
   cursor: pointer;
+  align-items: center; /* 🔑 핵심 */
 }
 
 .nb-thumb {
@@ -107,23 +107,23 @@
 }
 
 .nb-body {
+  position: relative; /* 🔑 메뉴 absolute 기준 */
   flex: 1;
   min-width: 0;
 }
 
 .nb-item-title {
-  font-size: 14px;
-  font-weight: 900;
-  color: #2a2a2a;
-  margin-bottom: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #111;
+  line-height: 1.2;
 }
 
 .nb-item-desc {
-  font-size: 12px;
-  color: #8b8b8b;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-top: 4px; /* 🔧 기존보다 줄임 */
+  font-size: 14px;
+  color: #666;
+  line-height: 1.35;
 }
 
 /* =========================
@@ -189,4 +189,71 @@
   font-size: 14px;
   color: #8a7a6a;
   line-height: 1.5;
+}
+
+.nb-item-meta {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #999;
+}
+
+.nb-item-head {
+  display: flex;
+  align-items: center;       /* 🔑 수직 정렬 */
+  justify-content: space-between;
+  gap: 8px;
+}
+
+  .nb-more {
+  background: none;
+  border: none;
+  padding: 4px;
+  font-size: 18px;
+  color: #999;
+}
+
+.nb-item:hover .nb-more {
+  color: #111;
+}
+
+
+.nb-more:hover {
+  color: #111;
+}
+
+.nb-menu {
+  position: absolute;
+  top: 28px;              /* 제목 라인 바로 아래 */
+  right: 0;
+  width: 96px;
+
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #eee;
+
+  z-index: 20;
+  overflow: hidden;
+}
+
+.nb-menu button {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+
+  background: none;
+  border: none;
+  text-align: left;
+
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+.nb-menu button:hover {
+  background: #f5f5f5;
+}
+
+.nb-menu .danger {
+  color: #e53935;
 }

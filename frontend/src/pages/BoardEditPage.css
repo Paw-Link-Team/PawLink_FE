@@ -1,0 +1,24 @@
+/* Page frame for edit/create pages */
+.bp-root {
+  width: 100%;
+  min-height: 100vh;
+  background: #f7f7f7;
+  display: flex;
+  justify-content: center;
+}
+
+.bp-screen {
+  width: 100%;
+  max-width: 420px;
+  min-height: 100vh;
+  background: #fff;
+  position: relative;
+}
+
+.bp-status {
+  height: 24px;
+}
+
+.bp-safe {
+  height: 16px;
+}

@@ -58,6 +58,8 @@ import WalkStartPage from "./pages/walk/WalkStartPage";
 import WalkInProgressPage from "./pages/walk/WalkInProgressPage.tsx";
 import WalkResultPage from "./pages/walk/WalkResultPage";
 
+import BoardEditPage from "./pages/BoardEditPage";
+
 export default function App() {
   return (
     <Routes>
@@ -95,6 +97,7 @@ export default function App() {
       <Route path="/board/done" element={<UnNoticeBoardPage />} />
       <Route path="/board/write" element={<WritePostPage />} />
       <Route path="/board/:id" element={<NoticeBoardDetailPage />} />
+      <Route path="/board/edit/:id" element={<BoardEditPage />} />
 
       {/* ===== 프로필 ===== */}
       <Route path="/walkers/:userId" element={<WalkerProfile />} />
@@ -105,7 +108,7 @@ export default function App() {
 
       {/* ===== 채팅 ===== */}
       <Route path="/chat" element={<ChatPage />} />
-      <Route path="/chat/:roomId" element={<ChatRoomPage />} />
+      <Route path="/chat/board/:roomId" element={<ChatRoomPage />} />
       <Route
         path="/chat/:roomId/appointment"
         element={<AppointmentPage />}
