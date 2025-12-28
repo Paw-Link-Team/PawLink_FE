@@ -25,16 +25,29 @@ export const endWalkApi = (
 ) => {
   const formData = new FormData();
 
-  formData.append("distanceKm", String(payload.distanceKm));
-  formData.append("memo", payload.memo);
-  formData.append("poop", payload.poop);
+  // ✅ 서버가 요구하는 "data" 파트
+  formData.append(
+    "data",
+    new Blob(
+      [
+        JSON.stringify({
+          distanceKm: payload.distanceKm,
+          memo: payload.memo,
+          poop: payload.poop,
+        }),
+      ],
+      { type: "application/json" }
+    )
+  );
 
+  // ✅ images는 그대로 OK
   payload.images?.forEach((file) => {
     formData.append("images", file);
   });
 
   return api.post(`/api/walks/${walkSessionId}/end`, formData);
 };
+
 
 
 /* =====================
