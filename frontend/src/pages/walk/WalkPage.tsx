@@ -11,7 +11,7 @@ type PoopStatus = "O" | "X";
 export default function WalkPage() {
   const navigate = useNavigate();
 
-  const { loading, walking, startedAt } = useWalkSession();
+  const { loading, walking, startedAt, walkId } = useWalkSession();
   const {
     status,
     path,
@@ -31,13 +31,13 @@ export default function WalkPage() {
    * ===================== */
   useEffect(() => {
     if (loading) return;
-    if (walking && startedAt) {
-      restoreWalk(startedAt);
+    if (walking && startedAt && walkId) {
+      restoreWalk(startedAt, walkId);
     }
-  }, [loading, walking, startedAt]);
+  }, [loading, walking, startedAt, walkId]);
 
   /* =====================
-   * 종료
+   * 산책 종료
    * ===================== */
   const handleEnd = async () => {
     const result = await endWalk(memo, poop);
