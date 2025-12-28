@@ -203,6 +203,7 @@ export default function ChatRoomPage() {
 
         if (roomId) {
           room = Number(roomId);
+          setNumericRoomId(room);
         } else if (boardId) {
           const res = await createChatRoomByBoardId(Number(boardId));
           room = res.data.data;
