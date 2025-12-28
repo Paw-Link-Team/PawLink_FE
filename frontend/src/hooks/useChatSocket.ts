@@ -16,6 +16,8 @@ export function useChatSocket(
       transports: ["websocket"],
       autoConnect: false, // 중요
     });
+    console.log(socket.io);
+    
 
     socketRef.current = socket;
 
