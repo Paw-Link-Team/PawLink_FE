@@ -4,41 +4,46 @@ import type { ChatMessageDto } from "../api/chat";
 
 export function useChatSocket(
   roomId: number,
-  socketOrigin: string,
   onMessage: (msg: ChatMessageDto) => void
 ) {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    if (!Number.isFinite(roomId) || !socketOrigin) return;
+    if (!Number.isFinite(roomId)) return;
 
-    const socket = io(socketOrigin, {
+    const socket = io("wss://api-pawlink.duckdns.org", {
       path: "/socket.io",
       transports: ["websocket"],
-      withCredentials: true,
+      autoConnect: false, // 중요
     });
 
     socketRef.current = socket;
-    socket.emit("joinRoom", roomId);
+
+    socket.on("connect", () => {
+      socket.emit("joinRoom", roomId);
+    });
 
     socket.on("newMessage", onMessage);
+
+    socket.connect();
 
     return () => {
       socket.emit("leaveRoom", roomId);
       socket.disconnect();
       socketRef.current = null;
     };
-  }, [roomId, socketOrigin, onMessage]);
+  }, [roomId, onMessage]);
 
-  const sendMessage = useCallback((message: string, senderUserId: number) => {
-    if (socketRef.current) {
-      socketRef.current.emit("sendMessage", {
+  const sendMessage = useCallback(
+    (message: string, senderUserId: number) => {
+      socketRef.current?.emit("sendMessage", {
         chatRoomId: roomId,
         senderUserId,
         message,
       });
-    }
-  }, [roomId]);
+    },
+    [roomId]
+  );
 
-  return { socketRef, sendMessage };
+  return { sendMessage };
 }
