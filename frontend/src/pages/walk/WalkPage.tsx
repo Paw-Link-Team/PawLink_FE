@@ -11,71 +11,87 @@ type PoopStatus = "O" | "X";
 export default function WalkPage() {
   const navigate = useNavigate();
 
-  const { loading, walking, startedAt, walkId } = useWalkSession();
-  const {
-    status,
-    path,
-    seconds,
-    distanceKm,
-    avgSpeed,
-    startWalk,
-    restoreWalk,
-    endWalk,
-  } = useWalkTracker();
+  /* =====================
+   * 서버 세션 (진실의 원천)
+   * ===================== */
+  const { loading, state, start, end } = useWalkSession();
+
+  /* =====================
+   * GPS / 타이머
+   * ===================== */
+  const tracker = useWalkTracker();
 
   const [memo, setMemo] = useState("");
   const [poop, setPoop] = useState<PoopStatus>("X");
 
   /* =====================
-   * 서버 기준 복구
+   * 세션 상태에 따라 트래커 제어
    * ===================== */
   useEffect(() => {
-    if (loading) return;
-    if (walking && startedAt && walkId) {
-      restoreWalk(startedAt, walkId);
+    if (state.status === "WALKING") {
+      tracker.startTimer();
+      tracker.startWatch();
+    } else {
+      tracker.reset();
     }
-  }, [loading, walking, startedAt, walkId]);
+  }, [state.status]);
 
   /* =====================
    * 산책 종료
    * ===================== */
   const handleEnd = async () => {
-    const result = await endWalk(memo, poop);
+    const result = await end({
+      distanceKm: tracker.distanceKm,
+      memo,
+      poop,
+    });
+
     navigate("/walk/result", {
       state: { walkHistoryId: result.id },
     });
   };
 
+  if (loading) {
+    return <div className="walk-page">로딩 중...</div>;
+  }
+
   return (
     <div className="walk-page">
-      <WalkMap path={path} />
+      <WalkMap path={tracker.path} />
 
       <div className="walk-stats">
-        <Stat label="산책 시간" value={formatTime(seconds)} />
-        <Stat label="이동 거리" value={`${distanceKm.toFixed(2)} km`} />
-        <Stat label="평균 속도" value={`${avgSpeed.toFixed(1)} km/h`} />
+        <Stat
+          label="산책 시간"
+          value={formatTime(tracker.seconds)}
+        />
+        <Stat
+          label="이동 거리"
+          value={`${tracker.distanceKm.toFixed(2)} km`}
+        />
+        <Stat
+          label="평균 속도"
+          value={`${tracker.avgSpeed.toFixed(1)} km/h`}
+        />
       </div>
 
       <div className="walk-actions">
-        {status === "BEFORE" && (
-          <button className="btn primary" onClick={startWalk}>
+        {state.status === "IDLE" && (
+          <button className="btn primary" onClick={start}>
             산책 시작
           </button>
         )}
 
-        {status === "WALKING" && (
+        {state.status === "WALKING" && (
           <>
-            <button className="btn disabled">산책 시작</button>
-            <button className="btn primary" onClick={handleEnd}>
+            <button className="btn disabled">
+              산책 시작
+            </button>
+            <button
+              className="btn primary"
+              onClick={handleEnd}
+            >
               산책 종료
             </button>
-          </>
-        )}
-
-        {status === "FINISHED" && (
-          <>
-            <button className="btn disabled">산책 시작</button>
-            <button className="btn disabled">산책 종료</button>
           </>
         )}
       </div>
@@ -86,13 +102,17 @@ export default function WalkPage() {
         <div className="memo-actions">
           <button className="memo-btn">📷 사진 추가하기</button>
           <button
-            className={`memo-btn ${poop === "X" ? "active" : ""}`}
+            className={`memo-btn ${
+              poop === "X" ? "active" : ""
+            }`}
             onClick={() => setPoop("X")}
           >
             배변 X
           </button>
           <button
-            className={`memo-btn ${poop === "O" ? "active" : ""}`}
+            className={`memo-btn ${
+              poop === "O" ? "active" : ""
+            }`}
             onClick={() => setPoop("O")}
           >
             배변 O
@@ -103,14 +123,20 @@ export default function WalkPage() {
           placeholder="산책 중 특이사항을 적어주세요."
           value={memo}
           onChange={(e) => setMemo(e.target.value)}
-          disabled={status === "BEFORE"}
+          disabled={state.status === "IDLE"}
         />
       </div>
     </div>
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
   return (
     <div className="stat">
       <div className="stat-label">{label}</div>

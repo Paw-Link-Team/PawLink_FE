@@ -3,6 +3,7 @@ import Header from "../../components/Header/Header";
 import kakaoLogin from "../../assets/login/kakao.png";
 import naverLogin from "../../assets/login/naver.png";
 import "./LoginPage.css";
+import { v4 as uuidv4 } from "uuid";
 
 export default function LoginPage() {
   useEffect(() => {
@@ -24,7 +25,7 @@ export default function LoginPage() {
   };
 
   const handleNaverLogin = () => {
-    const state = crypto.randomUUID();
+    const state = uuidv4();
 
     const params = new URLSearchParams({
       response_type: "code",

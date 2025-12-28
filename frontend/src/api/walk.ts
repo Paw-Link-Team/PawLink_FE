@@ -12,24 +12,30 @@ export const startWalkApi = () => {
 /* =====================
  * 산책 종료 (multipart)
  * ===================== */
+export type EndWalkPayload = {
+  distanceKm: number;
+  memo: string;
+  poop: PoopStatus;
+  images?: File[];
+};
+
 export const endWalkApi = (
-  walkId: number,
-  distanceKm: number,
-  memo: string,
-  poop: PoopStatus
+  walkSessionId: number,
+  payload: EndWalkPayload
 ) => {
   const formData = new FormData();
 
-  formData.append("distanceKm", String(distanceKm));
-  formData.append("memo", memo);
-  formData.append("poop", poop);
+  formData.append("distanceKm", String(payload.distanceKm));
+  formData.append("memo", payload.memo);
+  formData.append("poop", payload.poop);
 
-  return api.post(`/api/walks/${walkId}/end`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
+  payload.images?.forEach((file) => {
+    formData.append("images", file);
   });
+
+  return api.post(`/api/walks/${walkSessionId}/end`, formData);
 };
+
 
 /* =====================
  * 현재 산책 세션 조회 (복구용)

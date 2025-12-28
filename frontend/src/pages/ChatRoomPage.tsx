@@ -199,12 +199,18 @@ export default function ChatRoomPage() {
       try {
         setLoading(true);
 
-        let room = numericRoomId;
-        if (!Number.isFinite(room) && boardId) {
+        let room: number;
+
+        if (roomId) {
+          room = Number(roomId);
+        } else if (boardId) {
           const res = await createChatRoomByBoardId(Number(boardId));
           room = res.data.data;
           setNumericRoomId(room);
+        } else {
+          throw new Error("roomId 또는 boardId가 필요합니다.");
         }
+
 
         if (!Number.isFinite(room)) {
           throw new Error("Invalid roomId");
@@ -250,9 +256,19 @@ export default function ChatRoomPage() {
     socketRef.current = socket;
     socket.emit("joinRoom", numericRoomId);
 
-    socket.on("newMessage", (msg: ChatMessageDto) => {
-      setMessages((prev) => [...prev, msg]);
+    socket.on("newMessage", (msg) => {
+      setMessages((prev) =>
+        prev.some(
+          (p) =>
+            p.senderUserId === msg.senderUserId &&
+            p.sentAt === msg.sentAt &&
+            p.message === msg.message
+        )
+          ? prev
+          : [...prev, msg]
+      );
     });
+
 
     return () => {
       socket.emit("leaveRoom", numericRoomId);
@@ -265,22 +281,33 @@ export default function ChatRoomPage() {
    * send
    * ====================== */
   const send = () => {
-    if (!input.trim() || !socketRef.current || !me) return;
+    if (
+      !input.trim() ||
+      !socketRef.current ||
+      !me ||
+      !Number.isFinite(numericRoomId)
+    ) {
+      return;
+    }
 
     const text = input.trim();
 
+    // optimistic UI
     setMessages((prev) => [
       ...prev,
       buildOptimisticMessage(numericRoomId, text, me),
     ]);
 
+    // 🔥 서버가 기대하는 payload 형태
     socketRef.current.emit("sendMessage", {
       chatRoomId: numericRoomId,
+      senderUserId: me.userId, // ✅ 필수
       message: text,
     });
 
     setInput("");
   };
+
 
   const currentDateLabel = useMemo(
     () => formatDateHeader(messages[0]?.sentAt),
@@ -338,11 +365,12 @@ export default function ChatRoomPage() {
               </div>
             )}
 
-            {messages.map((m, idx) => (
+            {messages.map((m) => (
               <div
-                key={idx}
+                key={`${m.senderUserId}-${m.sentAt}-${m.message}`}
                 className={`crp-msg crp-msg-${getSide(m)}`}
               >
+
                 <div className="crp-msg-bubble">{m.message}</div>
                 <div className="crp-msg-time">
                   {formatMessageTime(m.sentAt)}
