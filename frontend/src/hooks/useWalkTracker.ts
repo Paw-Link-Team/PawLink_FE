@@ -122,18 +122,25 @@ export function useWalkTracker() {
      * 산책 시작
      * ===================== */
     const startWalk = async () => {
-        const res = await api.post("/api/walks/start");
-        walkIdRef.current = res.data.data.walkId;
+        try {
+            const res = await api.post("/api/walks/start");
+            walkIdRef.current = res.data.data.walkId;
 
-        // 초기화
-        setPath([]);
-        setSeconds(0);
-        setDistanceKm(0);
-        setAvgSpeed(0);
+            // walkId 확인
+            console.log("Start Walk ID:", walkIdRef.current);
 
-        setStatus("WALKING");
-        startTimer();
-        startTracking();
+            // 초기화
+            setPath([]);
+            setSeconds(0);
+            setDistanceKm(0);
+            setAvgSpeed(0);
+
+            setStatus("WALKING");
+            startTimer();
+            startTracking();
+        } catch (err) {
+            console.error("산책 시작 오류:", err);
+        }
     };
 
     /* =====================
@@ -145,24 +152,28 @@ export function useWalkTracker() {
         stopTimer();
         stopTracking();
 
-        const res = await api.post(
-            `/api/walks/${walkIdRef.current}/end`,
-            { distanceKm, memo, poop }
-        );
+        try {
+            const res = await api.post(
+                `/api/walks/${walkIdRef.current}/end`,
+                { distanceKm, memo, poop }
+            );
 
-        const history = res.data.data;
+            const history = res.data.data;
 
-        // ✅ 복구용 저장
-        sessionStorage.setItem(
-            "lastWalkResult",
-            JSON.stringify(history)
-        );
+            // 응답 확인
+            console.log("End Walk Response:", history);
 
-        navigate("/walk/result", {
-            state: history,
-        });
+            // ✅ 복구용 저장
+            sessionStorage.setItem("lastWalkResult", JSON.stringify(history));
 
-        setStatus("FINISHED");
+            navigate("/walk/result", {
+                state: history,
+            });
+
+            setStatus("FINISHED");
+        } catch (err) {
+            console.error("산책 종료 오류:", err);
+        }
     };
 
     /* =====================
