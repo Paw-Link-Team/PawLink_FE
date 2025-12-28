@@ -5,6 +5,7 @@ export function useWalkSession() {
   const [loading, setLoading] = useState(true);
   const [walking, setWalking] = useState(false);
   const [startedAt, setStartedAt] = useState<string | null>(null);
+  const [walkId, setWalkId] = useState<number | null>(null);
 
   useEffect(() => {
     getWalkSessionApi()
@@ -12,9 +13,10 @@ export function useWalkSession() {
         const data = res.data.data;
         setWalking(data.walking);
         setStartedAt(data.startedAt ?? null);
+        setWalkId(data.walkId ?? null); // ✅ 반드시 필요
       })
       .finally(() => setLoading(false));
   }, []);
 
-  return { loading, walking, startedAt };
+  return { loading, walking, startedAt, walkId };
 }
