@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import WalkMap from "./WalkMap";
 import { useWalkTracker } from "../../hooks/useWalkTracker";
+import { useWalkSession } from "../../hooks/useWalkSession";
 import { formatTime } from "../../features/walk/utills/time";
 import "./WalkPage.css";
 
 type PoopStatus = "O" | "X";
 
 export default function WalkPage() {
+  const navigate = useNavigate();
+
+  const { loading, walking, startedAt } = useWalkSession();
   const {
     status,
     path,
@@ -14,35 +19,43 @@ export default function WalkPage() {
     distanceKm,
     avgSpeed,
     startWalk,
+    restoreWalk,
     endWalk,
   } = useWalkTracker();
 
-  /* =====================
-   * 산책 메모 상태
-   * ===================== */
   const [memo, setMemo] = useState("");
   const [poop, setPoop] = useState<PoopStatus>("X");
 
   /* =====================
-   * 산책 종료 (저장)
+   * 서버 기준 복구
    * ===================== */
-  const handleEnd = () => {
-    endWalk(memo, poop);
+  useEffect(() => {
+    if (loading) return;
+    if (walking && startedAt) {
+      restoreWalk(startedAt);
+    }
+  }, [loading, walking, startedAt]);
+
+  /* =====================
+   * 종료
+   * ===================== */
+  const handleEnd = async () => {
+    const result = await endWalk(memo, poop);
+    navigate("/walk/result", {
+      state: { walkHistoryId: result.id },
+    });
   };
 
   return (
     <div className="walk-page">
-      {/* 지도 */}
       <WalkMap path={path} />
 
-      {/* 통계 */}
       <div className="walk-stats">
         <Stat label="산책 시간" value={formatTime(seconds)} />
         <Stat label="이동 거리" value={`${distanceKm.toFixed(2)} km`} />
         <Stat label="평균 속도" value={`${avgSpeed.toFixed(1)} km/h`} />
       </div>
 
-      {/* 버튼 영역 */}
       <div className="walk-actions">
         {status === "BEFORE" && (
           <button className="btn primary" onClick={startWalk}>
@@ -67,20 +80,17 @@ export default function WalkPage() {
         )}
       </div>
 
-      {/* 산책 메모 */}
       <div className="walk-memo">
         <div className="memo-title">산책 메모</div>
 
         <div className="memo-actions">
           <button className="memo-btn">📷 사진 추가하기</button>
-
           <button
             className={`memo-btn ${poop === "X" ? "active" : ""}`}
             onClick={() => setPoop("X")}
           >
             배변 X
           </button>
-
           <button
             className={`memo-btn ${poop === "O" ? "active" : ""}`}
             onClick={() => setPoop("O")}
@@ -100,9 +110,6 @@ export default function WalkPage() {
   );
 }
 
-/* =====================
- * 공용 컴포넌트
- * ===================== */
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="stat">
