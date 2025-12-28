@@ -1,7 +1,6 @@
 import api from "./api";
 
-// PoopStatus 정의
-type PoopStatus = 'X' | 'O';
+type PoopStatus = "X" | "O";
 
 /* =====================
  * 산책 시작
@@ -11,13 +10,24 @@ export const startWalkApi = () => {
 };
 
 /* =====================
- * 산책 종료
+ * 산책 종료 (multipart)
  * ===================== */
-export const endWalkApi = (walkId: number, distanceKm: number, memo: string, poop: PoopStatus) => {
-  return api.post(`/api/walks/${walkId}/end`, {
-    distanceKm,
-    memo,
-    poop,
+export const endWalkApi = (
+  walkId: number,
+  distanceKm: number,
+  memo: string,
+  poop: PoopStatus
+) => {
+  const formData = new FormData();
+
+  formData.append("distanceKm", String(distanceKm));
+  formData.append("memo", memo);
+  formData.append("poop", poop);
+
+  return api.post(`/api/walks/${walkId}/end`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
   });
 };
 
