@@ -11,6 +11,9 @@ export function useWalkTracker() {
   const [seconds, setSeconds] = useState(0);
   const [distanceKm, setDistanceKm] = useState(0);
 
+  // ✅ walkId 저장 (시작 / 복구 공용)
+  const currentWalkIdRef = useRef<number | null>(null);
+
   const watchIdRef = useRef<number | null>(null);
   const timerRef = useRef<number | null>(null);
 
@@ -81,19 +84,25 @@ export function useWalkTracker() {
   };
 
   /* =====================
-   * 시작
+   * 산책 시작
    * ===================== */
   const startWalk = async () => {
-    await startWalkApi();
+    const res = await startWalkApi();
+
+    // ✅ 서버에서 내려준 walkId 저장
+    currentWalkIdRef.current = res.data.data.walkId;
+
     setStatus("WALKING");
     startTimer();
     startWatch();
   };
 
   /* =====================
-   * 복구 (서버 기준)
+   * 산책 복구 (서버 기준)
    * ===================== */
-  const restoreWalk = (startedAt: string) => {
+  const restoreWalk = (startedAt: string, walkId: number) => {
+    currentWalkIdRef.current = walkId;
+
     setStatus("WALKING");
 
     const started = new Date(startedAt).getTime();
@@ -104,26 +113,26 @@ export function useWalkTracker() {
   };
 
   /* =====================
-   * 종료
+   * 산책 종료
    * ===================== */
   const endWalk = async (memo: string, poop: PoopStatus) => {
-  if (!currentWalkIdRef.current) {
-    throw new Error("walkId가 없습니다.");
-  }
+    if (!currentWalkIdRef.current) {
+      throw new Error("walkId가 없습니다.");
+    }
 
-  const res = await endWalkApi(
-    currentWalkIdRef.current, // walkId
-    distanceKm,
-    memo,
-    poop
-  );
+    const res = await endWalkApi(
+      currentWalkIdRef.current,
+      distanceKm,
+      memo,
+      poop
+    );
 
-  stopTimer();
-  stopWatch();
-  setStatus("FINISHED");
+    stopTimer();
+    stopWatch();
+    setStatus("FINISHED");
 
-  return res.data.data;
-};
+    return res.data.data;
+  };
 
   const avgSpeed =
     seconds > 0 ? (distanceKm / seconds) * 3600 : 0;
