@@ -6,6 +6,12 @@ export default defineConfig({
   plugins: [react()],
   server:{
     host: true,
-    port: 3000
+    port: 3000,
+    proxy: {
+      '/socket.io': {
+        target: 'https://api-pawlink.duckdns.org:9092',
+        ws: true,
+      }
+    }
   }
 })
