@@ -9,32 +9,38 @@ export function useChatSocket(
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    if (!Number.isFinite(roomId)) return;
+  if (!Number.isFinite(roomId)) return;
 
-    const socket = io("https://api-pawlink.duckdns.org", {
+  const socket = io("https://api-pawlink.duckdns.org", {
     path: "/socket.io",
-      transports: ["websocket"],
-      autoConnect: false, // 중요
-    });
-    console.log("SOCKET OPTS", socket.io.opts);
-    
+    // ❌ transports 강제 제거
+    // ❌ autoConnect 제거
+  });
 
-    socketRef.current = socket;
+  console.log("SOCKET OPTS", socket.io.opts);
 
-    socket.on("connect", () => {
-      socket.emit("joinRoom", roomId);
-    });
+  socketRef.current = socket;
 
-    socket.on("newMessage", onMessage);
+  socket.on("connect", () => {
+    console.log("✅ connected", socket.id);
+    socket.emit("joinRoom", roomId);
+  });
 
-    socket.connect();
+  socket.on("connect_error", (err) => {
+    console.error("❌ connect_error", err.message);
+  });
 
-    return () => {
-      socket.emit("leaveRoom", roomId);
-      socket.disconnect();
-      socketRef.current = null;
-    };
-  }, [roomId, onMessage]);
+  socket.on("disconnect", (reason) => {
+    console.warn("⚠️ disconnected", reason);
+  });
+
+  socket.on("newMessage", onMessage);
+
+  return () => {
+    socket.disconnect();
+    socketRef.current = null;
+  };
+}, [roomId, onMessage]);
 
   const sendMessage = useCallback(
     (message: string, senderUserId: number) => {
