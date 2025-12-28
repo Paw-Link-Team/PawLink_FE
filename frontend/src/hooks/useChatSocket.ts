@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import type { ChatMessageDto } from "../api/chat";
 
@@ -30,5 +30,15 @@ export function useChatSocket(
     };
   }, [roomId, socketOrigin, onMessage]);
 
-  return socketRef;
+  const sendMessage = useCallback((message: string, senderUserId: number) => {
+    if (socketRef.current) {
+      socketRef.current.emit("sendMessage", {
+        chatRoomId: roomId,
+        senderUserId,
+        message,
+      });
+    }
+  }, [roomId]);
+
+  return { socketRef, sendMessage };
 }
