@@ -109,7 +109,7 @@ export const fetchAppointmentByRoom = (chatRoomId: number) => {
   return api.get<{
     success: boolean;
     data: AppointmentPayload | null;
-  }>(`/api/chat/rooms/${chatRoomId}/appointment`);
+  }>(`/api/appointment/${chatRoomId}`);
 };
 
 /** 채팅방 기준 약속 생성 / 수정 */
@@ -119,7 +119,7 @@ export const upsertAppointmentByRoom = (
 ) => {
   return api.post<{
     success: boolean;
-  }>(`/api/chat/rooms/${chatRoomId}/appointment`, payload);
+  }>(`/api/appointment/${chatRoomId}`, payload);
 };
 
 /* ======================

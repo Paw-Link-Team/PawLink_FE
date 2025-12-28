@@ -1,5 +1,8 @@
 import api from "./api";
 
+// PoopStatus 정의
+type PoopStatus = 'X' | 'O';
+
 /* =====================
  * 산책 시작
  * ===================== */
@@ -10,9 +13,11 @@ export const startWalkApi = () => {
 /* =====================
  * 산책 종료
  * ===================== */
-export const endWalkApi = (distanceKm: number) => {
-  return api.post("/api/walks/end", {
+export const endWalkApi = (walkId: number, distanceKm: number, memo: string, poop: PoopStatus) => {
+  return api.post(`/api/walks/${walkId}/end`, {
     distanceKm,
+    memo,
+    poop,
   });
 };
 
