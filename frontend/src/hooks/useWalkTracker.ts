@@ -107,18 +107,23 @@ export function useWalkTracker() {
    * 종료
    * ===================== */
   const endWalk = async (memo: string, poop: PoopStatus) => {
-    const res = await endWalkApi({
-      distanceKm,
-      memo,
-      poop,
-    });
+  if (!currentWalkIdRef.current) {
+    throw new Error("walkId가 없습니다.");
+  }
 
-    stopTimer();
-    stopWatch();
-    setStatus("FINISHED");
+  const res = await endWalkApi(
+    currentWalkIdRef.current, // walkId
+    distanceKm,
+    memo,
+    poop
+  );
 
-    return res.data.data; // WalkHistoryResponse
-  };
+  stopTimer();
+  stopWatch();
+  setStatus("FINISHED");
+
+  return res.data.data;
+};
 
   const avgSpeed =
     seconds > 0 ? (distanceKm / seconds) * 3600 : 0;
