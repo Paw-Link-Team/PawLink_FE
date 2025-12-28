@@ -11,12 +11,12 @@ export function useChatSocket(
   useEffect(() => {
     if (!Number.isFinite(roomId)) return;
 
-    const socket = io("wss://api-pawlink.duckdns.org", {
-      path: "/socket.io",
+    const socket = io("https://api-pawlink.duckdns.org", {
+    path: "/socket.io",
       transports: ["websocket"],
       autoConnect: false, // 중요
     });
-    console.log(socket.io);
+    console.log("SOCKET OPTS", socket.io.opts);
     
 
     socketRef.current = socket;
