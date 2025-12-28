@@ -8,10 +8,10 @@ export function useWalkSession() {
 
   useEffect(() => {
     getWalkSessionApi()
-      .then(res => {
+      .then((res) => {
         const data = res.data.data;
         setWalking(data.walking);
-        setStartedAt(data.startedAt);
+        setStartedAt(data.startedAt ?? null);
       })
       .finally(() => setLoading(false));
   }, []);
