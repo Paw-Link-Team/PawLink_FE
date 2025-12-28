@@ -25,7 +25,7 @@ export const endWalkApi = (
 ) => {
   const formData = new FormData();
 
-  // ✅ 서버가 요구하는 "data" 파트
+  // ⭐️ 이 파트가 없으면 서버는 무조건 예외
   formData.append(
     "data",
     new Blob(
@@ -40,7 +40,6 @@ export const endWalkApi = (
     )
   );
 
-  // ✅ images는 그대로 OK
   payload.images?.forEach((file) => {
     formData.append("images", file);
   });
