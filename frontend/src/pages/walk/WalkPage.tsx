@@ -40,16 +40,44 @@ export default function WalkPage() {
    * 산책 종료
    * ===================== */
   const handleEnd = async () => {
-    const result = await end({
+    await end({
       distanceKm: tracker.distanceKm,
       memo,
       poop,
     });
 
+    const durationSec = tracker.seconds;
+
+    const avgSpeed =
+      tracker.distanceKm > 0
+        ? tracker.distanceKm / (durationSec / 3600)
+        : 0;
+
+    const endedAt = new Date();
+    const startedAt = new Date(
+      endedAt.getTime() - durationSec * 1000
+    );
+
+    const walkResult = {
+      startedAt: startedAt.toISOString(),
+      endedAt: endedAt.toISOString(),
+      durationSec,
+      distanceKm: tracker.distanceKm,
+      avgSpeed,
+      memo,
+      poop,
+    };
+
+    sessionStorage.setItem(
+      "lastWalkResult",
+      JSON.stringify(walkResult)
+    );
+
     navigate("/walk/result", {
-      state: { walkHistoryId: result.id },
+      state: walkResult,
     });
   };
+
 
   if (loading) {
     return <div className="walk-page">로딩 중...</div>;
@@ -102,17 +130,15 @@ export default function WalkPage() {
         <div className="memo-actions">
           <button className="memo-btn">📷 사진 추가하기</button>
           <button
-            className={`memo-btn ${
-              poop === "X" ? "active" : ""
-            }`}
+            className={`memo-btn ${poop === "X" ? "active" : ""
+              }`}
             onClick={() => setPoop("X")}
           >
             배변 X
           </button>
           <button
-            className={`memo-btn ${
-              poop === "O" ? "active" : ""
-            }`}
+            className={`memo-btn ${poop === "O" ? "active" : ""
+              }`}
             onClick={() => setPoop("O")}
           >
             배변 O
