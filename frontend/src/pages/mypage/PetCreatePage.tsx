@@ -8,9 +8,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function getToken() {
   const token = localStorage.getItem("accessToken");
-  if (!token) {
-    throw new Error("로그인이 필요합니다.");
-  }
+  if (!token) throw new Error("로그인이 필요합니다.");
   return token;
 }
 
@@ -56,7 +54,7 @@ export default function PetCreatePage() {
         },
         body: JSON.stringify({
           ...value,
-          petProfileImageUrl: imageUrl, // null 허용 (백엔드가 기본 이미지 처리)
+          petProfileImageUrl: imageUrl,
         }),
       });
 
@@ -77,8 +75,9 @@ export default function PetCreatePage() {
   };
 
   return (
-    <div className="petc-wrapper">
-      <div className="petc-screen">
+    <div className="petc-layout">
+      {/* 실제 스크롤 영역 */}
+      <main className="petc-content">
         <header className="petc-top">
           <button onClick={() => nav(-1)}>←</button>
           <div className="petc-title">반려견 등록</div>
@@ -94,9 +93,10 @@ export default function PetCreatePage() {
           }}
           onSubmit={onSubmit}
         />
+      </main>
 
-        <NavBar active="mypage" />
-      </div>
+      {/* 하단 고정 네비 */}
+      <NavBar active="mypage" />
     </div>
   );
 }
