@@ -8,7 +8,9 @@
   margin: 0 auto;
   background: #fff;
   min-height: 100vh;
+  padding-bottom: calc(72px + env(safe-area-inset-bottom)); /* ⭐ 핵심 */
 }
+
 /* ===== 반려견 이미지 영역 ===== */
 .petc-image-wrap {
   display: flex;
@@ -106,6 +108,7 @@
 
 .petc-footer {
   padding: 16px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
 }
 
 .petc-submit {
@@ -116,18 +119,4 @@
   background: #6b3f1d;
   color: #fff;
   font-weight: 700;
-}
-
-.petc-screen {
-  max-width: 420px;
-  margin: 0 auto;
-  background: #fff;
-  min-height: 100vh;
-
-  /* ✅ NavBar 겹침 방지 핵심 */
-  padding-bottom: calc(72px + env(safe-area-inset-bottom));
-}
-.petc-footer {
-  padding: 16px;
-  padding-bottom: calc(16px + env(safe-area-inset-bottom));
 }
